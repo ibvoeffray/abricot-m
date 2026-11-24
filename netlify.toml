@@ -1,6 +1,7 @@
-# Le site est généré à chaque déploiement à partir du Bulletin officiel du Valais.
+# La page est générée par GitHub Actions (.github/workflows/publier.yml) et versionnée dans site/.
+# Netlify la publie telle quelle : l'API du Bulletin officiel ne répond pas à ses serveurs de build.
 [build]
-  command = "python3 scripts/enquetes_vs.py --home Evionnaz --rayon 15 --jours 45 --tous --out site/index.html --json site/enquetes.json"
+  command = ""
   publish = "site/"
 
 [[headers]]

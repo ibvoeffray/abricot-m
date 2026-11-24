@@ -21,14 +21,14 @@ python3 scripts/enquetes_vs.py --json enquetes.json     # export des avis dans l
 python3 scripts/enquetes_vs.py --debug                  # XML du 1er avis + champs extraits
 ```
 
-## En ligne (Netlify)
+## En ligne (GitHub Actions + Netlify)
 
-`netlify.toml` lance le script à chaque déploiement et publie `site/` (la page n'est pas versionnée).
-Pour une mise à jour quotidienne automatique :
+L'API du Bulletin officiel ne répond pas aux serveurs de build Netlify (connexion expirée) ; elle répond en revanche aux serveurs de GitHub. Donc :
 
-1. Netlify → *Site configuration → Build & deploy → Build hooks* : créer un hook.
-2. GitHub → *Settings → Secrets and variables → Actions* : ajouter le secret `NETLIFY_BUILD_HOOK` avec l'URL du hook.
+1. Le workflow `.github/workflows/publier.yml` génère la page **chaque matin** (et à chaque modification du script sur `master`) et versionne `site/index.html` et `site/enquetes.json` s'il y a du nouveau.
+2. Netlify publie le dossier `site/` tel quel, sans étape de build (`netlify.toml`).
 
-Le workflow `.github/workflows/rafraichir.yml` déclenche alors un déploiement chaque matin (et à la demande depuis l'onglet *Actions*).
+Pour forcer une mise à jour : onglet *Actions* → *Publier les mises à l'enquête* → *Run workflow*.
+Sur une pull request, le workflow vérifie seulement que la génération fonctionne.
 
 > Le lien de chaque avis ouvre la publication officielle, seule à faire foi.

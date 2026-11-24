@@ -1,0 +1,47 @@
+# Génère la page des mises à l'enquête et la versionne dans site/ ; Netlify publie ensuite site/ tel quel.
+# La génération se fait ici et non sur Netlify : l'API du Bulletin officiel (amtsblattportal.ch)
+# ne répond pas aux serveurs de build Netlify, mais répond aux runners GitHub.
+name: Publier les mises à l'enquête
+
+on:
+  schedule:
+    - cron: "17 4 * * *"      # chaque jour vers 5h/6h (heure suisse)
+  workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
+  push:
+    branches: [master]
+    paths: ["scripts/**", ".github/workflows/publier.yml"]
+  pull_request:                # sur une PR : vérifie seulement que la génération fonctionne
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publier-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  generer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Générer la page
+        env:
+          TZ: Europe/Zurich
+        run: |
+          python3 scripts/enquetes_vs.py --home Evionnaz --rayon 15 --jours 45 --tous \
+            --out site/index.html --json site/enquetes.json
+
+      - name: Versionner la page mise à jour
+        if: github.event_name != 'pull_request'
+        run: |
+          if git diff --quiet -- site/enquetes.json; then
+            echo "Aucun nouvel avis : rien à publier."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/index.html site/enquetes.json
+          git commit -m "Mises à l'enquête du $(TZ=Europe/Zurich date +%d.%m.%Y)"
+          git push

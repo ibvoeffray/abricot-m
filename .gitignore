@@ -2,8 +2,7 @@ node_modules
 .DS_Store
 .idea
 __pycache__/
-# généré au déploiement
-site/
-enquetes.html
-enquetes.json
-debug_premier_avis.xml
+# sorties locales du script
+/enquetes.html
+/enquetes.json
+/debug_premier_avis.xml
