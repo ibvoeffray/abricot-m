@@ -1,10 +1,15 @@
-# Mises à l'enquête en Valais
+# Mises à l'enquête – Valais, Vaud, Genève
 
-Page web qui liste les **mises à l'enquête publique** publiées au **Bulletin officiel du Valais** autour d'une commune, avec carte, distance, délai d'opposition et lien vers l'avis officiel.
+Page web qui liste les **mises à l'enquête publique** autour d'une commune, en **Valais, dans le canton de Vaud et à Genève**, avec carte, distance, délai d'opposition et lien vers l'avis ou le dossier officiel.
 
-- Sources : API publique du Portail des feuilles officielles (amtsblattportal.ch, SECO), sous-rubriques
-  **BA-VS05** (demandes d'autorisation de construire) et **BA-VS10** (mises en consultation publique des plans) ;
-  géocodage swisstopo (api3.geo.admin.ch).
+| Canton | Source | Délai |
+|---|---|---|
+| **VS** | Bulletin officiel du Valais, API amtsblattportal.ch (SECO), sous-rubriques BA-VS05 (autorisations de construire) et BA-VS10 (consultation des plans) | indiqué dans l'avis |
+| **VD** | Géodonnées de l'État de Vaud, couche CAMAC « Demandes de permis de construire (enquête publique) » (ogc.vd.ch) | fin de l'enquête publique |
+| **GE** | SITG, « Autorisation de construire – Dossier » (dossiers enregistrés ou en instruction) | non fourni : 30 jours dès la publication FAO |
+
+La commune des dossiers vaudois et genevois est retrouvée à partir des contours communaux publiés par chaque canton. Seuls les avis officiels (Bulletin officiel, Feuille des avis officiels) font foi.
+
 - Pour chaque avis : projet, commune, parcelle, zone, dérogations, requérant, n° eConstruction, **délai indiqué dans l'avis**,
   position **exacte** (coordonnées de l'avis, sinon centre du village).
 - **Faire opposition** : sur chaque avis encore ouvert, un formulaire prépare une lettre d'opposition (ou de réserve de droit privé) pré-remplie avec les références de l'avis et l'adresse de l'autorité indiquée dans la publication, à imprimer ou enregistrer en PDF, signer et envoyer avant le délai. Rien n'est envoyé : tout se passe dans le navigateur.
@@ -12,9 +17,9 @@ Page web qui liste les **mises à l'enquête publique** publiées au **Bulletin 
 
 ## Coordonnées des communes
 
-Chaque avis propose « Contacter la commune » : adresse, téléphone, e-mail, horaires et site de l'administration communale.
+Chaque avis propose « Contacter la commune » (VS, VD, GE) : adresse, téléphone, e-mail, horaires et site de l'administration communale.
 
-- `data/communes_vs.json` est construit par `python3 scripts/maj_communes.py` à partir de Wikidata (site officiel), d'OpenStreetMap (adresse, téléphone, horaires des administrations communales) et de la page d'accueil des sites communaux (téléphone). À relancer de temps en temps.
+- `data/communes_vs.json` est construit par `python3 scripts/maj_communes.py` à partir de Wikidata (site officiel), d'OpenStreetMap (adresse, téléphone, horaires des administrations communales) et de la page d'accueil des sites communaux (téléphone). Relancé automatiquement le 3 de chaque mois (`.github/workflows/communes.yml`).
 - L'adresse publiée par la commune dans ses propres avis prime sur celle d'OpenStreetMap.
 - **Corrections à la main** : `data/communes_vs_manuel.json`, par numéro OFS de la commune ; ces valeurs priment sur tout le reste. Exemple :
 
@@ -39,7 +44,8 @@ python3 scripts/enquetes_vs.py                          # Evionnaz, 2 km, 30 jou
 python3 scripts/enquetes_vs.py --home Martigny --rayon 8
 python3 scripts/enquetes_vs.py --jours 60 --tous        # y c. délais échus
 python3 scripts/enquetes_vs.py --json enquetes.json     # export des avis dans le rayon
-python3 scripts/enquetes_vs.py --debug                  # XML du 1er avis + champs extraits
+python3 scripts/enquetes_vs.py --cantons VS            # un seul canton
+python3 scripts/enquetes_vs.py --debug                  # XML du 1er avis VS
 ```
 
 ## En ligne (GitHub Actions + Netlify)

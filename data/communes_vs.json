@@ -1,4 +1,1944 @@
 {
+ "5401": {
+  "maj": "2026-11-24",
+  "nom": "Aigle",
+  "site": "https://www.aigle.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 468 41 11"
+ },
+ "5402": {
+  "maj": "2026-11-24",
+  "nom": "Bex",
+  "site": "https://www.bex.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 463 02 67"
+ },
+ "5403": {
+  "maj": "2026-11-24",
+  "nom": "Chessel",
+  "site": "http://www.chessel.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 481 38 72"
+ },
+ "5404": {
+  "maj": "2026-11-24",
+  "nom": "Corbeyrier",
+  "site": "https://www.corbeyrier.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 466 80 41"
+ },
+ "5405": {
+  "maj": "2026-11-24",
+  "nom": "Gryon",
+  "site": "https://www.gryon.ch"
+ },
+ "5406": {
+  "maj": "2026-11-24",
+  "nom": "Lavey-Morcles",
+  "site": "http://www.lavey.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 485 12 33"
+ },
+ "5407": {
+  "maj": "2026-11-24",
+  "nom": "Leysin",
+  "site": "http://www.leysin.ch"
+ },
+ "5408": {
+  "maj": "2026-11-24",
+  "nom": "Noville",
+  "site": "https://www.noville.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 967 15 25"
+ },
+ "5409": {
+  "maj": "2026-11-24",
+  "nom": "Ollon",
+  "site": "https://www.ollon.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 499 01 01"
+ },
+ "5410": {
+  "maj": "2026-11-24",
+  "nom": "Ormont-Dessous",
+  "site": "https://www.ormont-dessous.ch"
+ },
+ "5411": {
+  "maj": "2026-11-24",
+  "nom": "Ormont-Dessus",
+  "site": "http://www.ormont-dessus.ch"
+ },
+ "5412": {
+  "maj": "2026-11-24",
+  "nom": "Rennaz",
+  "site": "http://www.rennaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 960 19 39"
+ },
+ "5413": {
+  "maj": "2026-11-24",
+  "nom": "Roche",
+  "site": "http://www.roche-vd.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 960 31 14"
+ },
+ "5414": {
+  "maj": "2026-11-24",
+  "nom": "Villeneuve",
+  "site": "https://www.villeneuve.ch"
+ },
+ "5415": {
+  "maj": "2026-11-24",
+  "nom": "Yvorne",
+  "site": "https://www.yvorne.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 466 25 22"
+ },
+ "5422": {
+  "maj": "2026-11-24",
+  "nom": "Aubonne",
+  "site": "https://www.aubonne.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 808 63 66"
+ },
+ "5423": {
+  "maj": "2026-11-24",
+  "nom": "Ballens",
+  "site": "http://www.ballens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 809 52 39"
+ },
+ "5424": {
+  "maj": "2026-11-24",
+  "nom": "Berolle",
+  "site": "http://www.berolle.ch"
+ },
+ "5425": {
+  "maj": "2026-11-24",
+  "nom": "Bière",
+  "site": "https://www.biere-vd.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 809 51 55"
+ },
+ "5426": {
+  "maj": "2026-11-24",
+  "nom": "Bougy-Villars",
+  "site": "https://www.bougy-villars.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 808 54 41"
+ },
+ "5427": {
+  "maj": "2026-11-24",
+  "nom": "Féchy",
+  "site": "https://www.fechy.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 821 12 40"
+ },
+ "5428": {
+  "maj": "2026-11-24",
+  "nom": "Gimel",
+  "site": "http://www.gimel.ch"
+ },
+ "5429": {
+  "maj": "2026-11-24",
+  "nom": "Longirod",
+  "site": "http://www.longirod.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 368 16 56"
+ },
+ "5430": {
+  "maj": "2026-11-24",
+  "nom": "Marchissy",
+  "site": "https://www.marchissy.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 368 11 86"
+ },
+ "5431": {
+  "maj": "2026-11-24",
+  "nom": "Mollens",
+  "site": "https://www.mollensvd.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 864 42 65"
+ },
+ "5434": {
+  "maj": "2026-11-24",
+  "nom": "Saint-George",
+  "site": "http://stgeorge.ch"
+ },
+ "5435": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Livres",
+  "site": "https://st-livres.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 808 72 49"
+ },
+ "5436": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Oyens",
+  "site": "http://www.saint-oyens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 828 35 12"
+ },
+ "5437": {
+  "maj": "2026-11-24",
+  "nom": "Saubraz",
+  "site": "http://www.saubraz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 828 39 10"
+ },
+ "5451": {
+  "maj": "2026-11-24",
+  "nom": "Avenches",
+  "site": "https://www.avenches.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 676 99 22"
+ },
+ "5456": {
+  "maj": "2026-11-24",
+  "nom": "Cudrefin",
+  "site": "https://www.cudrefin.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 677 90 10"
+ },
+ "5458": {
+  "maj": "2026-11-24",
+  "nom": "Faoug",
+  "site": "http://www.faoug.ch"
+ },
+ "5464": {
+  "maj": "2026-11-24",
+  "nom": "Vully-les-Lacs",
+  "site": "https://www.vully-les-lacs.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 677 30 03"
+ },
+ "5471": {
+  "maj": "2026-11-24",
+  "nom": "Bettens",
+  "site": "http://www.commune-bettens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 882 54 50"
+ },
+ "5472": {
+  "maj": "2026-11-24",
+  "nom": "Bournens",
+  "site": "https://www.bournens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 731 13 88"
+ },
+ "5473": {
+  "maj": "2026-11-24",
+  "nom": "Boussens",
+  "site": "http://www.boussens.ch"
+ },
+ "5474": {
+  "maj": "2026-11-24",
+  "nom": "La Chaux (Cossonay)",
+  "site": "https://www.lachaux.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 861 11 01"
+ },
+ "5475": {
+  "maj": "2026-11-24",
+  "nom": "Chavannes-le-Veyron",
+  "site": "http://www.chavannes-le-veyron.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 862 11 80"
+ },
+ "5476": {
+  "maj": "2026-11-24",
+  "nom": "Chevilly",
+  "site": "https://www.chevilly.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 861 45 40"
+ },
+ "5477": {
+  "maj": "2026-11-24",
+  "nom": "Cossonay",
+  "site": "https://www.cossonay.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 863 22 00"
+ },
+ "5479": {
+  "maj": "2026-11-24",
+  "nom": "Cuarnens",
+  "site": "https://www.cuarnens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 864 56 96"
+ },
+ "5480": {
+  "maj": "2026-11-24",
+  "nom": "Daillens",
+  "site": "https://www.daillens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 862 91 20"
+ },
+ "5481": {
+  "maj": "2026-11-24",
+  "nom": "Dizy",
+  "site": "http://www.dizy.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 861 38 23"
+ },
+ "5482": {
+  "maj": "2026-11-24",
+  "nom": "Eclépens",
+  "site": "https://www.eclepens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 866 72 12"
+ },
+ "5483": {
+  "maj": "2026-11-24",
+  "nom": "Ferreyres",
+  "site": "http://www.ferreyres.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 866 12 02"
+ },
+ "5484": {
+  "maj": "2026-11-24",
+  "nom": "Gollion",
+  "site": "http://www.gollion.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 861 37 97"
+ },
+ "5485": {
+  "maj": "2026-11-24",
+  "nom": "Grancy",
+  "site": "http://www.grancy.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 861 14 80"
+ },
+ "5486": {
+  "maj": "2026-11-24",
+  "nom": "L'Isle",
+  "site": "https://www.lisle.ch"
+ },
+ "5487": {
+  "maj": "2026-11-24",
+  "nom": "Lussery-Villars",
+  "site": "http://www.lussery-villars.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 862 25 35"
+ },
+ "5488": {
+  "maj": "2026-11-24",
+  "nom": "Mauraz",
+  "site": "http://www.mauraz.ch"
+ },
+ "5489": {
+  "maj": "2026-11-24",
+  "nom": "Mex",
+  "site": "https://www.mex.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 706 18 00"
+ },
+ "5490": {
+  "maj": "2026-11-24",
+  "nom": "Moiry",
+  "site": "http://www.moiry.ch"
+ },
+ "5491": {
+  "maj": "2026-11-24",
+  "nom": "Mont-la-Ville",
+  "site": "https://www.mont-la-ville.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 101 21 71"
+ },
+ "5492": {
+  "maj": "2026-11-24",
+  "nom": "Montricher",
+  "site": "https://www.montricher.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 864 56 70"
+ },
+ "5493": {
+  "maj": "2026-11-24",
+  "nom": "Orny",
+  "site": "https://www.orny.ch"
+ },
+ "5495": {
+  "maj": "2026-11-24",
+  "nom": "Penthalaz",
+  "site": "https://www.penthalaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 863 20 50"
+ },
+ "5496": {
+  "maj": "2026-11-24",
+  "nom": "Penthaz",
+  "site": "https://www.penthaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 862 71 88"
+ },
+ "5497": {
+  "maj": "2026-11-24",
+  "nom": "Pompaples",
+  "site": "http://www.pompaples.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 866 61 33"
+ },
+ "5498": {
+  "maj": "2026-11-24",
+  "nom": "La Sarraz",
+  "site": "https://www.lasarraz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 866 02 20"
+ },
+ "5499": {
+  "maj": "2026-11-24",
+  "nom": "Senarclens",
+  "site": "https://senarclens.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 861 39 51"
+ },
+ "5501": {
+  "maj": "2026-11-24",
+  "nom": "Sullens",
+  "site": "https://www.sullens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 731 33 34"
+ },
+ "5503": {
+  "maj": "2026-11-24",
+  "nom": "Vufflens-la-Ville",
+  "site": "https://www.vufflens-la-ville.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 701 32 55"
+ },
+ "5511": {
+  "maj": "2026-11-24",
+  "nom": "Assens",
+  "site": "https://www.assens.ch"
+ },
+ "5512": {
+  "maj": "2026-11-24",
+  "nom": "Bercher",
+  "site": "https://www.bercher-vd.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 887 73 23"
+ },
+ "5514": {
+  "maj": "2026-11-24",
+  "nom": "Bottens",
+  "site": "https://www.bottens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 881 15 41"
+ },
+ "5515": {
+  "maj": "2026-11-24",
+  "nom": "Bretigny-sur-Morrens",
+  "site": "http://www.bretigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 731 25 74"
+ },
+ "5516": {
+  "maj": "2026-11-24",
+  "nom": "Cugy",
+  "site": "https://www.cugy-vd.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 731 22 44"
+ },
+ "5518": {
+  "maj": "2026-11-24",
+  "nom": "Echallens",
+  "site": "http://www.echallens.ch"
+ },
+ "5520": {
+  "maj": "2026-11-24",
+  "nom": "Essertines-sur-Yverdon",
+  "site": "https://essertines-sur-yverdon.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 435 13 88"
+ },
+ "5521": {
+  "maj": "2026-11-24",
+  "nom": "Etagnières",
+  "site": "https://etagnieres.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 731 01 50"
+ },
+ "5522": {
+  "maj": "2026-11-24",
+  "nom": "Fey",
+  "site": "http://www.fey-vd.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 887 81 13"
+ },
+ "5523": {
+  "maj": "2026-11-24",
+  "nom": "Froideville",
+  "site": "http://www.froideville.ch"
+ },
+ "5527": {
+  "maj": "2026-11-24",
+  "nom": "Morrens",
+  "site": "https://www.morrens.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 731 95 30"
+ },
+ "5529": {
+  "maj": "2026-11-24",
+  "nom": "Oulens-sous-Échallens",
+  "site": "https://www.oulens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 882 54 03"
+ },
+ "5530": {
+  "maj": "2026-11-24",
+  "nom": "Pailly",
+  "site": "https://www.pailly.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 887 77 15"
+ },
+ "5531": {
+  "maj": "2026-11-24",
+  "nom": "Penthéréaz",
+  "site": "http://www.penthereaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 881 12 33"
+ },
+ "5533": {
+  "maj": "2026-11-24",
+  "nom": "Poliez-Pittet",
+  "site": "http://www.poliez-pittet.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 881 33 51"
+ },
+ "5534": {
+  "maj": "2026-11-24",
+  "nom": "Rueyres",
+  "site": "http://www.rueyres.ch"
+ },
+ "5535": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Barthélemy",
+  "site": "http://www.st-barthelemy.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 886 20 50"
+ },
+ "5537": {
+  "maj": "2026-11-24",
+  "nom": "Villars-le-Terroir",
+  "site": "http://www.villars-le-terroir.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 881 28 25"
+ },
+ "5539": {
+  "maj": "2026-11-24",
+  "nom": "Vuarrens",
+  "site": "https://www.vuarrens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 887 84 16"
+ },
+ "5540": {
+  "maj": "2026-11-24",
+  "nom": "Montilliez",
+  "site": "http://www.montilliez.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 881 52 88"
+ },
+ "5541": {
+  "maj": "2026-11-24",
+  "nom": "Goumoëns",
+  "site": "https://www.goumoens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 886 15 20"
+ },
+ "5551": {
+  "maj": "2026-11-24",
+  "nom": "Bonvillars",
+  "site": "https://www.bonvillars.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 436 12 50"
+ },
+ "5552": {
+  "maj": "2026-11-24",
+  "nom": "Bullet",
+  "site": "https://www.bullet.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 454 12 64"
+ },
+ "5553": {
+  "maj": "2026-11-24",
+  "nom": "Champagne",
+  "site": "https://www.champagne.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 436 04 20"
+ },
+ "5554": {
+  "maj": "2026-11-24",
+  "nom": "Concise",
+  "site": "https://www.concise.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 434 62 65"
+ },
+ "5555": {
+  "maj": "2026-11-24",
+  "nom": "Corcelles-près-Concise",
+  "site": "https://www.corcelles-concise.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 434 18 08"
+ },
+ "5556": {
+  "maj": "2026-11-24",
+  "nom": "Fiez",
+  "site": "https://www.fiez.ch"
+ },
+ "5557": {
+  "maj": "2026-11-24",
+  "nom": "Fontaines-sur-Grandson",
+  "site": "https://www.fontaines-sur-grandson.ch"
+ },
+ "5559": {
+  "maj": "2026-11-24",
+  "nom": "Giez",
+  "site": "https://www.giez.ch"
+ },
+ "5560": {
+  "maj": "2026-11-24",
+  "nom": "Grandevent",
+  "site": "http://www.grandevent.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 436 10 13"
+ },
+ "5561": {
+  "maj": "2026-11-24",
+  "nom": "Grandson",
+  "site": "https://www.grandson.ch"
+ },
+ "5562": {
+  "maj": "2026-11-24",
+  "nom": "Mauborget",
+  "site": "https://www.mauborget.ch"
+ },
+ "5563": {
+  "maj": "2026-11-24",
+  "nom": "Mutrux",
+  "site": ""
+ },
+ "5564": {
+  "maj": "2026-11-24",
+  "nom": "Novalles",
+  "site": "https://www.novalles.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 436 10 77"
+ },
+ "5565": {
+  "maj": "2026-11-24",
+  "nom": "Onnens",
+  "site": "https://www.onnens.ch"
+ },
+ "5566": {
+  "maj": "2026-11-24",
+  "nom": "Provence",
+  "site": "https://www.provence.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 434 13 62"
+ },
+ "5568": {
+  "maj": "2026-11-24",
+  "nom": "Sainte-Croix",
+  "site": "https://www.sainte-croix.ch"
+ },
+ "5571": {
+  "maj": "2026-11-24",
+  "nom": "Tévenon",
+  "site": "https://www.villars-burquin.ch/"
+ },
+ "5581": {
+  "maj": "2026-11-24",
+  "nom": "Belmont-sur-Lausanne",
+  "site": "http://www.belmont.ch"
+ },
+ "5582": {
+  "maj": "2026-11-24",
+  "nom": "Cheseaux-sur-Lausanne",
+  "site": "http://www.cheseaux.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 731 05 10"
+ },
+ "5583": {
+  "maj": "2026-11-24",
+  "nom": "Crissier",
+  "site": "http://www.crissier.ch"
+ },
+ "5584": {
+  "maj": "2026-11-24",
+  "nom": "Épalinges",
+  "site": "http://www.epalinges.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 785 61 75"
+ },
+ "5585": {
+  "maj": "2026-11-24",
+  "nom": "Jouxtens-Mézery",
+  "site": "https://www.jouxtens-mezery.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 634 38 46"
+ },
+ "5586": {
+  "maj": "2026-11-24",
+  "nom": "Lausanne",
+  "site": "https://www.lausanne.ch/"
+ },
+ "5587": {
+  "maj": "2026-11-24",
+  "nom": "Le Mont-sur-Lausanne",
+  "site": "http://www.lemontsurlausanne.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 651 91 91"
+ },
+ "5588": {
+  "maj": "2026-11-24",
+  "nom": "Paudex",
+  "site": "http://www.paudex.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 791 05 48"
+ },
+ "5589": {
+  "maj": "2026-11-24",
+  "nom": "Prilly",
+  "site": "http://www.prilly.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 622 72 11"
+ },
+ "5590": {
+  "maj": "2026-11-24",
+  "nom": "Pully",
+  "site": "http://www.pully.ch"
+ },
+ "5591": {
+  "maj": "2026-11-24",
+  "nom": "Renens",
+  "site": "https://www.renens.ch/"
+ },
+ "5592": {
+  "maj": "2026-11-24",
+  "nom": "Romanel-sur-Lausanne",
+  "site": "http://www.romanel-sur-lausanne.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 641 28 00"
+ },
+ "5601": {
+  "maj": "2026-11-24",
+  "nom": "Chexbres",
+  "site": "http://www.chexbres.ch"
+ },
+ "5604": {
+  "maj": "2026-11-24",
+  "nom": "Forel",
+  "site": "http://www.forel.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 781 17 17"
+ },
+ "5606": {
+  "maj": "2026-11-24",
+  "nom": "Lutry",
+  "site": "https://www.lutry.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 796 21 21"
+ },
+ "5607": {
+  "maj": "2026-11-24",
+  "nom": "Puidoux",
+  "site": "http://www.puidoux.ch"
+ },
+ "5609": {
+  "maj": "2026-11-24",
+  "nom": "Rivaz",
+  "site": "https://www.rivaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 946 16 95"
+ },
+ "5610": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Saphorin",
+  "site": "https://www.saint-saphorin.ch"
+ },
+ "5611": {
+  "maj": "2026-11-24",
+  "nom": "Savigny",
+  "site": "https://www.savigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 781 07 30"
+ },
+ "5613": {
+  "maj": "2026-11-24",
+  "nom": "Bourg-en-Lavaux",
+  "site": "http://www.b-e-l.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 821 04 04"
+ },
+ "5621": {
+  "maj": "2026-11-24",
+  "nom": "Aclens",
+  "site": "https://www.aclens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 869 93 58"
+ },
+ "5622": {
+  "maj": "2026-11-24",
+  "nom": "Bremblens",
+  "site": "http://www.bremblens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 801 19 11"
+ },
+ "5623": {
+  "maj": "2026-11-24",
+  "nom": "Buchillon",
+  "site": "http://www.buchillon.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 807 34 50"
+ },
+ "5624": {
+  "maj": "2026-11-24",
+  "nom": "Bussigny",
+  "site": "http://www.bussigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 706 11 11"
+ },
+ "5627": {
+  "maj": "2026-11-24",
+  "nom": "Chavannes-près-Renens",
+  "site": "https://www.chavannes.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 633 33 00"
+ },
+ "5628": {
+  "maj": "2026-11-24",
+  "nom": "Chigny",
+  "site": "http://www.chigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 802 18 56"
+ },
+ "5629": {
+  "maj": "2026-11-24",
+  "nom": "Clarmont",
+  "site": "http://www.clarmont.ch"
+ },
+ "5631": {
+  "maj": "2026-11-24",
+  "nom": "Denens",
+  "site": "https://www.denens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 801 79 27"
+ },
+ "5632": {
+  "maj": "2026-11-24",
+  "nom": "Denges",
+  "site": "http://www.denges.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 803 07 07"
+ },
+ "5633": {
+  "maj": "2026-11-24",
+  "nom": "Echandens",
+  "site": "http://www.echandens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 701 15 25"
+ },
+ "5634": {
+  "maj": "2026-11-24",
+  "nom": "Echichens",
+  "site": "https://www.echichens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 811 22 00"
+ },
+ "5635": {
+  "maj": "2026-11-24",
+  "nom": "Ecublens",
+  "site": "http://www.ecublens.ch"
+ },
+ "5636": {
+  "maj": "2026-11-24",
+  "nom": "Etoy",
+  "site": "https://www.etoy.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 821 32 32"
+ },
+ "5637": {
+  "maj": "2026-11-24",
+  "nom": "Lavigny",
+  "site": "http://www.lavigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "058 611 61 16"
+ },
+ "5638": {
+  "maj": "2026-11-24",
+  "nom": "Lonay",
+  "site": "http://www.lonay.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 804 74 74"
+ },
+ "5639": {
+  "maj": "2026-11-24",
+  "nom": "Lully",
+  "site": "http://www.lully.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 801 21 59"
+ },
+ "5640": {
+  "maj": "2026-11-24",
+  "nom": "Lussy-sur-Morges",
+  "site": "http://www.lussy-sur-morges.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 801 83 88"
+ },
+ "5642": {
+  "maj": "2026-11-24",
+  "nom": "Morges",
+  "site": "http://www.morges.ch"
+ },
+ "5643": {
+  "maj": "2026-11-24",
+  "nom": "Préverenges",
+  "site": "http://www.preverenges.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 811 50 50"
+ },
+ "5645": {
+  "maj": "2026-11-24",
+  "nom": "Romanel-sur-Morges",
+  "site": "https://www.romanel-sur-morges.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 869 94 97"
+ },
+ "5646": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Prex",
+  "site": "https://www.saint-prex.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 823 01 01"
+ },
+ "5648": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Sulpice",
+  "site": "https://www.st-sulpice.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 694 33 50"
+ },
+ "5649": {
+  "maj": "2026-11-24",
+  "nom": "Tolochenaz",
+  "site": "http://www.tolochenaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 811 29 30"
+ },
+ "5650": {
+  "maj": "2026-11-24",
+  "nom": "Vaux-sur-Morges",
+  "site": "http://www.vaux-sur-morges.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 803 36 61"
+ },
+ "5651": {
+  "maj": "2026-11-24",
+  "nom": "Villars-Sainte-Croix",
+  "site": "http://www.villars-sainte-croix.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 701 16 10"
+ },
+ "5652": {
+  "maj": "2026-11-24",
+  "nom": "Villars-sous-Yens",
+  "site": "http://www.villars-sous-yens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 800 40 85"
+ },
+ "5653": {
+  "maj": "2026-11-24",
+  "nom": "Vufflens-le-Château",
+  "site": "https://www.vufflens-le-chateau.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 804 60 30"
+ },
+ "5654": {
+  "maj": "2026-11-24",
+  "nom": "Vullierens",
+  "site": "https://www.vullierens.ch"
+ },
+ "5655": {
+  "maj": "2026-11-24",
+  "nom": "Yens",
+  "site": "https://www.yens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 800 40 76"
+ },
+ "5656": {
+  "maj": "2026-11-24",
+  "nom": "Hautemorges",
+  "site": "https://www.hautemorges.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 800 90 20"
+ },
+ "5661": {
+  "maj": "2026-11-24",
+  "nom": "Boulens",
+  "site": "http://www.boulens.ch"
+ },
+ "5663": {
+  "maj": "2026-11-24",
+  "nom": "Bussy-sur-Moudon",
+  "site": "http://bussy-sur-moudon.ch/"
+ },
+ "5665": {
+  "maj": "2026-11-24",
+  "nom": "Chavannes-sur-Moudon",
+  "site": "https://www.chavannes-sur-moudon.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 905 60 94"
+ },
+ "5669": {
+  "maj": "2026-11-24",
+  "nom": "Curtilles",
+  "site": "https://www.curtilles.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 906 96 30"
+ },
+ "5671": {
+  "maj": "2026-11-24",
+  "nom": "Dompierre",
+  "site": "http://www.dompierre-vd.ch"
+ },
+ "5673": {
+  "maj": "2026-11-24",
+  "nom": "Hermenches",
+  "site": "http://www.hermenches.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 905 63 70"
+ },
+ "5674": {
+  "maj": "2026-11-24",
+  "nom": "Lovatens",
+  "site": "https://www.lovatens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 906 94 05"
+ },
+ "5675": {
+  "maj": "2026-11-24",
+  "nom": "Lucens",
+  "site": "https://www.lucens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 906 15 50"
+ },
+ "5678": {
+  "maj": "2026-11-24",
+  "nom": "Moudon",
+  "site": "https://www.moudon.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 905 88 88"
+ },
+ "5680": {
+  "maj": "2026-11-24",
+  "nom": "Ogens",
+  "site": "https://www.ogens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 887 75 85"
+ },
+ "5683": {
+  "maj": "2026-11-24",
+  "nom": "Prévonloup",
+  "site": "http://www.prevonloup.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 652 08 00"
+ },
+ "5684": {
+  "maj": "2026-11-24",
+  "nom": "Rossenges",
+  "site": "https://rossenges.ch/"
+ },
+ "5688": {
+  "maj": "2026-11-24",
+  "nom": "Syens",
+  "site": "http://www.syens.ch"
+ },
+ "5690": {
+  "maj": "2026-11-24",
+  "nom": "Villars-le-Comte",
+  "site": "http://www.villars-le-comte.ch"
+ },
+ "5692": {
+  "maj": "2026-11-24",
+  "nom": "Vucherens",
+  "site": "http://www.vucherens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 903 26 74"
+ },
+ "5693": {
+  "maj": "2026-11-24",
+  "nom": "Montanaire",
+  "site": "http://www.montanaire.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 905 09 30"
+ },
+ "5701": {
+  "maj": "2026-11-24",
+  "nom": "Arnex-sur-Nyon",
+  "site": "http://www.arnex-sur-nyon.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 367 13 09"
+ },
+ "5702": {
+  "maj": "2026-11-24",
+  "nom": "Arzier-Le Muids",
+  "site": "http://www.arzier.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 366 87 87"
+ },
+ "5703": {
+  "maj": "2026-11-24",
+  "nom": "Bassins",
+  "site": "http://www.bassins.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 366 23 22"
+ },
+ "5704": {
+  "maj": "2026-11-24",
+  "nom": "Begnins",
+  "site": "https://www.begnins.ch"
+ },
+ "5705": {
+  "maj": "2026-11-24",
+  "nom": "Bogis-Bossey",
+  "site": "http://www.bogis-bossey.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 960 52 52"
+ },
+ "5706": {
+  "maj": "2026-11-24",
+  "nom": "Borex",
+  "site": "http://www.borex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 367 13 33"
+ },
+ "5707": {
+  "maj": "2026-11-24",
+  "nom": "Chavannes-de-Bogis",
+  "site": "http://www.chavannes-de-bogis.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 960 75 00"
+ },
+ "5708": {
+  "maj": "2026-11-24",
+  "nom": "Chavannes-des-Bois",
+  "site": "http://www.chavannes-des-bois.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 755 31 44"
+ },
+ "5709": {
+  "maj": "2026-11-24",
+  "nom": "Chéserex",
+  "site": "http://www.cheserex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 369 90 40"
+ },
+ "5710": {
+  "maj": "2026-11-24",
+  "nom": "Coinsins",
+  "site": "https://coinsins.ch/",
+  "source_telephone": "site communal",
+  "telephone": "022 364 35 35"
+ },
+ "5711": {
+  "maj": "2026-11-24",
+  "nom": "Commugny",
+  "site": "https://www.commugny.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 566 67 01"
+ },
+ "5712": {
+  "maj": "2026-11-24",
+  "nom": "Coppet",
+  "site": "https://www.coppet.ch"
+ },
+ "5713": {
+  "maj": "2026-11-24",
+  "nom": "Crans",
+  "site": "http://www.crans-pres-celigny.ch"
+ },
+ "5714": {
+  "maj": "2026-11-24",
+  "nom": "Crassier",
+  "site": "http://www.crassier.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 367 18 75"
+ },
+ "5715": {
+  "maj": "2026-11-24",
+  "nom": "Duillier",
+  "site": "https://www.duillier.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 369 17 29"
+ },
+ "5716": {
+  "maj": "2026-11-24",
+  "nom": "Eysins",
+  "site": "http://www.eysins.ch"
+ },
+ "5717": {
+  "maj": "2026-11-24",
+  "nom": "Founex",
+  "site": "https://www.founex.ch/",
+  "source_telephone": "site communal",
+  "telephone": "022 960 88 88"
+ },
+ "5718": {
+  "maj": "2026-11-24",
+  "nom": "Genolier",
+  "site": "http://www.genolier.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 366 86 30"
+ },
+ "5719": {
+  "maj": "2026-11-24",
+  "nom": "Gingins",
+  "site": "https://www.gingins.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 369 92 22"
+ },
+ "5720": {
+  "maj": "2026-11-24",
+  "nom": "Givrins",
+  "site": "https://www.givrins.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 369 90 20"
+ },
+ "5721": {
+  "maj": "2026-11-24",
+  "nom": "Gland",
+  "site": "https://gland.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 354 04 04"
+ },
+ "5722": {
+  "maj": "2026-11-24",
+  "nom": "Grens",
+  "site": "http://www.grens.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 361 58 47"
+ },
+ "5723": {
+  "maj": "2026-11-24",
+  "nom": "Mies",
+  "site": "http://www.mies.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 950 92 40"
+ },
+ "5724": {
+  "maj": "2026-11-24",
+  "nom": "Nyon",
+  "site": "http://www.nyon.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 316 40 00"
+ },
+ "5725": {
+  "maj": "2026-11-24",
+  "nom": "Prangins",
+  "site": "https://www.prangins.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 994 31 13"
+ },
+ "5726": {
+  "maj": "2026-11-24",
+  "nom": "La Rippe",
+  "site": "https://www.larippe.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 367 15 00"
+ },
+ "5727": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Cergue",
+  "site": "https://www.st-cergue.ch/",
+  "source_telephone": "site communal",
+  "telephone": "022 360 11 46"
+ },
+ "5728": {
+  "maj": "2026-11-24",
+  "nom": "Signy-Avenex",
+  "site": "http://www.signy-avenex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 361 77 79"
+ },
+ "5729": {
+  "maj": "2026-11-24",
+  "nom": "Tannay",
+  "site": "http://www.tannay.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 776 40 41"
+ },
+ "5730": {
+  "maj": "2026-11-24",
+  "nom": "Trélex",
+  "site": "https://www.trelex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 369 92 92"
+ },
+ "5731": {
+  "maj": "2026-11-24",
+  "nom": "Le Vaud",
+  "site": "http://www.levaud.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 366 25 62"
+ },
+ "5732": {
+  "maj": "2026-11-24",
+  "nom": "Vich",
+  "site": "https://www.vich.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 364 19 70"
+ },
+ "5741": {
+  "maj": "2026-11-24",
+  "nom": "L'Abergement",
+  "site": "https://www.labergement.ch/",
+  "source_telephone": "site communal",
+  "telephone": "024 441 03 00"
+ },
+ "5742": {
+  "maj": "2026-11-24",
+  "nom": "Agiez",
+  "site": "https://agiez.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 441 70 92"
+ },
+ "5743": {
+  "maj": "2026-11-24",
+  "nom": "Arnex-sur-Orbe",
+  "site": "https://www.arnex-sur-orbe.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 441 51 37"
+ },
+ "5744": {
+  "maj": "2026-11-24",
+  "nom": "Ballaigues",
+  "site": "http://www.ballaigues.ch"
+ },
+ "5745": {
+  "maj": "2026-11-24",
+  "nom": "Baulmes",
+  "site": "https://www.baulmes.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 459 15 66"
+ },
+ "5746": {
+  "maj": "2026-11-24",
+  "nom": "Bavois",
+  "site": "https://www.bavois.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 441 46 43"
+ },
+ "5747": {
+  "maj": "2026-11-24",
+  "nom": "Bofflens",
+  "site": "https://www.bofflens.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 441 03 60"
+ },
+ "5748": {
+  "maj": "2026-11-24",
+  "nom": "Bretonnières",
+  "site": "http://www.1329.ch"
+ },
+ "5749": {
+  "maj": "2026-11-24",
+  "nom": "Chavornay",
+  "site": "http://www.chavornay.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 442 85 10"
+ },
+ "5750": {
+  "maj": "2026-11-24",
+  "nom": "Les Clées",
+  "site": "https://www.lesclees.ch"
+ },
+ "5752": {
+  "maj": "2026-11-24",
+  "nom": "Croy",
+  "site": "http://www.croy.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 453 19 04"
+ },
+ "5754": {
+  "maj": "2026-11-24",
+  "nom": "Juriens",
+  "site": "https://www.juriens.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 453 18 19"
+ },
+ "5755": {
+  "maj": "2026-11-24",
+  "nom": "Lignerolle",
+  "site": ""
+ },
+ "5756": {
+  "maj": "2026-11-24",
+  "nom": "Montcherand",
+  "site": "https://www.montcherand.ch"
+ },
+ "5757": {
+  "maj": "2026-11-24",
+  "nom": "Orbe",
+  "site": "https://www.orbe.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 442 92 22"
+ },
+ "5758": {
+  "maj": "2026-11-24",
+  "nom": "La Praz",
+  "site": "https://lapraz.ch/",
+  "source_telephone": "site communal",
+  "telephone": "024 453 15 87"
+ },
+ "5759": {
+  "maj": "2026-11-24",
+  "nom": "Premier",
+  "site": "http://www.premier.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 453 13 95"
+ },
+ "5760": {
+  "maj": "2026-11-24",
+  "nom": "Rances",
+  "site": "https://www.rances.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 459 20 41"
+ },
+ "5761": {
+  "maj": "2026-11-24",
+  "nom": "Romainmôtier-Envy",
+  "site": "http://www.romainmotier.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 453 15 86"
+ },
+ "5762": {
+  "maj": "2026-11-24",
+  "nom": "Sergey",
+  "site": "https://www.sergey.ch"
+ },
+ "5763": {
+  "maj": "2026-11-24",
+  "nom": "Valeyres-sous-Rances",
+  "site": "https://www.valeyres-sous-rances.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 441 66 82"
+ },
+ "5764": {
+  "maj": "2026-11-24",
+  "nom": "Vallorbe",
+  "site": "https://www.vallorbe.ch"
+ },
+ "5765": {
+  "maj": "2026-11-24",
+  "nom": "Vaulion",
+  "site": "https://www.vaulion.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 843 29 71"
+ },
+ "5766": {
+  "maj": "2026-11-24",
+  "nom": "Vuitebœuf",
+  "site": "http://www.vuiteboeuf.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 459 18 16"
+ },
+ "5785": {
+  "maj": "2026-11-24",
+  "nom": "Corcelles-le-Jorat",
+  "site": "https://www.corcelles-le-jorat.ch"
+ },
+ "5790": {
+  "maj": "2026-11-24",
+  "nom": "Maracon",
+  "site": "https://www.maracon.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 907 81 25"
+ },
+ "5792": {
+  "maj": "2026-11-24",
+  "nom": "Montpreveyres",
+  "site": "http://www.montpreveyres.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 903 25 13"
+ },
+ "5798": {
+  "maj": "2026-11-24",
+  "nom": "Ropraz",
+  "site": "http://www.ropraz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 903 14 94"
+ },
+ "5799": {
+  "maj": "2026-11-24",
+  "nom": "Servion",
+  "site": "http://www.servion.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 903 17 08"
+ },
+ "5803": {
+  "maj": "2026-11-24",
+  "nom": "Vulliens",
+  "site": "http://www.vulliens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 903 19 60"
+ },
+ "5804": {
+  "maj": "2026-11-24",
+  "nom": "Jorat-Menthue",
+  "site": "http://www.jorat-menthue.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 905 51 15"
+ },
+ "5805": {
+  "maj": "2026-11-24",
+  "nom": "Oron",
+  "site": "https://www.oron.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 908 04 12"
+ },
+ "5806": {
+  "maj": "2026-11-24",
+  "nom": "Jorat-Mézières",
+  "site": "http://www.jorat-mezieres.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 903 02 02"
+ },
+ "5812": {
+  "maj": "2026-11-24",
+  "nom": "Champtauroz",
+  "site": "https://champtauroz.ch/",
+  "source_telephone": "site communal",
+  "telephone": "026 666 00 62"
+ },
+ "5813": {
+  "maj": "2026-11-24",
+  "nom": "Chevroux",
+  "site": "http://www.chevroux.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 667 10 05"
+ },
+ "5816": {
+  "maj": "2026-11-24",
+  "nom": "Corcelles-près-Payerne",
+  "site": "https://www.corcelles.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 662 43 43"
+ },
+ "5817": {
+  "maj": "2026-11-24",
+  "nom": "Grandcour",
+  "site": "https://www.grandcour.ch"
+ },
+ "5819": {
+  "maj": "2026-11-24",
+  "nom": "Henniez",
+  "site": "http://www.commune-henniez.ch"
+ },
+ "5821": {
+  "maj": "2026-11-24",
+  "nom": "Missy",
+  "site": "https://www.missy.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 667 20 55"
+ },
+ "5822": {
+  "maj": "2026-11-24",
+  "nom": "Payerne",
+  "site": "https://www.payerne.ch"
+ },
+ "5827": {
+  "maj": "2026-11-24",
+  "nom": "Trey",
+  "site": "https://www.trey.ch"
+ },
+ "5828": {
+  "maj": "2026-11-24",
+  "nom": "Treytorrens",
+  "site": "https://www.treytorrens.ch"
+ },
+ "5830": {
+  "maj": "2026-11-24",
+  "nom": "Villarzel",
+  "site": "https://villarzel.ch/"
+ },
+ "5831": {
+  "maj": "2026-11-24",
+  "nom": "Valbroye",
+  "site": "http://www.valbroye.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 668 54 00"
+ },
+ "5841": {
+  "maj": "2026-11-24",
+  "nom": "Château-d’Oex",
+  "site": "https://www.chateaudoex-admin.ch"
+ },
+ "5842": {
+  "maj": "2026-11-24",
+  "nom": "Rossinière",
+  "site": "https://rossiniere.ch"
+ },
+ "5843": {
+  "maj": "2026-11-24",
+  "nom": "Rougemont",
+  "site": "https://rougemont.ch",
+  "source_telephone": "site communal",
+  "telephone": "026 925 11 55"
+ },
+ "5851": {
+  "maj": "2026-11-24",
+  "nom": "Allaman",
+  "site": "https://www.allaman.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 807 34 56"
+ },
+ "5852": {
+  "maj": "2026-11-24",
+  "nom": "Bursinel",
+  "site": "http://www.bursinel.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 824 26 94"
+ },
+ "5853": {
+  "maj": "2026-11-24",
+  "nom": "Bursins",
+  "site": "https://www.bursins.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 824 14 53"
+ },
+ "5854": {
+  "maj": "2026-11-24",
+  "nom": "Burtigny",
+  "site": "https://www.burtigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 366 24 12"
+ },
+ "5855": {
+  "maj": "2026-11-24",
+  "nom": "Dully",
+  "site": "http://www.dully.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 824 16 53"
+ },
+ "5856": {
+  "maj": "2026-11-24",
+  "nom": "Essertines-sur-Rolle",
+  "site": "https://www.essertines-sur-rolle.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 828 34 97"
+ },
+ "5857": {
+  "maj": "2026-11-24",
+  "nom": "Gilly",
+  "site": "https://www.gilly.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 824 16 11"
+ },
+ "5858": {
+  "maj": "2026-11-24",
+  "nom": "Luins",
+  "site": "http://www.luins.ch"
+ },
+ "5859": {
+  "maj": "2026-11-24",
+  "nom": "Mont-sur-Rolle",
+  "site": "https://www.mont-sur-rolle.ch"
+ },
+ "5860": {
+  "maj": "2026-11-24",
+  "nom": "Perroy",
+  "site": "https://www.perroy.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 825 38 45"
+ },
+ "5861": {
+  "maj": "2026-11-24",
+  "nom": "Rolle",
+  "site": "https://www.rolle.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 822 44 44"
+ },
+ "5862": {
+  "maj": "2026-11-24",
+  "nom": "Tartegnin",
+  "site": "https://www.tartegnin.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 825 22 72"
+ },
+ "5863": {
+  "maj": "2026-11-24",
+  "nom": "Vinzel",
+  "site": "http://www.vinzel.ch"
+ },
+ "5871": {
+  "maj": "2026-11-24",
+  "nom": "L'Abbaye",
+  "site": "https://www.labbaye.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 564 20 30"
+ },
+ "5872": {
+  "maj": "2026-11-24",
+  "nom": "Le Chenit",
+  "site": "http://www.communeduchenit.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 845 17 21"
+ },
+ "5873": {
+  "maj": "2026-11-24",
+  "nom": "Le Lieu",
+  "site": "https://www.lelieu.ch/",
+  "source_telephone": "site communal",
+  "telephone": "021 841 11 20"
+ },
+ "5882": {
+  "maj": "2026-11-24",
+  "nom": "Chardonne",
+  "site": "https://www.chardonne.ch"
+ },
+ "5883": {
+  "maj": "2026-11-24",
+  "nom": "Corseaux",
+  "site": "https://www.corseaux.ch"
+ },
+ "5884": {
+  "maj": "2026-11-24",
+  "nom": "Corsier-sur-Vevey",
+  "site": "https://www.corsier-sur-vevey.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 925 92 90"
+ },
+ "5885": {
+  "maj": "2026-11-24",
+  "nom": "Jongny",
+  "site": "http://www.jongny.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 921 57 69"
+ },
+ "5886": {
+  "maj": "2026-11-24",
+  "nom": "Montreux",
+  "site": "https://www.montreux.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 962 77 77"
+ },
+ "5889": {
+  "maj": "2026-11-24",
+  "nom": "La Tour-de-Peilz",
+  "site": "https://www.la-tour-de-peilz.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 977 01 50"
+ },
+ "5890": {
+  "maj": "2026-11-24",
+  "nom": "Vevey",
+  "site": "http://www.vevey.ch"
+ },
+ "5891": {
+  "maj": "2026-11-24",
+  "nom": "Veytaux",
+  "site": "https://www.veytaux.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 966 05 55"
+ },
+ "5892": {
+  "maj": "2026-11-24",
+  "nom": "Blonay – Saint-Légier",
+  "site": "https://www.blonay-saint-legier.ch"
+ },
+ "5902": {
+  "maj": "2026-11-24",
+  "nom": "Belmont-sur-Yverdon",
+  "site": "http://www.belmont-sur-yverdon.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 435 25 05"
+ },
+ "5903": {
+  "maj": "2026-11-24",
+  "nom": "Bioley-Magnoux",
+  "site": "https://www.bioley-magnoux.ch"
+ },
+ "5904": {
+  "maj": "2026-11-24",
+  "nom": "Chamblon",
+  "site": "http://www.chamblon.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 445 35 75"
+ },
+ "5905": {
+  "maj": "2026-11-24",
+  "nom": "Champvent",
+  "site": "https://www.champvent.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 459 26 14"
+ },
+ "5907": {
+  "maj": "2026-11-24",
+  "nom": "Chavannes-le-Chêne",
+  "site": "http://www.chavannes-le-chene.ch/"
+ },
+ "5908": {
+  "maj": "2026-11-24",
+  "nom": "Chêne-Pâquier",
+  "site": "https://www.chene-paquier.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 430 26 15"
+ },
+ "5909": {
+  "maj": "2026-11-24",
+  "nom": "Cheseaux-Noréaz",
+  "site": "https://www.cheseaux-noreaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 425 67 83"
+ },
+ "5910": {
+  "maj": "2026-11-24",
+  "nom": "Cronay",
+  "site": "https://www.cronay.ch"
+ },
+ "5911": {
+  "maj": "2026-11-24",
+  "nom": "Cuarny",
+  "site": "http://www.cuarny.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 420 16 10"
+ },
+ "5912": {
+  "maj": "2026-11-24",
+  "nom": "Démoret",
+  "site": "https://www.demoret.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 433 11 87"
+ },
+ "5913": {
+  "maj": "2026-11-24",
+  "nom": "Donneloye",
+  "site": "https://www.donneloye.ch"
+ },
+ "5914": {
+  "maj": "2026-11-24",
+  "nom": "Ependes",
+  "site": "https://www.ependesvd.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 435 16 05"
+ },
+ "5919": {
+  "maj": "2026-11-24",
+  "nom": "Mathod",
+  "site": "http://www.mathod.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 459 24 64"
+ },
+ "5921": {
+  "maj": "2026-11-24",
+  "nom": "Molondin",
+  "site": "https://www.molondin.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 433 33 34"
+ },
+ "5922": {
+  "maj": "2026-11-24",
+  "nom": "Montagny-près-Yverdon",
+  "site": "http://www.montagny.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 447 21 71"
+ },
+ "5923": {
+  "maj": "2026-11-24",
+  "nom": "Oppens",
+  "site": "http://www.oppens.ch"
+ },
+ "5924": {
+  "maj": "2026-11-24",
+  "nom": "Orges",
+  "site": "https://www.orges.ch/",
+  "source_telephone": "site communal",
+  "telephone": "024 445 13 12"
+ },
+ "5925": {
+  "maj": "2026-11-24",
+  "nom": "Orzens",
+  "site": "http://www.orzens.ch",
+  "source_telephone": "site communal",
+  "telephone": "021 887 83 81"
+ },
+ "5926": {
+  "maj": "2026-11-24",
+  "nom": "Pomy",
+  "site": "http://www.pomy.ch/",
+  "source_telephone": "site communal",
+  "telephone": "024 425 25 35"
+ },
+ "5928": {
+  "maj": "2026-11-24",
+  "nom": "Rovray",
+  "site": "http://www.rovray.ch"
+ },
+ "5929": {
+  "maj": "2026-11-24",
+  "nom": "Suchy",
+  "site": "http://www.suchy.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 441 87 40"
+ },
+ "5930": {
+  "maj": "2026-11-24",
+  "nom": "Suscévaz",
+  "site": "http://www.suscevaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 445 05 62"
+ },
+ "5931": {
+  "maj": "2026-11-24",
+  "nom": "Treycovagnes",
+  "site": "http://treycovagnes.ch/",
+  "source_telephone": "site communal",
+  "telephone": "024 445 46 70"
+ },
+ "5932": {
+  "maj": "2026-11-24",
+  "nom": "Ursins",
+  "site": "https://www.ursins.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 435 18 77"
+ },
+ "5933": {
+  "maj": "2026-11-24",
+  "nom": "Valeyres-sous-Montagny",
+  "site": "http://www.valeyres-sous-montagny.ch"
+ },
+ "5934": {
+  "maj": "2026-11-24",
+  "nom": "Valeyres-sous-Ursins",
+  "site": "https://www.valeyres-sous-ursins.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 435 19 68"
+ },
+ "5935": {
+  "maj": "2026-11-24",
+  "nom": "Villars-Epeney",
+  "site": "http://www.villars-epeney.ch"
+ },
+ "5937": {
+  "maj": "2026-11-24",
+  "nom": "Vugelles-La Mothe",
+  "site": "https://vugelleslamothe.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 436 10 34"
+ },
+ "5938": {
+  "maj": "2026-11-24",
+  "nom": "Yverdon-les-Bains",
+  "site": "https://www.yverdon-les-bains.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 423 61 11"
+ },
+ "5939": {
+  "maj": "2026-11-24",
+  "nom": "Yvonand",
+  "site": "https://www.yvonand.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 423 32 40"
+ },
  "6002": {
   "maj": "2026-11-24",
   "nom": "Brigue-Glis",
@@ -118,7 +2058,9 @@
   "adresse": "Route de Clouchèvre 30, 1934 Le Châble VS",
   "maj": "2026-11-24",
   "nom": "Val de Bagnes",
-  "site": "https://www.valdebagnes.ch/"
+  "site": "https://www.valdebagnes.ch/",
+  "source_telephone": "site communal",
+  "telephone": "027 777 11 00"
  },
  "6052": {
   "adresse": "Hauptgasse 1, 3997 Bellwald",
@@ -131,9 +2073,7 @@
  "6054": {
   "maj": "2026-11-24",
   "nom": "Binn",
-  "site": "https://www.binn.ch",
-  "source_telephone": "site communal",
-  "telephone": "027 971 46 20"
+  "site": "https://www.binn.ch"
  },
  "6056": {
   "maj": "2026-11-24",
@@ -162,6 +2102,11 @@
   "maj": "2026-11-24",
   "nom": "Niederwald",
   "site": ""
+ },
+ "6074": {
+  "maj": "2026-11-24",
+  "nom": "Münster-Geschinen",
+  "site": "http://www.muenster-geschinen.ch"
  },
  "6076": {
   "maj": "2026-11-24",
@@ -242,9 +2187,7 @@
  "6109": {
   "maj": "2026-11-24",
   "nom": "Inden",
-  "site": "https://www.inden.ch",
-  "source_telephone": "site communal",
-  "telephone": "027 470 28 56"
+  "site": "https://www.inden.ch"
  },
  "6110": {
   "maj": "2026-11-24",
@@ -254,7 +2197,9 @@
  "6111": {
   "maj": "2026-11-24",
   "nom": "Loèche-les-Bains",
-  "site": "https://www.leukerbad.org"
+  "site": "https://www.leukerbad.org",
+  "source_telephone": "site communal",
+  "telephone": "027 472 71 00"
  },
  "6112": {
   "maj": "2026-11-24",
@@ -278,7 +2223,9 @@
  "6117": {
   "maj": "2026-11-24",
   "nom": "Guttet-Feschel",
-  "site": "https://www.guttet-feschel.ch"
+  "site": "https://www.guttet-feschel.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 473 17 70"
  },
  "6118": {
   "adresse": "Kirchstrasse 6, 3945 Gampel",
@@ -348,7 +2295,9 @@
  "6140": {
   "maj": "2026-11-24",
   "nom": "Saillon",
-  "site": "https://www.saillon.ch"
+  "site": "https://www.saillon.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 743 43 00"
  },
  "6141": {
   "maj": "2026-11-24",
@@ -720,12 +2669,16 @@
  "6289": {
   "maj": "2026-11-24",
   "nom": "Saas-Balen",
-  "site": "http://gemeinde-saas-balen.ch"
+  "site": "http://gemeinde-saas-balen.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 957 23 37"
  },
  "6290": {
   "maj": "2026-11-24",
   "nom": "Saas-Fee",
-  "site": "https://www.3906.ch"
+  "site": "https://www.3906.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 958 11 88"
  },
  "6291": {
   "maj": "2026-11-24",
@@ -794,5 +2747,333 @@
   "site": "https://gemeinde.zermatt.ch/",
   "source_telephone": "OpenStreetMap",
   "telephone": "027 966 22 11"
+ },
+ "6601": {
+  "maj": "2026-11-24",
+  "nom": "Aire-la-Ville",
+  "site": "http://www.aire-la-ville.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 757 48 29"
+ },
+ "6602": {
+  "maj": "2026-11-24",
+  "nom": "Anières",
+  "site": "https://www.anieres.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 751 11 45"
+ },
+ "6603": {
+  "maj": "2026-11-24",
+  "nom": "Avully",
+  "site": "https://www.avully.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 756 92 50"
+ },
+ "6604": {
+  "adresse": "Route du Creux-du-Loup 42, Sézegnin",
+  "maj": "2026-11-24",
+  "nom": "Avusy",
+  "site": "https://www.avusy.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 756 90 60"
+ },
+ "6605": {
+  "maj": "2026-11-24",
+  "nom": "Bardonnex",
+  "site": "https://www.bardonnex.ch/"
+ },
+ "6606": {
+  "adresse": "Route de Lausanne 329, Bellevue",
+  "horaires_osm": "Mo,Tu 13:30-16:30; We 09:00-13:00; Th 13:30-19:00",
+  "maj": "2026-11-24",
+  "nom": "Bellevue",
+  "site": "http://www.mairie-bellevue.ch"
+ },
+ "6607": {
+  "horaires_osm": "Mo-Fr 08:30-12:00, Mo,Tu,Th 13:30-16:30, We 14:00-17:00",
+  "maj": "2026-11-24",
+  "nom": "Bernex",
+  "site": "http://www.bernex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 850 92 92"
+ },
+ "6608": {
+  "adresse": "Place du Marché 14, Carouge GE",
+  "maj": "2026-11-24",
+  "nom": "Carouge",
+  "site": "https://www.carouge.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 307 89 87"
+ },
+ "6609": {
+  "adresse": "Chemin de la Bergerie 18, 1236 Cartigny",
+  "email": "info@cartigny.ch",
+  "maj": "2026-11-24",
+  "nom": "Cartigny",
+  "site": "https://www.cartigny.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "022 756 12 77"
+ },
+ "6610": {
+  "adresse": "Route de Crans 1, 1298 Céligny",
+  "maj": "2026-11-24",
+  "nom": "Céligny",
+  "site": "https://www.celigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 776 21 26"
+ },
+ "6611": {
+  "adresse": "Route de Valleiry 4, Chancy",
+  "maj": "2026-11-24",
+  "nom": "Chancy",
+  "site": "http://www.chancy.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 756 90 50"
+ },
+ "6612": {
+  "adresse": "Route de Chêne 136, 1224 Chêne-Bougeries",
+  "maj": "2026-11-24",
+  "nom": "Chêne-Bougeries",
+  "site": "http://www.chene-bougeries.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 869 17 17"
+ },
+ "6613": {
+  "adresse": "Avenue Petit-Senn 46, Chêne-Bourg",
+  "maj": "2026-11-24",
+  "nom": "Chêne-Bourg",
+  "site": "http://www.chene-bourg.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 869 41 10"
+ },
+ "6614": {
+  "adresse": "Chemin des Briffods 13, Choulex",
+  "maj": "2026-11-24",
+  "nom": "Choulex",
+  "site": "http://www.choulex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 750 00 02"
+ },
+ "6615": {
+  "maj": "2026-11-24",
+  "nom": "Collex-Bossy",
+  "site": "http://www.collex-bossy.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 959 77 00"
+ },
+ "6616": {
+  "maj": "2026-11-24",
+  "nom": "Collonge-Bellerive",
+  "site": "https://www.collonge-bellerive.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 722 11 50"
+ },
+ "6617": {
+  "adresse": "Route de La-Capite 24, 1223 Cologny",
+  "maj": "2026-11-24",
+  "nom": "Cologny",
+  "site": "http://www.cologny.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 737 49 49"
+ },
+ "6618": {
+  "adresse": "Promenade des Rêveries 2, 1232 Confignon",
+  "maj": "2026-11-24",
+  "nom": "Confignon",
+  "site": "http://www.confignon.ch"
+ },
+ "6619": {
+  "maj": "2026-11-24",
+  "nom": "Corsier",
+  "site": "http://www.corsier.ch"
+ },
+ "6620": {
+  "adresse": "Route du Mandement 520, 1283 Dardagny",
+  "horaires_osm": "Mo,Tu,Th,Fr 08:00-11:45",
+  "maj": "2026-11-24",
+  "nom": "Dardagny",
+  "site": "https://www.dardagny.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 754 12 30"
+ },
+ "6621": {
+  "adresse": "Rue de l'Hôtel-de-Ville 2, 1211 Genève",
+  "maj": "2026-11-24",
+  "nom": "Genève",
+  "site": "https://www.geneve.ch/"
+ },
+ "6622": {
+  "adresse": "Rue du Village 37, 1294 Genthod",
+  "maj": "2026-11-24",
+  "nom": "Genthod",
+  "site": "https://www.genthod.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "022 774 12 80"
+ },
+ "6623": {
+  "adresse": "Route de Colovrex 18, Le Grand-Saconnex",
+  "maj": "2026-11-24",
+  "nom": "Grand-Saconnex",
+  "site": "https://www.grand-saconnex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 920 99 00"
+ },
+ "6624": {
+  "maj": "2026-11-24",
+  "nom": "Gy",
+  "site": "http://www.mairie-gy.ch"
+ },
+ "6625": {
+  "maj": "2026-11-24",
+  "nom": "Hermance",
+  "site": "https://www.hermance.ch"
+ },
+ "6626": {
+  "maj": "2026-11-24",
+  "nom": "Jussy",
+  "site": "https://www.jussy.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 888 15 15"
+ },
+ "6627": {
+  "maj": "2026-11-24",
+  "nom": "Laconnex",
+  "site": "http://www.laconnex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 756 15 69"
+ },
+ "6628": {
+  "adresse": "Route du Grand-Lancy 41, 1212 Grand-Lancy",
+  "maj": "2026-11-24",
+  "nom": "Lancy",
+  "site": "https://www.lancy.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 706 15 11"
+ },
+ "6629": {
+  "adresse": "Route de Gy 17, Meinier",
+  "maj": "2026-11-24",
+  "nom": "Meinier",
+  "site": "https://www.meinier.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 722 12 12"
+ },
+ "6630": {
+  "adresse": "rue des Boudines 2",
+  "maj": "2026-11-24",
+  "nom": "Meyrin",
+  "site": "http://www.meyrin.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 782 82 82"
+ },
+ "6631": {
+  "adresse": "Place Duchêne 16, 1213 Onex",
+  "maj": "2026-11-24",
+  "nom": "Onex",
+  "site": "https://www.onex.ch"
+ },
+ "6632": {
+  "adresse": "Route de Certoux 51, 1258 Perly",
+  "maj": "2026-11-24",
+  "nom": "Perly-Certoux",
+  "site": "http://www.perly-certoux.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "022 721 02 50"
+ },
+ "6633": {
+  "adresse": "Route des Chevaliers-de-Malte 3, 1228 Plan-les-Ouates",
+  "maj": "2026-11-24",
+  "nom": "Plan-les-Ouates",
+  "site": "http://www.plan-les-ouates.ch"
+ },
+ "6634": {
+  "adresse": "Route de Pregny 47, 1292 Chambésy",
+  "maj": "2026-11-24",
+  "nom": "Pregny-Chambésy",
+  "site": "http://www.pregny-chambesy.ch"
+ },
+ "6635": {
+  "adresse": "Route de La-Louvière 14, 1243 Presinge",
+  "maj": "2026-11-24",
+  "nom": "Presinge",
+  "site": "http://www.presinge.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 759 12 52"
+ },
+ "6636": {
+  "maj": "2026-11-24",
+  "nom": "Puplinge",
+  "site": "http://www.puplinge.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 860 84 40"
+ },
+ "6637": {
+  "maj": "2026-11-24",
+  "nom": "Russin",
+  "site": "https://www.russin.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 754 90 00"
+ },
+ "6638": {
+  "adresse": "Rampe de Choully 17, 1242 Satigny",
+  "maj": "2026-11-24",
+  "nom": "Satigny",
+  "site": "https://www.satigny.ch/",
+  "source_telephone": "site communal",
+  "telephone": "022 753 90 40"
+ },
+ "6639": {
+  "maj": "2026-11-24",
+  "nom": "Soral",
+  "site": "https://www.soral.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 756 18 43"
+ },
+ "6640": {
+  "adresse": "Chemin du Bois-Des-Arts 58, 1226 Thônex",
+  "maj": "2026-11-24",
+  "nom": "Thônex",
+  "site": "http://www.thonex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 869 39 00"
+ },
+ "6641": {
+  "maj": "2026-11-24",
+  "nom": "Troinex",
+  "site": "https://www.troinex.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 784 31 11"
+ },
+ "6642": {
+  "adresse": "Route de Vandoeuvres 104, 1253 Vandoeuvres",
+  "maj": "2026-11-24",
+  "nom": "Vandœuvres",
+  "site": "http://www.vandoeuvres.ch"
+ },
+ "6643": {
+  "adresse": "Rue du Village 9, 1214 Vernier",
+  "maj": "2026-11-24",
+  "nom": "Vernier",
+  "site": "https://www.vernier.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 306 06 06"
+ },
+ "6644": {
+  "adresse": "Route de Suisse 18, Versoix",
+  "maj": "2026-11-24",
+  "nom": "Versoix",
+  "site": "http://www.versoix.ch",
+  "source_telephone": "site communal",
+  "telephone": "022 775 66 00"
+ },
+ "6645": {
+  "adresse": "Place de l'Église 7, 1255 Veyrier",
+  "email": "info@veyrier.ch",
+  "horaires_osm": "Mo-Fr 09:00-13:00,13:30-16:30; Tu 09:00-13:00,13:30-18:00; Th 09:00-16:30",
+  "maj": "2026-11-24",
+  "nom": "Veyrier",
+  "site": "http://www.veyrier.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "022 899 10 10"
  }
 }

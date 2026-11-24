@@ -1,0 +1,29 @@
+# Met à jour chaque mois les coordonnées des administrations communales (VS, VD, GE) :
+# site (Wikidata), adresse / téléphone / horaires (OpenStreetMap), téléphone (sites communaux).
+# Les corrections manuelles restent dans data/communes_vs_manuel.json.
+name: Coordonnées des communes
+
+on:
+  schedule:
+    - cron: "41 3 3 * *"      # le 3 de chaque mois
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  communes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Mettre à jour data/communes_vs.json
+        run: python3 scripts/maj_communes.py
+      - name: Versionner si changé
+        run: |
+          if git diff --quiet -- data/communes_vs.json; then echo "Rien de nouveau."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/communes_vs.json
+          git commit -m "Coordonnées des communes du $(date +%d.%m.%Y)"
+          git push

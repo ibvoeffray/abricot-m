@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-enquetes_vs.py — Mises à l'enquête publique près de chez toi (Valais).
+enquetes_vs.py — Mises à l'enquête publique près de chez toi (Valais, Vaud, Genève).
+
+Vaud : couche CAMAC de l'État de Vaud (ogc.vd.ch) ; Genève : SITG (vector.sitg.ge.ch).
 
 Source : Bulletin officiel du Valais, publié via l'API publique du
 Portail des feuilles officielles (amtsblattportal.ch, SECO), rubriques
@@ -301,8 +303,8 @@ def fetch_one(pid):
 # ---------- HTML ----------
 TEMPLATE = r"""<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mises à l'enquête en Valais</title>
-<meta name="description" content="Les mises à l'enquête publique (constructions et plans) publiées au Bulletin officiel du Valais, près de chez vous.">
+<title>Mises à l'enquête – VS, VD, GE</title>
+<meta name="description" content="Les mises à l'enquête publique (constructions et plans) en Valais, dans le canton de Vaud et à Genève, près de chez vous.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23d52b1e'/><path d='M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z' fill='white'/></svg>">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
@@ -337,7 +339,7 @@ main{padding:8px max(3vw,16px) 40px}
 .c:hover{background:var(--soft)}.c.on{background:var(--hi)}
 .h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
 .d{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}.com{color:var(--mut)}
-.tp{font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:99px;padding:1px 8px}
+.tp{font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:99px;padding:1px 8px}.tp.kt{font-weight:700;color:var(--ink)}
 .b{margin-left:auto;font-size:13px;padding:2px 9px;border-radius:99px;background:var(--line);white-space:nowrap;font-weight:600}
 .b.hot{background:var(--red);color:#fff}.b.late{opacity:.55}
 h3{margin:6px 0 4px;font-size:17px;line-height:1.35}
@@ -400,7 +402,8 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
   <div class="fld"><label for="home">Autour de</label><div class="acw"><input id="home" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hl" autocomplete="off" spellcheck="false" placeholder="Commune ou NPA"><button id="gps" type="button" title="Utiliser ma position" aria-label="Utiliser ma position"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg></button><ul id="hl" role="listbox" aria-label="Communes" hidden></ul></div></div>
   <label><span>Rayon : <span id="rv"></span> km</span><input type="range" id="r" min="1" max="10" step="1"></label>
   <label>Rechercher<input id="q" type="search" placeholder="Commune, mot-clé, parcelle, requérant…"></label>
-  <label>Type<select id="t"><option value="">Tous</option><option>Autorisation de construire</option><option>Consultation des plans</option></select></label>
+  <label>Canton<select id="k"><option value="">Tous</option></select></label>
+  <label>Type<select id="t"><option value="">Tous</option></select></label>
   <label class="chk"><input type="checkbox" id="late"> Inclure les délais échus</label>
   <span id="err" role="status"></span>
  </div>
@@ -442,9 +445,11 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 <div class="layout">
  <div id="map"></div>
  <main><section id="list"></section>
- <p class="foot">Source : Bulletin officiel du Valais (amtsblattportal.ch), généré le __GENERATED__ (publications des __JOURS__ derniers jours).
- Le lien de chaque avis ouvre la publication officielle, seule à faire foi. Le délai affiché est celui indiqué dans l'avis
- (à défaut : __DELAI__ jours dès la publication). Les dossiers se consultent sur eConstruction (connexion SwissID, « Consultation du Bulletin Officiel », puis recherche avec le numéro indiqué) ou auprès de la commune.</p></main>
+ <p class="foot">Sources : <b>VS</b> Bulletin officiel du Valais (amtsblattportal.ch) ; <b>VD</b> demandes de permis de construire mises à l'enquête (CAMAC, géodonnées de l'État de Vaud) ;
+ <b>GE</b> dossiers d'autorisation de construire (SITG, Office des autorisations de construire). Généré le __GENERATED__ (avis des __JOURS__ derniers jours).
+ Les liens ouvrent l'avis ou le dossier officiel, seul à faire foi : l'avis publié au Bulletin officiel (VS) ou dans la Feuille des avis officiels (VD, GE) prime sur ces données.
+ VS : délai indiqué dans l'avis (à défaut __DELAI__ jours dès la publication), dossiers sur eConstruction (SwissID) ou à la commune. VD : délai = fin de l'enquête publique.
+ GE : la date de publication dans la FAO n'est pas fournie ; le délai d'observations est de 30 jours dès cette publication.</p></main>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -461,7 +466,8 @@ let radius=CFG.rayon;try{const r=+localStorage.getItem('enq-r');if(r>=1&&r<=10)r
 
 function km(a,b){const R=6371,r=Math.PI/180,dp=(b.lat-a.lat)*r,dl=(b.lon-a.lon)*r;
  const h=Math.sin(dp/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dl/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
-DATA.forEach(d=>{const now=new Date();const end=pd(d.fin_delai);d.left=end?Math.round((end-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/DAY):99;});
+DATA.forEach(d=>{const now=new Date();const end=pd(d.fin_delai);d.left=end?Math.round((end-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/DAY):null;});
+const isLate=d=>d.left!=null&&d.left<0;
 
 const map=L.map('map',{scrollWheelZoom:true}).setView([home.lat,home.lon],11);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
@@ -472,16 +478,18 @@ const layer=L.layerGroup().addTo(map);const markers={};
 function el(t,c,x){const n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
 function card(d){
  const a=el('article','c');a.dataset.id=d.id;
- const h=el('div','h');h.append(el('span','d',d.dist.toFixed(1)+' km'),el('span','com',d.commune),el('span','tp',d.type));
- const b=el('span','b '+(d.left<0?'late':d.left<=7?'hot':''),d.left<0?'échu':d.left===0?'dernier jour':'J-'+d.left);h.append(b);a.append(h);
+ const h=el('div','h');h.append(el('span','d',d.dist.toFixed(1)+' km'),el('span','com',d.commune||'?'),el('span','tp kt',d.canton),el('span','tp',d.type));
+ const b=d.left==null?el('span','b',d.statut||'en cours'):el('span','b '+(d.left<0?'late':d.left<=7?'hot':''),d.left<0?'échu':d.left===0?'dernier jour':'J-'+d.left);h.append(b);a.append(h);
  const h3=el('h3');const l=el('a',null,d.projet||d.titre||'Avis');l.href=d.url;l.target='_blank';l.rel='noopener';h3.append(l);a.append(h3);
- const dl=el('dl');[['Parcelle','parcelle'],['Zone','zone'],['Dérogations','derogations'],['Requérant','requerant']]
-  .forEach(([k,v])=>{if(d[v]){dl.append(el('dt',null,k),el('dd',null,d[v]));}});
+ const dl=el('dl');[['Nature','nature'],['N° CAMAC','camac'],['N° dossier',d.canton==='GE'?'numero':''],['Parcelle','parcelle'],['Zone','zone'],['Dérogations','derogations'],['Requérant','requerant']]
+  .forEach(([k,v])=>{if(v&&d[v]&&!(v==='nature'&&d[v]===d.projet)){dl.append(el('dt',null,k),el('dd',null,d[v]));}});
  if(d.econstruction){const dd=el('dd','ec');dd.append(el('code',null,d.econstruction),ecButton(d.econstruction));dl.append(el('dt',null,'eConstruction'),dd);}
  if(dl.children.length)a.append(dl);
  const end=pd(d.fin_delai);
- const acts=el('div','acts');if(d.left>=0){const ob=el('button','oppb','Faire opposition');ob.type='button';ob.addEventListener('click',e=>{e.stopPropagation();openOpp(d);});acts.append(ob);}
- a.append(el('small',null,'Publié le '+fmt.format(pd(d.date))+' · oppositions jusqu’au '+(end?fmtY.format(end):'?')+(d.coords_exactes?'':' · position approximative (centre de la commune)')));
+ const acts=el('div','acts');if(!isLate(d)&&!(d.canton==='GE'&&/accélérée/i.test(d.type||''))){const ob=el('button','oppb',d.canton==='GE'?'Faire des observations':'Faire opposition');ob.type='button';ob.addEventListener('click',e=>{e.stopPropagation();openOpp(d);});acts.append(ob);}
+ a.append(el('small',null,(d.canton==='VD'?'Enquête publique '+(d.debut?'du '+fmt.format(pd(d.debut))+' ':'')+'au '+fmtY.format(end)+' · oppositions jusqu’au '+fmtY.format(end)
+  :d.canton==='GE'?'Déposé le '+fmtY.format(pd(d.date))+' · observations : 30 jours dès la publication dans la FAO'
+  :'Publié le '+fmt.format(pd(d.date))+' · oppositions jusqu’au '+(end?fmtY.format(end):'?'))+(d.coords_exactes?'':' · position approximative (centre de la commune)')));
  acts.append(communeDetails(d));
  a.append(acts);
  a.addEventListener('click',e=>{if(e.target.closest('a'))return;const m=markers[d.id];if(m){map.setView(m.getLatLng(),Math.max(map.getZoom(),15));m.openPopup();}select([d.id]);});
@@ -517,17 +525,26 @@ function communeDetails(d){const det=el('details','ci');const s=el('summary',nul
 // ---------- Faire opposition : lettre pré-remplie, à signer et envoyer ----------
 const dlg=$('#opp'),of=$('#opp-f');let cur=null;
 const MOI=['prenom','nom','adresse','localite','email','tel','qualite','precision'];
-function authority(d){const c=(d.contact||'').trim();return c||('Administration communale de '+d.commune+'\n[adresse à compléter]');}
+function authority(d){
+ const c=(d.contact||'').trim();if(c)return c;
+ const k=COMMUNES[d.bfs]||{};
+ if(d.canton==='VD')return 'Municipalité '+de(k.nom||d.commune)+'\nGreffe municipal\n'+(k.adresse?k.adresse.replace(/,\s*/g,'\n'):'[adresse du greffe municipal à compléter]');
+ return 'Administration communale '+de(k.nom||d.commune)+'\n'+(k.adresse?k.adresse.replace(/,\s*/g,'\n'):'[adresse à compléter]');}
 function openOpp(d){
  cur=d;const end=pd(d.fin_delai);
  const r=$('#opp-ref');r.textContent='';r.append(el('b',null,d.projet||d.titre),
   el('div',null,[d.commune,d.parcelle,d.type].filter(Boolean).join(' · ')),
-  el('div',null,'Publié au Bulletin officiel le '+fmtY.format(pd(d.date))+(d.numero?' (n° '+d.numero+')':'')));
- $('#opp-dl').textContent='À envoyer au plus tard le '+(end?fmtY.format(end):'?')+' (timbre postal faisant foi)'+(d.left===0?' : c’est aujourd’hui !':d.left>0?' : encore '+d.left+' jour'+(d.left>1?'s':'')+'.':'.');
+  el('div',null,d.canton==='VD'?'Enquête publique '+(d.debut?'du '+fmtY.format(pd(d.debut))+' ':'')+'au '+fmtY.format(end)+(d.camac?' (CAMAC n° '+d.camac+')':'')
+   :d.canton==='GE'?'Dossier '+d.numero+', déposé le '+fmtY.format(pd(d.date))
+   :'Publié au Bulletin officiel le '+fmtY.format(pd(d.date))+(d.numero?' (n° '+d.numero+')':'')));
+ $('#opp-t').textContent=d.canton==='GE'?'Faire des observations':'Faire opposition';
+ of.querySelector('fieldset').hidden=d.canton==='GE';if(d.canton==='GE')of.elements.kind[0].checked=true;
+ $('#opp-dl').textContent=d.canton==='GE'?'Délai : 30 jours dès la publication de la demande dans la Feuille d’avis officielle (FAO). Vérifiez la date de publication sur fao.ge.ch.'
+  :'À envoyer au plus tard le '+(end?fmtY.format(end):'?')+(d.canton==='VD'?' (dernier jour de l’enquête ; timbre postal faisant foi)':' (timbre postal faisant foi)')+(d.left===0?' : c’est aujourd’hui !':d.left>0?' : encore '+d.left+' jour'+(d.left>1?'s':'')+'.':'.');
  const how=$('#opp-how');how.textContent='';
  how.append(el('li',null,'Générez la lettre, imprimez-la (ou enregistrez-la en PDF) et signez-la à la main.'));
  const li=el('li',null,'Envoyez-la de préférence en recommandé à : '+authority(d).replace(/\n/g,', ')+'.');how.append(li);
- {const c=COMMUNES[d.bfs]||{};const l0=el('li',null,'Avant d’écrire, consultez le dossier auprès de l’administration communale '+de(c.nom||d.commune)+[c.adresse,c.telephone?'tél. '+c.telephone:'',c.horaires?'horaires : '+c.horaires:''].filter(Boolean).map(x=>', '+x).join('')+(d.econstruction?', ou en ligne sur eConstruction.':'.'));how.prepend(l0);}
+ {const c=COMMUNES[d.bfs]||{};const l0=el('li',null,(d.canton==='GE'?'Avant d’écrire, consultez le dossier en ligne (lien de l’avis) ou auprès de l’administration communale ':'Avant d’écrire, consultez le dossier auprès de l’administration communale ')+de(c.nom||d.commune)+[c.adresse,c.telephone?'tél. '+c.telephone:'',c.horaires?'horaires : '+c.horaires:''].filter(Boolean).map(x=>', '+x).join('')+(d.econstruction?', ou en ligne sur eConstruction.':'.'));how.prepend(l0);}
  if(d.econstruction){const l2=el('li',null,'Ou déposez-la en PDF sur eConstruction (n° '+d.econstruction+') : il faut alors une signature électronique qualifiée et une identité vérifiée. ');l2.append(ecButton(d.econstruction));how.append(l2);}
  try{const m=JSON.parse(localStorage.getItem('enq-moi')||'{}');MOI.forEach(k=>{if(m[k]!=null&&of.elements[k])of.elements[k].value=m[k];});}catch(e){}
  of.elements.motifs.value='';
@@ -549,17 +566,23 @@ function letter(d,v){
  const from=el('div','from');[v.prenom+' '+v.nom,v.adresse,v.localite,v.tel,v.email].filter(Boolean).forEach(t=>from.append(el('div',null,t)));L.append(from);
  const to=el('div','to');to.append(el('div','rec','Recommandé'),el('div',null,authority(d)));L.append(to);
  L.append(el('div','date',(v.localite.replace(/^\d{4}\s*/,'')||'')+', le '+fmtY.format(new Date())));
- const what=plans?'la mise en consultation publique des plans':'la demande d’autorisation de construire';
- L.append(el('p','obj',(opp?'Opposition à ':'Réserve de droit privé : ')+what+' – '+(d.projet||d.titre)));
+ const ge=d.canton==='GE',vd=d.canton==='VD';
+ const what=plans?'la mise en consultation publique des plans':vd?'la demande de permis de construire':ge?'la requête en autorisation de construire':'la demande d’autorisation de construire';
+ L.append(el('p','obj',(ge?'Observations sur ':opp?'Opposition à ':'Réserve de droit privé : ')+what+' – '+(d.projet||d.titre)));
  const refs=el('div','refs');[['Commune',d.commune],['Parcelle',(d.parcelle||'').replace(/^parcelle\s*/i,'')],['Requérant',d.requerant],
-  ['Publication','Bulletin officiel du Valais du '+fmtY.format(pd(d.date))+(d.numero?', n° '+d.numero:'')],['N° eConstruction',d.econstruction]]
+  vd?['Enquête publique',(d.debut?'du '+fmtY.format(pd(d.debut))+' ':'')+'au '+fmtY.format(pd(d.fin_delai))+(d.numero?', FAO n° '+d.numero:'')]
+  :ge?['N° de dossier',d.numero]:['Publication','Bulletin officiel du Valais du '+fmtY.format(pd(d.date))+(d.numero?', n° '+d.numero:'')],
+  ['N° CAMAC',d.camac],['N° eConstruction',d.econstruction]]
   .forEach(([k,x])=>{if(x)refs.append(el('div',null,k+' : '+x));});L.append(refs);
- L.append(P('Madame, Monsieur,'));
- L.append(P(opp?'Par la présente, et dans le délai de 30 jours dès sa publication au Bulletin officiel du Valais, je forme opposition à '+what+' citée en référence.'
-  :'Par la présente, et dans le délai de 30 jours dès sa publication au Bulletin officiel du Valais, je formule une réserve de droit privé à l’égard de '+what+' citée en référence.'));
+ L.append(P(vd?'Madame la Syndique, Monsieur le Syndic, Mesdames et Messieurs les Municipaux,':'Madame, Monsieur,'));
+ const delai=vd?'dans le délai de l’enquête publique':ge?'dans le délai de 30 jours dès sa publication dans la Feuille d’avis officielle':'dans le délai de 30 jours dès sa publication au Bulletin officiel du Valais';
+ L.append(P(ge?'Par la présente, et '+delai+', je vous adresse mes observations au sujet de '+what+' citée en référence.'
+  :opp?'Par la présente, et '+delai+', je forme opposition à '+what+' citée en référence.'
+  :'Par la présente, et '+delai+', je formule une réserve de droit privé à l’égard de '+what+' citée en référence.'));
  L.append(P('Qualité pour agir : '+(v.qualite==='autre'?(v.precision||'voir motifs ci-dessous'):'je suis '+v.qualite+(v.precision?' ('+v.precision+')':''))+'. Je suis ainsi directement et personnellement touché·e par ce projet.'));
  L.append(el('p','obj','Motifs'));L.append(el('div','mot',v.motifs));
- if(opp)L.append(P('Pour ces motifs, je vous prie de bien vouloir rejeter le projet tel qu’il a été mis à l’enquête.'));
+ if(ge)L.append(P('Je vous prie de bien vouloir tenir compte de ces observations dans l’examen de la requête.'));
+ else if(opp)L.append(P('Pour ces motifs, je vous prie de bien vouloir rejeter le projet tel qu’il a été mis à l’enquête.'));
  L.append(P('Je vous remercie de me tenir informé·e de la suite donnée à la présente et vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.'));
  const sig=el('div','sig');sig.append(el('div',null,v.prenom+' '+v.nom),el('div','line','Signature'));L.append(sig);
 }
@@ -569,19 +592,19 @@ function select(ids){document.querySelectorAll('.c').forEach(c=>c.classList.togg
 function update(fit){
  $('#rv').textContent=radius;$('#r').value=radius;$('#home').value=home.label;
  circle.setLatLng([home.lat,home.lon]).setRadius(radius*1000);me.setLatLng([home.lat,home.lon]);
- const q=$('#q').value.trim().toLowerCase(),t=$('#t').value,late=$('#late').checked;
+ const q=$('#q').value.trim().toLowerCase(),t=$('#t').value,k=$('#k').value,late=$('#late').checked;
  DATA.forEach(d=>d.dist=d.lat!=null?km(home,d):1e9);
- const rows=DATA.filter(d=>d.dist<=radius&&(late||d.left>=0)&&(!t||d.type===t)&&(!q||d.search.includes(q)))
-  .sort((a,b)=>a.dist-b.dist||a.left-b.left);
+ const rows=DATA.filter(d=>d.dist<=radius&&(late||!isLate(d))&&(!t||d.type===t)&&(!k||d.canton===k)&&(!q||d.search.includes(q)))
+  .sort((a,b)=>a.dist-b.dist||(a.left??99)-(b.left??99));
  const n=rows.length;
  $('#h1').textContent=n+' mise'+(n>1?'s':'')+' à l’enquête à moins de '+radius+' km';
- $('#sub').textContent='Autour de '+home.label+' · Bulletin officiel du Valais · '+DATA.length+' avis publiés ces '+CFG.jours+' derniers jours dans le canton';
+ $('#sub').textContent='Autour de '+home.label+' · '+DATA.length+' avis ('+CFG.cantons.join(', ')+') des '+CFG.jours+' derniers jours';
  const list=$('#list');list.textContent='';
  if(!n)list.append(el('p','empty','Aucune mise à l’enquête ne correspond dans ce rayon.'));
  rows.forEach(d=>list.append(card(d)));
  layer.clearLayers();for(const k in markers)delete markers[k];
  rows.forEach(d=>{
-  const m=L.circleMarker([d.lat,d.lon],{radius:7,color:d.left<0?'#888':'#d52b1e',weight:2,fillColor:d.left<0?'#888':'#d52b1e',fillOpacity:d.coords_exactes?.75:.25});
+  const m=L.circleMarker([d.lat,d.lon],{radius:7,color:isLate(d)?'#888':'#d52b1e',weight:2,fillColor:isLate(d)?'#888':'#d52b1e',fillOpacity:d.coords_exactes?.75:.25});
   const p=el('div');p.append(el('b',null,d.commune));p.append(el('div',null,d.projet||d.titre));
   const a=el('a',null,'Avis officiel ↗');a.href=d.url;a.target='_blank';a.rel='noopener';p.append(a);
   if(d.econstruction){const w=el('div');w.style.marginTop='6px';w.append(ecButton(d.econstruction));p.append(w);}
@@ -590,18 +613,21 @@ function update(fit){
  if(fit)map.fitBounds(circle.getBounds(),{padding:[10,10]});
  try{localStorage.setItem('enq-home',JSON.stringify(home));localStorage.setItem('enq-r',radius);}catch(e){}
 }
-DATA.forEach(d=>d.search=[d.commune,d.projet,d.titre,d.parcelle,d.requerant,d.zone,d.econstruction,d.numero].join(' ').toLowerCase());
+DATA.forEach(d=>d.search=[d.commune,d.canton,d.projet,d.titre,d.nature,d.parcelle,d.requerant,d.zone,d.econstruction,d.numero,d.camac].join(' ').toLowerCase());
+// listes « Canton » et « Type » construites d'après les données
+[...new Set(DATA.map(d=>d.canton))].sort().forEach(c=>$('#k').append(el('option',null,c)));
+[...new Set(DATA.map(d=>d.type).filter(Boolean))].sort().forEach(t=>$('#t').append(el('option',null,t)));
 
 $('#r').addEventListener('input',e=>{radius=+e.target.value;update(false);});
 $('#r').addEventListener('change',()=>update(true));
-['#q','#t','#late'].forEach(s=>$(s).addEventListener('input',()=>update(false)));
+['#q','#t','#k','#late'].forEach(s=>$(s).addEventListener('input',()=>update(false)));
 // ---------- Choix du point de référence : suggestions de communes + position GPS ----------
 const GEO='https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&sr=4326&';
 const de=n=>(/^[aeiouyàâéèêëîïôûü]/i.test(n||'')?'d\u2019':'de ')+n;
 const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-'’]/g,' ').replace(/\s+/g,' ').trim();
 const strip=l=>l.replace(/^\d{4}\s*-\s*|\s*\([A-Z]{2}\)$/g,'').trim();
 // Communes présentes dans les données : proposées immédiatement, même hors ligne
-const LOCAL=(()=>{const m={};DATA.forEach(d=>{if(d.commune&&d.lat!=null&&!m[d.commune])m[d.commune]={lat:d.lat,lon:d.lon,label:d.commune+' (VS)',name:d.commune,n:0};if(m[d.commune])m[d.commune].n++;});return Object.values(m);})();
+const LOCAL=(()=>{const m={};DATA.forEach(d=>{if(d.commune&&d.lat!=null&&!m[d.commune])m[d.commune]={lat:d.lat,lon:d.lon,label:d.commune+' ('+(d.canton||'VS')+')',name:d.commune,n:0};if(m[d.commune])m[d.commune].n++;});return Object.values(m);})();
 const inp=$('#home'),box=$('#hl'),gps=$('#gps');
 let items=[],active=-1,tm,reqId=0;
 
@@ -756,12 +782,13 @@ def communes_info(items):
     return out
 
 
-def render(items, home, args, generated):
-    data = [{k: it.get(k) for k in ("id", "numero", "type", "titre", "projet", "date", "fin_delai", "commune",
-                                     "parcelle", "zone", "derogations", "requerant", "econstruction",
-                                     "coords_exactes", "lat", "lon", "url", "contact", "bfs")}
+def render(items, home, args, generated, cantons=("VS",)):
+    data = [{k: it.get(k) for k in ("id", "canton", "numero", "type", "titre", "projet", "date", "debut", "fin_delai",
+                                     "commune", "parcelle", "zone", "derogations", "requerant", "econstruction",
+                                     "nature", "camac", "statut", "coords_exactes", "lat", "lon", "url", "contact", "bfs")
+             if it.get(k) not in (None, "")}
             for it in items if it.get("lat") is not None]
-    cfg = {"home": list(home), "rayon": min(10, max(1, int(round(args.rayon)) or 2)), "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
+    cfg = {"home": list(home), "rayon": min(10, max(1, int(round(args.rayon)) or 2)), "jours": args.jours, "econstruction": ECONSTRUCTION_URL, "cantons": list(cantons),
            "today": dt.date.today().isoformat()}
     js = lambda o: json.dumps(o, ensure_ascii=False).replace("</", "<\\/")
     return (TEMPLATE.replace("__DATA__", js(data)).replace("__CFG__", js(cfg))
@@ -770,34 +797,146 @@ def render(items, home, args, generated):
             .replace("__DELAI__", str(DELAI_OPPOSITION_J)))
 
 
-# ---------- Main ----------
-def main():
-    ap = argparse.ArgumentParser(description="Mises à l'enquête publique près de chez toi (Valais)")
-    ap.add_argument("--home", default="Evionnaz", help="commune ou NPA de référence (défaut : Evionnaz)")
-    ap.add_argument("--rayon", type=float, default=2, help="rayon en km, de 1 à 10 (défaut : 2)")
-    ap.add_argument("--jours", type=int, default=30, help="publications des N derniers jours (défaut : 30)")
-    ap.add_argument("--tous", action="store_true", help="inclure les avis dont le délai est échu")
-    ap.add_argument("--rubrique", action="append", help="forcer une sous-rubrique (ex. BA-VS05) ; répétable")
-    ap.add_argument("--out", default="enquetes.html", help="fichier HTML (défaut : enquetes.html)")
-    ap.add_argument("--json", help="exporter aussi les données (avis dans le rayon) en JSON")
-    ap.add_argument("--workers", type=int, default=8, help="téléchargements en parallèle (défaut : 8)")
-    ap.add_argument("--debug", action="store_true")
-    a = ap.parse_args()
+# ---------- Vaud et Genève : contours des communes ----------
+VD_ARCGIS = "https://www.ogc.vd.ch/public/rest/services/OGC/wmsVD/MapServer"
+GE_ARCGIS = "https://vector.sitg.ge.ch/arcgis/rest/services"
+GE_OAC = ("Département du territoire\nOffice des autorisations de construire\n"
+          "Rue David-Dufour 5\nCase postale 22\n1211 Genève 8")
+VD_URL_CAMAC = "https://www.actis.vd.ch/rest/exp/idqry/9008/param/{no}"
 
-    _load_cache()
-    home = geocode(a.home)
-    if not home:
-        sys.exit(f"Commune/NPA introuvable : {a.home}")
-    today = dt.date.today()
-    start = today - dt.timedelta(days=a.jours)
 
+def arcgis_query(url, where, fields="*", extra=None, page=1000):
+    """Interroge une couche ArcGIS REST page par page ; renvoie les entités (WGS84)."""
+    out, offset = [], 0
+    while True:
+        params = {"where": where, "outFields": fields, "outSR": 4326, "f": "json",
+                  "resultOffset": offset, "resultRecordCount": page, **(extra or {})}
+        d = json.loads(get(url + "/query", params, accept="application/json"))
+        if "error" in d:
+            raise RuntimeError(f"{url} : {d['error']}")
+        feats = d.get("features") or []
+        out.extend(feats)
+        if not d.get("exceededTransferLimit") or not feats:
+            return out
+        offset += len(feats)
+
+
+def rings_of(geom):
+    return [r for r in (geom or {}).get("rings", []) if len(r) > 2]
+
+
+def in_ring(x, y, ring):
+    inside, n = False, len(ring)
+    for k in range(n):
+        x1, y1 = ring[k]
+        x2, y2 = ring[(k + 1) % n]
+        if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1) + x1:
+            inside = not inside
+    return inside
+
+
+class Communes:
+    """Attribue une commune (nom, numéro OFS) à un point, à partir de polygones simplifiés."""
+    def __init__(self, feats, name_field, bfs_field):
+        self.polys = []
+        for f in feats:
+            rings = rings_of(f.get("geometry"))
+            if not rings:
+                continue
+            xs = [p[0] for r in rings for p in r]
+            ys = [p[1] for r in rings for p in r]
+            a = f["attributes"]
+            self.polys.append((min(xs), min(ys), max(xs), max(ys), rings,
+                               str(a.get(name_field) or "").strip(), str(a.get(bfs_field) or "")))
+
+    def find(self, lat, lon):
+        best = None
+        for x0, y0, x1, y1, rings, name, bfs in self.polys:
+            if x0 <= lon <= x1 and y0 <= lat <= y1:
+                n = sum(in_ring(lon, lat, r) for r in rings)
+                if n % 2 == 1:
+                    return name, bfs
+                best = best or (name, bfs)
+        return best or ("", "")
+
+
+def parse_ch_date(s):
+    m = re.match(r"(\d{1,2})\.(\d{1,2})\.(\d{4})", s or "")
+    return dt.date(int(m.group(3)), int(m.group(2)), int(m.group(1))) if m else None
+
+
+def collect_vd(start, today):
+    """Vaud : couche CAMAC « Demandes de permis de construire (enquête publique) »."""
+    coms = Communes(arcgis_query(f"{VD_ARCGIS}/244", "1=1", "NOM_MIN,NO_COM_FED",
+                                 {"maxAllowableOffset": 0.0003, "geometryPrecision": 5}), "NOM_MIN", "NO_COM_FED")
+    months, d = [], start.replace(day=1)
+    while d <= today + dt.timedelta(days=62):
+        months.append(f"DATE_ENQUETE LIKE '%au __.{d.month:02d}.{d.year}'")
+        d = (d + dt.timedelta(days=32)).replace(day=1)
+    where = "ETAT='Enquête publique en cours' OR " + " OR ".join(months)
+    feats = arcgis_query(f"{VD_ARCGIS}/537", where)
+    items = []
+    for f in feats:
+        a, g = f["attributes"], f.get("geometry") or {}
+        if "x" not in g:
+            continue
+        m = re.search(r"(\d{1,2}\.\d{1,2}\.\d{4}).*?(\d{1,2}\.\d{1,2}\.\d{4})", a.get("DATE_ENQUETE") or "")
+        debut, fin = (parse_ch_date(m.group(1)), parse_ch_date(m.group(2))) if m else (None, None)
+        if not fin or fin < start:
+            continue
+        nom, bfs = coms.find(g["y"], g["x"])
+        no = a.get("NO_CAMAC")
+        items.append({
+            "id": f"vd-{no or a.get('OBJECTID')}", "canton": "VD", "numero": a.get("NO_FAO") or "",
+            "type": "Permis de construire", "nature": a.get("NATURE") or "",
+            "titre": a.get("DESCRIPTION") or "", "projet": a.get("DESCRIPTION") or a.get("NATURE") or "",
+            "date": (debut or fin).isoformat(), "debut": debut.isoformat() if debut else "",
+            "delai": fin.isoformat(), "commune": nom, "bfs": bfs, "camac": str(no or ""),
+            "parcelle": "", "zone": "", "derogations": "", "requerant": "", "econstruction": "",
+            "contact": "", "coords_exactes": True, "lat": g["y"], "lon": g["x"],
+            "url": a.get("URL") or (VD_URL_CAMAC.format(no=no) if no else ""), "statut": a.get("ETAT") or "",
+        })
+    return items
+
+
+GE_TYPES = {"DD": "Demande définitive", "DP": "Demande préalable", "M": "Démolition",
+            "APA": "Procédure accélérée", "MPA": "Démolition (procédure accélérée)"}
+
+
+def collect_ge(start, today):
+    """Genève : SITG « Autorisation de construire – Dossier » (dossiers enregistrés ou en instruction)."""
+    coms = Communes(arcgis_query(f"{GE_ARCGIS}/CAD_COMMUNE/MapServer/0", "1=1", "COMMUNE,NO_COM_FEDERAL",
+                                 {"maxAllowableOffset": 0.0002, "geometryPrecision": 5}), "COMMUNE", "NO_COM_FEDERAL")
+    where = (f"DATE_DEPOT >= date '{start.isoformat()}' AND STATUT IN ('ENREGISTREMENT','ENREGISTRE','INSTRUCTION')")
+    feats = arcgis_query(f"{GE_ARCGIS}/SIT_AUTOR_DOSSIER/FeatureServer/0", where,
+                         "ID_DOSSIER,TYPE_DOSSIER,NOM_DOSSIER,STATUT,DATE_DEPOT,DESCRIPTION,LIEN_SAD")
+    items = []
+    for f in feats:
+        a, g = f["attributes"], f.get("geometry") or {}
+        if "x" not in g:
+            continue
+        depot = dt.datetime.fromtimestamp(a["DATE_DEPOT"] / 1000, dt.timezone.utc).date() if a.get("DATE_DEPOT") else today
+        nom, bfs = coms.find(g["y"], g["x"])
+        nom = nom.title() if nom.isupper() else nom
+        if nom.startswith("Genève-"):  # la Ville de Genève est découpée en sections cadastrales
+            nom = "Genève"
+        t = a.get("TYPE_DOSSIER") or ""
+        items.append({
+            "id": f"ge-{a.get('ID_DOSSIER')}", "canton": "GE", "numero": a.get("ID_DOSSIER") or "",
+            "type": GE_TYPES.get(t, a.get("NOM_DOSSIER") or t), "ge_type": t,
+            "titre": (a.get("DESCRIPTION") or "").strip(), "projet": (lambda t: t[:1].upper() + t[1:])((a.get("DESCRIPTION") or "").strip()),
+            "date": depot.isoformat(), "debut": "", "delai": "", "commune": nom, "bfs": bfs,
+            "parcelle": "", "zone": "", "derogations": "", "requerant": "", "econstruction": "",
+            "contact": GE_OAC, "coords_exactes": True, "lat": g["y"], "lon": g["x"],
+            "url": a.get("LIEN_SAD") or "", "statut": (a.get("STATUT") or "").capitalize(),
+        })
+    return items
+
+
+def collect_vs(a, start, today):
     subs = a.rubrique or list(SUBRUBRIQUES)
-    print(f"→ Sous-rubriques {subs}, du {start} au {today}, autour de {home[2]} ({a.rayon:g} km)")
     pubs = list_publications(subs, start, today)
-    print(f"→ {len(pubs)} publications en Valais")
-    if not pubs:
-        print("Aucun résultat. Essaie --debug, ou --rubrique avec un autre code.")
-
+    print(f"  {len(pubs)} publications au Bulletin officiel du Valais")
     ids = [(p.get("meta") or p).get("id") for p in pubs]
     ids = list(dict.fromkeys(i for i in ids if i))  # la pagination de l'API peut renvoyer des doublons
     items, done = [], 0
@@ -819,39 +958,90 @@ def main():
                 with open("debug_premier_avis.xml", "wb") as f:
                     f.write(raw)
                 print("[debug] XML du premier avis → debug_premier_avis.xml")
-                print("[debug] champs extraits :", json.dumps(it, ensure_ascii=False, indent=1))
+            it["canton"] = "VS"
             if it["lat"] is None:
                 loc = geocode(it["commune"], "gg25") or geocode(it["npa"], "zipcode")
                 if loc:
                     it["lat"], it["lon"] = loc[0], loc[1]
-            try:
-                pubd = dt.date.fromisoformat(it["date"])
-            except ValueError:
-                pubd = today
-            fin = dt.date.fromisoformat(it["delai"]) if re.match(r"\d{4}-\d\d-\d\d$", it["delai"] or "") \
-                else pubd + dt.timedelta(days=DELAI_OPPOSITION_J)
-            it["fin_delai"] = fin.isoformat()
-            it["jours_restants"] = (fin - today).days
-            it["distance"] = km(home, (it["lat"], it["lon"])) if it["lat"] is not None else None
+            if not it.get("delai"):
+                try:
+                    pubd = dt.date.fromisoformat(it["date"])
+                except ValueError:
+                    pubd = today
+                it["delai"] = (pubd + dt.timedelta(days=DELAI_OPPOSITION_J)).isoformat()
             items.append(it)
-            if done % 50 == 0:
+            if done % 100 == 0:
                 print(f"  … {done}/{len(ids)}")
+    return items
+
+
+# ---------- Main ----------
+def main():
+    ap = argparse.ArgumentParser(description="Mises à l'enquête publique près de chez toi (VS, VD, GE)")
+    ap.add_argument("--home", default="Evionnaz", help="commune ou NPA de référence (défaut : Evionnaz)")
+    ap.add_argument("--rayon", type=float, default=2, help="rayon en km, de 1 à 10 (défaut : 2)")
+    ap.add_argument("--jours", type=int, default=30, help="publications des N derniers jours (défaut : 30)")
+    ap.add_argument("--tous", action="store_true", help="inclure les avis dont le délai est échu")
+    ap.add_argument("--cantons", default="VS,VD,GE", help="cantons à inclure (défaut : VS,VD,GE)")
+    ap.add_argument("--rubrique", action="append", help="VS : forcer une sous-rubrique (ex. BA-VS05) ; répétable")
+    ap.add_argument("--out", default="enquetes.html", help="fichier HTML (défaut : enquetes.html)")
+    ap.add_argument("--json", help="exporter aussi les données (avis dans le rayon) en JSON")
+    ap.add_argument("--workers", type=int, default=8, help="téléchargements en parallèle (défaut : 8)")
+    ap.add_argument("--debug", action="store_true")
+    a = ap.parse_args()
+
+    _load_cache()
+    home = geocode(a.home)
+    if not home:
+        sys.exit(f"Commune/NPA introuvable : {a.home}")
+    today = dt.date.today()
+    start = today - dt.timedelta(days=a.jours)
+    cantons = [c.strip().upper() for c in a.cantons.split(",") if c.strip()]
+    print(f"→ Cantons {cantons}, du {start} au {today}, autour de {home[2]} ({a.rayon:g} km)")
+
+    sources = {"VS": lambda: collect_vs(a, start, today), "VD": lambda: collect_vd(start, today),
+               "GE": lambda: collect_ge(start, today)}
+    items, ok = [], []
+    for c in cantons:
+        if c not in sources:
+            print(f"  ! canton non pris en charge : {c}")
+            continue
+        try:
+            got = sources[c]()
+            print(f"→ {c} : {len(got)} avis")
+            items.extend(got)
+            ok.append(c)
+        except Exception as e:  # une source en panne ne bloque pas les autres
+            print(f"  ! {c} indisponible : {e}")
     _save_cache()
+    if not ok:
+        sys.exit("Aucune source disponible.")
+
+    for it in items:
+        it.setdefault("canton", "VS")
+        if it.get("delai"):
+            fin = dt.date.fromisoformat(it["delai"])
+            it["fin_delai"], it["jours_restants"] = fin.isoformat(), (fin - today).days
+        else:  # Genève : délai non publié dans les données
+            it["fin_delai"], it["jours_restants"] = None, None
+        it["distance"] = km(home, (it["lat"], it["lon"])) if it.get("lat") is not None else None
 
     if not a.tous:
-        items = [i for i in items if i["jours_restants"] >= 0]
-    items.sort(key=lambda i: (i["distance"] if i["distance"] is not None else 1e9, i["jours_restants"]))
+        items = [i for i in items if i["jours_restants"] is None or i["jours_restants"] >= 0]
+    items.sort(key=lambda i: (i["distance"] if i["distance"] is not None else 1e9,
+                              i["jours_restants"] if i["jours_restants"] is not None else 99))
     proches = [i for i in items if i["distance"] is not None and i["distance"] <= a.rayon]
 
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
     with open(a.out, "w", encoding="utf-8") as f:
-        f.write(render(items, home, a, dt.datetime.now().strftime("%d.%m.%Y %H:%M")))
+        f.write(render(items, home, a, dt.datetime.now().strftime("%d.%m.%Y %H:%M"), ok))
     if a.json:
         with open(a.json, "w", encoding="utf-8") as f:
             json.dump(proches, f, ensure_ascii=False, indent=2)
-    sans = sum(1 for i in items if not i["coords_exactes"])
-    print(f"✓ {len(proches)} avis à moins de {a.rayon:g} km ({len(items)} dans le canton, "
-          f"{sans} placés au centre de la commune) → {os.path.abspath(a.out)}")
+    par = ", ".join(f"{c} {sum(1 for i in items if i['canton'] == c)}" for c in ok)
+    print(f"✓ {len(proches)} avis à moins de {a.rayon:g} km ({len(items)} au total : {par}) → {os.path.abspath(a.out)}")
+    if len(ok) < len([c for c in cantons if c in sources]):
+        sys.exit(2)  # une source a manqué : échec volontaire, la page de la veille reste en ligne
 
 
 if __name__ == "__main__":
