@@ -28,6 +28,7 @@ from concurrent.futures import ThreadPoolExecutor
 API = "https://amtsblattportal.ch/api/v1"
 GEO = "https://api3.geo.admin.ch/rest/services/api/SearchServer"
 DETAIL_URL = "https://www.bulletin-officiel.vs.ch/#!/search/publications/detail/{id}"
+ECONSTRUCTION_URL = "https://econstruction-vs.apps.vs.ch/"  # consultation : connexion SwissID, puis recherche par numéro
 SUBRUBRIQUES = {"BA-VS05": "Autorisation de construire", "BA-VS10": "Consultation des plans"}
 DELAI_OPPOSITION_J = 30  # LC Valais : 30 jours dès la publication au BO (si l'avis n'indique pas de date)
 CACHE = os.path.expanduser("~/.cache/enquetes_vs_geo.json")
@@ -328,6 +329,12 @@ dl{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margin:6px 0;
 dt{color:var(--mut)}dd{margin:0}
 small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 .empty{color:var(--mut);padding:24px 0}
+.ec{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ec code{font:600 14px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.ecb{font:600 13px system-ui;color:var(--red);background:none;border:1px solid currentColor;border-radius:99px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.ecb:hover{background:var(--red);color:#fff}
+#toast{position:fixed;left:0;right:0;bottom:20px;margin:0 auto;width:fit-content;z-index:2000;max-width:min(520px,calc(100vw - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#toast b{font-family:ui-monospace,Menlo,monospace}
 @media (max-width:560px){.ctl{display:grid;grid-template-columns:1fr 1fr}.ctl .fld,.ctl label:nth-child(3),.ctl #err{grid-column:1/-1}#home,#q,input[type=range]{width:100%}#home{flex:1}}
 </style></head><body>
 <header>
@@ -342,12 +349,13 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
   <span id="err" role="status"></span>
  </div>
 </header>
+<div id="toast" role="status" aria-live="polite" hidden></div>
 <div class="layout">
  <div id="map"></div>
  <main><section id="list"></section>
  <p class="foot">Source : Bulletin officiel du Valais (amtsblattportal.ch), généré le __GENERATED__ (publications des __JOURS__ derniers jours).
  Le lien de chaque avis ouvre la publication officielle, seule à faire foi. Le délai affiché est celui indiqué dans l'avis
- (à défaut : __DELAI__ jours dès la publication). Les dossiers se consultent sur eConstruction avec le numéro indiqué, ou auprès de la commune.</p></main>
+ (à défaut : __DELAI__ jours dès la publication). Les dossiers se consultent sur eConstruction (connexion SwissID, « Consultation du Bulletin Officiel », puis recherche avec le numéro indiqué) ou auprès de la commune.</p></main>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -378,13 +386,27 @@ function card(d){
  const h=el('div','h');h.append(el('span','d',d.dist.toFixed(1)+' km'),el('span','com',d.commune),el('span','tp',d.type));
  const b=el('span','b '+(d.left<0?'late':d.left<=7?'hot':''),d.left<0?'échu':d.left===0?'dernier jour':'J-'+d.left);h.append(b);a.append(h);
  const h3=el('h3');const l=el('a',null,d.projet||d.titre||'Avis');l.href=d.url;l.target='_blank';l.rel='noopener';h3.append(l);a.append(h3);
- const dl=el('dl');[['Parcelle','parcelle'],['Zone','zone'],['Dérogations','derogations'],['Requérant','requerant'],['eConstruction','econstruction']]
-  .forEach(([k,v])=>{if(d[v]){dl.append(el('dt',null,k),el('dd',null,d[v]));}});if(dl.children.length)a.append(dl);
+ const dl=el('dl');[['Parcelle','parcelle'],['Zone','zone'],['Dérogations','derogations'],['Requérant','requerant']]
+  .forEach(([k,v])=>{if(d[v]){dl.append(el('dt',null,k),el('dd',null,d[v]));}});
+ if(d.econstruction){const dd=el('dd','ec');dd.append(el('code',null,d.econstruction),ecButton(d.econstruction));dl.append(el('dt',null,'eConstruction'),dd);}
+ if(dl.children.length)a.append(dl);
  const end=pd(d.fin_delai);
  a.append(el('small',null,'Publié le '+fmt.format(pd(d.date))+' · oppositions jusqu’au '+(end?fmtY.format(end):'?')+(d.coords_exactes?'':' · position approximative (centre de la commune)')));
  a.addEventListener('click',e=>{if(e.target.closest('a'))return;const m=markers[d.id];if(m){map.setView(m.getLatLng(),Math.max(map.getZoom(),15));m.openPopup();}select([d.id]);});
  return a;
 }
+// eConstruction n'a pas de lien public direct vers un dossier : connexion SwissID puis recherche par numéro.
+// On copie le numéro et on ouvre la plateforme dans un nouvel onglet.
+const EC_URL=CFG.econstruction;let toastT;
+function toast(nodes,ms){const t=$('#toast');t.textContent='';t.append(...nodes);t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,ms||9000);}
+function copy(txt){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(txt);
+ return new Promise((ok,ko)=>{const ta=el('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.select();try{document.execCommand('copy')?ok():ko();}catch(e){ko(e);}ta.remove();});}
+function ecButton(no){const b=el('button','ecb','Copier et ouvrir eConstruction ↗');b.type='button';
+ b.title='Copie le numéro '+no+' et ouvre eConstruction (connexion SwissID requise)';
+ b.addEventListener('click',e=>{e.stopPropagation();window.open(EC_URL,'_blank','noopener');
+  const msg=ok=>[document.createTextNode(ok?'Numéro ':'Notez le numéro '),el('b',null,no),document.createTextNode((ok?' copié. Sur':' : sur')+' eConstruction, connectez-vous avec SwissID, puis « Consultation du Bulletin Officiel » et collez-le dans la recherche.')];
+  copy(no).then(()=>toast(msg(true)),()=>toast(msg(false),15000));});
+ return b;}
 function select(ids){document.querySelectorAll('.c').forEach(c=>c.classList.toggle('on',ids.includes(c.dataset.id)));}
 
 function update(fit){
@@ -405,6 +427,7 @@ function update(fit){
   const m=L.circleMarker([d.lat,d.lon],{radius:7,color:d.left<0?'#888':'#d52b1e',weight:2,fillColor:d.left<0?'#888':'#d52b1e',fillOpacity:d.coords_exactes?.75:.25});
   const p=el('div');p.append(el('b',null,d.commune));p.append(el('div',null,d.projet||d.titre));
   const a=el('a',null,'Avis officiel ↗');a.href=d.url;a.target='_blank';a.rel='noopener';p.append(a);
+  if(d.econstruction){const w=el('div');w.style.marginTop='6px';w.append(ecButton(d.econstruction));p.append(w);}
   m.bindPopup(p);m.on('click',()=>{select([d.id]);const c=document.querySelector('.c[data-id="'+d.id+'"]');if(c)c.scrollIntoView({behavior:'smooth',block:'center'});});
   m.addTo(layer);markers[d.id]=m;});
  if(fit)map.fitBounds(circle.getBounds(),{padding:[10,10]});
@@ -507,7 +530,7 @@ def render(items, home, args, generated):
                                      "parcelle", "zone", "derogations", "requerant", "econstruction",
                                      "coords_exactes", "lat", "lon", "url")}
             for it in items if it.get("lat") is not None]
-    cfg = {"home": list(home), "rayon": int(round(args.rayon)) or 15, "jours": args.jours,
+    cfg = {"home": list(home), "rayon": int(round(args.rayon)) or 15, "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
            "today": dt.date.today().isoformat()}
     js = lambda o: json.dumps(o, ensure_ascii=False).replace("</", "<\\/")
     return (TEMPLATE.replace("__DATA__", js(data)).replace("__CFG__", js(cfg))
