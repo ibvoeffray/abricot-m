@@ -7,6 +7,7 @@ Page web qui liste les **mises à l'enquête publique** publiées au **Bulletin 
   géocodage swisstopo (api3.geo.admin.ch).
 - Pour chaque avis : projet, commune, parcelle, zone, dérogations, requérant, n° eConstruction, **délai indiqué dans l'avis**,
   position **exacte** (coordonnées de l'avis, sinon centre du village).
+- **Faire opposition** : sur chaque avis encore ouvert, un formulaire prépare une lettre d'opposition (ou de réserve de droit privé) pré-remplie avec les références de l'avis et l'adresse de l'autorité indiquée dans la publication, à imprimer ou enregistrer en PDF, signer et envoyer avant le délai. Rien n'est envoyé : tout se passe dans le navigateur.
 - Dans la page : point de référence par **commune ou NPA** (suggestions au fil de la saisie, clavier ↑ ↓ Entrée Échap) ou par **position GPS** (bouton ⌖), rayon (1–60 km), recherche, type d'avis, avis échus. Les réglages sont mémorisés dans le navigateur.
 
 ## Utilisation en local

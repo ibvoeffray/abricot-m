@@ -209,6 +209,14 @@ def element_value(el):
     return ""
 
 
+def clean_contact(text):
+    """Adresse de l'autorité (texte simple ou HTML) → lignes de texte."""
+    t = re.sub(r"(?i)<br\s*/?>|</(div|p)>", "\n", text or "")
+    t = html.unescape(re.sub(r"<[^>]+>", "", t))
+    lines = [re.sub(r"\s+", " ", l).strip(" ,") for l in t.splitlines()]
+    return "\n".join(l for l in lines if l)
+
+
 def parse_detail(pid, raw_xml):
     root = _strip_ns(ET.fromstring(raw_xml))
     meta = root.find("meta")
@@ -242,7 +250,7 @@ def parse_detail(pid, raw_xml):
     reaction = content.find("reaction/element") if content is not None else None
     deadline = (reaction.findtext("deadline/date") if reaction is not None else "") or ""
     deadline_label = _t(reaction, "deadline/term") if reaction is not None else ""
-    contact = _t(reaction, "contact") if reaction is not None else ""
+    contact = clean_contact(_t(reaction, "contact")) if reaction is not None else ""
 
     commune = _t(content, "localization/municipalityId/term") if content is not None else ""
     office = meta.findtext("registrationOffice/displayName") or ""
@@ -335,6 +343,41 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 .ecb:hover{background:var(--red);color:#fff}
 #toast{position:fixed;left:0;right:0;bottom:20px;margin:0 auto;width:fit-content;z-index:2000;max-width:min(520px,calc(100vw - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 #toast b{font-family:ui-monospace,Menlo,monospace}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.oppb{font:600 13px system-ui;color:#fff;background:var(--red);border:1px solid var(--red);border-radius:99px;padding:4px 12px;cursor:pointer}
+.oppb:hover{filter:brightness(1.1)}
+#opp{width:min(680px,calc(100vw - 16px));max-height:calc(100vh - 24px);padding:0;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#opp::backdrop{background:rgba(10,12,16,.55)}
+#opp form{display:grid;gap:14px;padding:20px}
+#opp .hd{display:flex;justify-content:space-between;align-items:start;gap:12px}
+#opp h2{margin:0;font-size:22px}
+#opp .x{border:0;background:none;color:var(--mut);font-size:26px;line-height:1;cursor:pointer;padding:0 4px}
+.ref{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.ref b{display:block;font-size:15px;margin-bottom:2px}
+.dl{border-left:4px solid var(--red);padding:8px 12px;background:var(--hi);border-radius:0 8px 8px 0;font-size:14px;margin:0}
+#opp fieldset{border:0;padding:0;margin:0;display:flex;gap:8px;flex-wrap:wrap}
+#opp legend{font-size:13px;color:var(--mut);font-weight:600;margin-bottom:6px;padding:0}
+.rad{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:15px}
+.rad:has(input:checked){border-color:var(--red);background:var(--hi)}.rad input{accent-color:var(--red)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+@media (max-width:560px){.g2{grid-template-columns:1fr}}
+#opp label.f{display:grid;gap:4px;font-size:13px;color:var(--mut);font-weight:600}
+#opp label.f i{font-style:normal;font-weight:400}
+#opp input:not([type=radio]),#opp select,#opp textarea{width:100%}
+#opp textarea{font:15px/1.5 system-ui;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-height:150px;resize:vertical}
+.how{font-size:14px;margin:0;padding-left:20px}.how li{margin:3px 0}
+.fine{font-size:12.5px;color:var(--mut);margin:0}
+.fb{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.btn{font:600 15px system-ui;border-radius:8px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.btn.p{background:var(--red);border-color:var(--red);color:#fff}
+#letter{display:none}
+@media print{@page{margin:20mm 20mm 18mm}body{background:#fff!important;color:#000!important}body>*:not(#letter){display:none!important}
+ #letter{display:block;font:11pt/1.5 Georgia,"Times New Roman",serif;color:#000}
+ #letter .from{margin-bottom:14mm}#letter .to{margin-left:90mm;margin-bottom:12mm;white-space:pre-line}
+ #letter .rec{font-weight:bold;margin-bottom:2mm}#letter .date{text-align:right;margin-bottom:8mm}
+ #letter .obj{font-weight:bold;margin:0 0 2mm}#letter .refs{margin:0 0 6mm;font-size:10pt}
+ #letter p{margin:0 0 4mm}#letter .mot{white-space:pre-wrap;margin:0 0 4mm}
+ #letter .sig{margin-top:10mm;margin-left:90mm}#letter .line{margin-top:18mm;border-top:1px solid #000;padding-top:1mm;font-size:9pt}}
 @media (max-width:560px){.ctl{display:grid;grid-template-columns:1fr 1fr}.ctl .fld,.ctl label:nth-child(3),.ctl #err{grid-column:1/-1}#home,#q,input[type=range]{width:100%}#home{flex:1}}
 </style></head><body>
 <header>
@@ -350,6 +393,39 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
  </div>
 </header>
 <div id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="opp" aria-labelledby="opp-t">
+ <form id="opp-f" novalidate>
+  <div class="hd"><h2 id="opp-t">Faire opposition</h2><button type="button" class="x" id="opp-x" aria-label="Fermer">×</button></div>
+  <div class="ref" id="opp-ref"></div>
+  <p class="dl" id="opp-dl"></p>
+  <fieldset><legend>Je souhaite</legend>
+   <label class="rad"><input type="radio" name="kind" value="opposition" checked> former une opposition</label>
+   <label class="rad"><input type="radio" name="kind" value="reserve"> formuler une réserve de droit privé</label>
+  </fieldset>
+  <div class="g2">
+   <label class="f">Prénom<input name="prenom" required autocomplete="given-name"></label>
+   <label class="f">Nom<input name="nom" required autocomplete="family-name"></label>
+   <label class="f">Adresse<input name="adresse" required autocomplete="street-address"></label>
+   <label class="f">NPA et localité<input name="localite" required autocomplete="postal-code address-level2" placeholder="1902 Evionnaz"></label>
+   <label class="f"><span>E-mail <i>(facultatif)</i></span><input name="email" type="email" autocomplete="email"></label>
+   <label class="f"><span>Téléphone <i>(facultatif)</i></span><input name="tel" type="tel" autocomplete="tel"></label>
+  </div>
+  <div class="g2">
+   <label class="f">Qualité pour agir<select name="qualite" required>
+    <option value="">Choisir…</option>
+    <option>propriétaire d'une parcelle voisine</option>
+    <option>locataire ou habitant·e à proximité immédiate</option>
+    <option>propriétaire ou habitant·e touché·e par les nuisances du projet</option>
+    <option>autre</option></select></label>
+   <label class="f"><span>Précision <i>(parcelle, distance…)</i></span><input name="precision" placeholder="ex. parcelle n° 1234, à 20 m du projet"></label>
+  </div>
+  <label class="f">Motifs<textarea name="motifs" required placeholder="Expliquez en quoi le projet vous touche personnellement : hauteur, ombre, vue, bruit, circulation, non-conformité au règlement de zone, dérogations…"></textarea></label>
+  <ol class="how" id="opp-how"></ol>
+  <p class="fine">Rien n'est envoyé : la lettre est préparée dans votre navigateur. Vos coordonnées sont mémorisées sur cet appareil seulement. Modèle indicatif, qui ne remplace pas un conseil juridique.</p>
+  <div class="fb"><button type="button" class="btn" id="opp-c">Annuler</button><button type="submit" class="btn p">Générer la lettre (imprimer / PDF)</button></div>
+ </form>
+</dialog>
+<article id="letter" aria-hidden="true"></article>
 <div class="layout">
  <div id="map"></div>
  <main><section id="list"></section>
@@ -391,7 +467,9 @@ function card(d){
  if(d.econstruction){const dd=el('dd','ec');dd.append(el('code',null,d.econstruction),ecButton(d.econstruction));dl.append(el('dt',null,'eConstruction'),dd);}
  if(dl.children.length)a.append(dl);
  const end=pd(d.fin_delai);
+ const acts=el('div','acts');if(d.left>=0){const ob=el('button','oppb','Faire opposition');ob.type='button';ob.addEventListener('click',e=>{e.stopPropagation();openOpp(d);});acts.append(ob);}
  a.append(el('small',null,'Publié le '+fmt.format(pd(d.date))+' · oppositions jusqu’au '+(end?fmtY.format(end):'?')+(d.coords_exactes?'':' · position approximative (centre de la commune)')));
+ if(acts.children.length)a.append(acts);
  a.addEventListener('click',e=>{if(e.target.closest('a'))return;const m=markers[d.id];if(m){map.setView(m.getLatLng(),Math.max(map.getZoom(),15));m.openPopup();}select([d.id]);});
  return a;
 }
@@ -407,6 +485,55 @@ function ecButton(no){const b=el('button','ecb','Copier et ouvrir eConstruction 
   const msg=ok=>[document.createTextNode(ok?'Numéro ':'Notez le numéro '),el('b',null,no),document.createTextNode((ok?' copié. Sur':' : sur')+' eConstruction, connectez-vous avec SwissID, puis « Consultation du Bulletin Officiel » et collez-le dans la recherche.')];
   copy(no).then(()=>toast(msg(true)),()=>toast(msg(false),15000));});
  return b;}
+// ---------- Faire opposition : lettre pré-remplie, à signer et envoyer ----------
+const dlg=$('#opp'),of=$('#opp-f');let cur=null;
+const MOI=['prenom','nom','adresse','localite','email','tel','qualite','precision'];
+function authority(d){const c=(d.contact||'').trim();return c||('Administration communale de '+d.commune+'\n[adresse à compléter]');}
+function openOpp(d){
+ cur=d;const end=pd(d.fin_delai);
+ const r=$('#opp-ref');r.textContent='';r.append(el('b',null,d.projet||d.titre),
+  el('div',null,[d.commune,d.parcelle,d.type].filter(Boolean).join(' · ')),
+  el('div',null,'Publié au Bulletin officiel le '+fmtY.format(pd(d.date))+(d.numero?' (n° '+d.numero+')':'')));
+ $('#opp-dl').textContent='À envoyer au plus tard le '+(end?fmtY.format(end):'?')+' (timbre postal faisant foi)'+(d.left===0?' : c’est aujourd’hui !':d.left>0?' : encore '+d.left+' jour'+(d.left>1?'s':'')+'.':'.');
+ const how=$('#opp-how');how.textContent='';
+ how.append(el('li',null,'Générez la lettre, imprimez-la (ou enregistrez-la en PDF) et signez-la à la main.'));
+ const li=el('li',null,'Envoyez-la de préférence en recommandé à : '+authority(d).replace(/\n/g,', ')+'.');how.append(li);
+ if(d.econstruction){const l2=el('li',null,'Ou déposez-la en PDF sur eConstruction (n° '+d.econstruction+') : il faut alors une signature électronique qualifiée et une identité vérifiée. ');l2.append(ecButton(d.econstruction));how.append(l2);}
+ try{const m=JSON.parse(localStorage.getItem('enq-moi')||'{}');MOI.forEach(k=>{if(m[k]!=null&&of.elements[k])of.elements[k].value=m[k];});}catch(e){}
+ of.elements.motifs.value='';
+ if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
+ setTimeout(()=>{const f=MOI.map(k=>of.elements[k]).find(x=>x&&x.required&&!x.value)||of.elements.motifs;f.focus();},50);
+}
+function closeOpp(){if(dlg.close)dlg.close();else dlg.removeAttribute('open');}
+$('#opp-x').addEventListener('click',closeOpp);$('#opp-c').addEventListener('click',closeOpp);
+dlg.addEventListener('click',e=>{if(e.target===dlg)closeOpp();});
+of.addEventListener('submit',e=>{
+ e.preventDefault();if(!of.reportValidity())return;
+ const v={};[...MOI,'motifs','kind'].forEach(k=>v[k]=(of.elements[k].value||'').trim());
+ try{const m={};MOI.forEach(k=>m[k]=v[k]);localStorage.setItem('enq-moi',JSON.stringify(m));}catch(e){}
+ letter(cur,v);closeOpp();setTimeout(()=>window.print(),50);
+});
+function letter(d,v){
+ const L=$('#letter');L.textContent='';const P=t=>el('p',null,t);
+ const opp=v.kind!=='reserve',plans=/plans/i.test(d.type||'');
+ const from=el('div','from');[v.prenom+' '+v.nom,v.adresse,v.localite,v.tel,v.email].filter(Boolean).forEach(t=>from.append(el('div',null,t)));L.append(from);
+ const to=el('div','to');to.append(el('div','rec','Recommandé'),el('div',null,authority(d)));L.append(to);
+ L.append(el('div','date',(v.localite.replace(/^\d{4}\s*/,'')||'')+', le '+fmtY.format(new Date())));
+ const what=plans?'la mise en consultation publique des plans':'la demande d’autorisation de construire';
+ L.append(el('p','obj',(opp?'Opposition à ':'Réserve de droit privé : ')+what+' – '+(d.projet||d.titre)));
+ const refs=el('div','refs');[['Commune',d.commune],['Parcelle',(d.parcelle||'').replace(/^parcelle\s*/i,'')],['Requérant',d.requerant],
+  ['Publication','Bulletin officiel du Valais du '+fmtY.format(pd(d.date))+(d.numero?', n° '+d.numero:'')],['N° eConstruction',d.econstruction]]
+  .forEach(([k,x])=>{if(x)refs.append(el('div',null,k+' : '+x));});L.append(refs);
+ L.append(P('Madame, Monsieur,'));
+ L.append(P(opp?'Par la présente, et dans le délai de 30 jours dès sa publication au Bulletin officiel du Valais, je forme opposition à '+what+' citée en référence.'
+  :'Par la présente, et dans le délai de 30 jours dès sa publication au Bulletin officiel du Valais, je formule une réserve de droit privé à l’égard de '+what+' citée en référence.'));
+ L.append(P('Qualité pour agir : '+(v.qualite==='autre'?(v.precision||'voir motifs ci-dessous'):'je suis '+v.qualite+(v.precision?' ('+v.precision+')':''))+'. Je suis ainsi directement et personnellement touché·e par ce projet.'));
+ L.append(el('p','obj','Motifs'));L.append(el('div','mot',v.motifs));
+ if(opp)L.append(P('Pour ces motifs, je vous prie de bien vouloir rejeter le projet tel qu’il a été mis à l’enquête.'));
+ L.append(P('Je vous remercie de me tenir informé·e de la suite donnée à la présente et vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.'));
+ const sig=el('div','sig');sig.append(el('div',null,v.prenom+' '+v.nom),el('div','line','Signature'));L.append(sig);
+}
+
 function select(ids){document.querySelectorAll('.c').forEach(c=>c.classList.toggle('on',ids.includes(c.dataset.id)));}
 
 function update(fit){
@@ -534,7 +661,7 @@ update(true);
 def render(items, home, args, generated):
     data = [{k: it.get(k) for k in ("id", "numero", "type", "titre", "projet", "date", "fin_delai", "commune",
                                      "parcelle", "zone", "derogations", "requerant", "econstruction",
-                                     "coords_exactes", "lat", "lon", "url")}
+                                     "coords_exactes", "lat", "lon", "url", "contact")}
             for it in items if it.get("lat") is not None]
     cfg = {"home": list(home), "rayon": int(round(args.rayon)) or 15, "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
            "today": dt.date.today().isoformat()}
