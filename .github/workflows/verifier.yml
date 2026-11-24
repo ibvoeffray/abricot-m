@@ -1,0 +1,19 @@
+# Vérifie sur chaque PR que le générateur atteint l'API du Bulletin officiel et produit la page.
+name: Vérifier le générateur
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  generer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Accès aux API
+        run: |
+          curl -sS -m 30 -o /dev/null -w "amtsblattportal.ch : %{http_code}\n" "https://amtsblattportal.ch/api/v1/rubrics" || true
+          curl -sS -m 30 -o /dev/null -w "api3.geo.admin.ch : %{http_code}\n" "https://api3.geo.admin.ch/rest/services/api/SearchServer?searchText=Evionnaz&type=locations&origins=gg25" || true
+      - name: Générer la page (7 jours)
+        run: python3 scripts/enquetes_vs.py --jours 7 --out /tmp/site/index.html
