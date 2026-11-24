@@ -8,14 +8,34 @@ Page web qui liste les **mises à l'enquête publique** publiées au **Bulletin 
 - Pour chaque avis : projet, commune, parcelle, zone, dérogations, requérant, n° eConstruction, **délai indiqué dans l'avis**,
   position **exacte** (coordonnées de l'avis, sinon centre du village).
 - **Faire opposition** : sur chaque avis encore ouvert, un formulaire prépare une lettre d'opposition (ou de réserve de droit privé) pré-remplie avec les références de l'avis et l'adresse de l'autorité indiquée dans la publication, à imprimer ou enregistrer en PDF, signer et envoyer avant le délai. Rien n'est envoyé : tout se passe dans le navigateur.
-- Dans la page : point de référence par **commune ou NPA** (suggestions au fil de la saisie, clavier ↑ ↓ Entrée Échap) ou par **position GPS** (bouton ⌖), rayon (1–60 km), recherche, type d'avis, avis échus. Les réglages sont mémorisés dans le navigateur.
+- Dans la page : point de référence par **commune ou NPA** (suggestions au fil de la saisie, clavier ↑ ↓ Entrée Échap) ou par **position GPS** (bouton ⌖), rayon (1–10 km, 2 km par défaut), recherche, type d'avis, avis échus. Les réglages sont mémorisés dans le navigateur.
+
+## Coordonnées des communes
+
+Chaque avis propose « Contacter la commune » : adresse, téléphone, e-mail, horaires et site de l'administration communale.
+
+- `data/communes_vs.json` est construit par `python3 scripts/maj_communes.py` à partir de Wikidata (site officiel), d'OpenStreetMap (adresse, téléphone, horaires des administrations communales) et de la page d'accueil des sites communaux (téléphone). À relancer de temps en temps.
+- L'adresse publiée par la commune dans ses propres avis prime sur celle d'OpenStreetMap.
+- **Corrections à la main** : `data/communes_vs_manuel.json`, par numéro OFS de la commune ; ces valeurs priment sur tout le reste. Exemple :
+
+```json
+{
+  "6213": {
+    "telephone": "027 767 11 13",
+    "horaires": "lu–ve 8h00–11h30, ma et je aussi 14h00–17h00",
+    "email": "commune@exemple.ch"
+  }
+}
+```
+
+Champs possibles : `service`, `adresse`, `telephone`, `email`, `horaires` (texte libre), `site`. Les horaires ne sont connus que pour une minorité de communes ; sinon la page renvoie vers le site de la commune.
 
 ## Utilisation en local
 
 Python 3.8+ seul, sans dépendance :
 
 ```sh
-python3 scripts/enquetes_vs.py                          # Evionnaz, 15 km, 30 jours → enquetes.html
+python3 scripts/enquetes_vs.py                          # Evionnaz, 2 km, 30 jours → enquetes.html
 python3 scripts/enquetes_vs.py --home Martigny --rayon 8
 python3 scripts/enquetes_vs.py --jours 60 --tous        # y c. délais échus
 python3 scripts/enquetes_vs.py --json enquetes.json     # export des avis dans le rayon

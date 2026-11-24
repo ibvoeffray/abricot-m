@@ -11,14 +11,17 @@ Géocodage des communes / NPA : api3.geo.admin.ch (swisstopo).
 Aucune dépendance : Python 3.8+ standard.
 
 Exemples :
-  python3 enquetes_vs.py                          # Evionnaz, 15 km, 30 jours
+  python3 enquetes_vs.py                          # Evionnaz, 2 km, 30 jours
   python3 enquetes_vs.py --home Martigny --rayon 8
   python3 enquetes_vs.py --jours 60 --tous        # y c. délais échus
   python3 enquetes_vs.py --json enquetes.json     # export brut en plus
   python3 enquetes_vs.py --debug                  # dump XML du 1er avis
 
-La page générée contient tous les avis du canton : le rayon et la commune
-de référence se règlent ensuite directement dans la page.
+La page générée contient tous les avis du canton : le rayon (1 à 10 km) et la
+commune de référence se règlent ensuite directement dans la page.
+
+Coordonnées des communes : data/communes_vs.json (scripts/maj_communes.py),
+corrigées par data/communes_vs_manuel.json, complétées par les avis eux-mêmes.
 """
 import argparse, datetime as dt, html, json, math, os, re, sys, time
 import urllib.parse, urllib.request
@@ -276,6 +279,12 @@ def parse_detail(pid, raw_xml):
         "proprietaire": g("landowner"),
         "auteur": g("projectframer"),
         "econstruction": g("caseno"),
+        "bfs": (content.findtext("localization/municipalityId/key") if content is not None else "") or "",
+        "ro_bfs": meta.findtext("registrationOffice/municipalityId") or "",
+        "ro_nom": office,
+        "ro_adresse": ", ".join(x for x in (
+            " ".join(y for y in (meta.findtext("registrationOffice/street"), meta.findtext("registrationOffice/streetNumber")) if y),
+            " ".join(y for y in (meta.findtext("registrationOffice/swissZipCode"), meta.findtext("registrationOffice/town")) if y)) if x),
         "contact": contact,
         "coords_exactes": bool(coords),
         "lat": coords[0] if coords else None,
@@ -343,7 +352,7 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 .ecb:hover{background:var(--red);color:#fff}
 #toast{position:fixed;left:0;right:0;bottom:20px;margin:0 auto;width:fit-content;z-index:2000;max-width:min(520px,calc(100vw - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 #toast b{font-family:ui-monospace,Menlo,monospace}
-.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;margin-top:8px}
 .oppb{font:600 13px system-ui;color:#fff;background:var(--red);border:1px solid var(--red);border-radius:99px;padding:4px 12px;cursor:pointer}
 .oppb:hover{filter:brightness(1.1)}
 #opp{width:min(680px,calc(100vw - 16px));max-height:calc(100vh - 24px);padding:0;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
@@ -370,6 +379,10 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 .fb{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
 .btn{font:600 15px system-ui;border-radius:8px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 .btn.p{background:var(--red);border-color:var(--red);color:#fff}
+.ci{font-size:14px}.ci summary{cursor:pointer;font:600 13px system-ui;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:4px 12px;list-style:none;display:inline-block}
+.ci summary::-webkit-details-marker{display:none}.ci[open] summary{background:var(--soft)}
+.ci .box{margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--soft);display:grid;gap:3px}
+.ci .box b{font-size:14px}.ci .box a{color:var(--red)}.ci .muted{color:var(--mut);font-size:12.5px}
 #letter{display:none}
 @media print{@page{margin:20mm 20mm 18mm}body{background:#fff!important;color:#000!important}body>*:not(#letter){display:none!important}
  #letter{display:block;font:11pt/1.5 Georgia,"Times New Roman",serif;color:#000}
@@ -385,7 +398,7 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
  <div class="sub" id="sub"></div>
  <div class="ctl">
   <div class="fld"><label for="home">Autour de</label><div class="acw"><input id="home" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hl" autocomplete="off" spellcheck="false" placeholder="Commune ou NPA"><button id="gps" type="button" title="Utiliser ma position" aria-label="Utiliser ma position"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg></button><ul id="hl" role="listbox" aria-label="Communes" hidden></ul></div></div>
-  <label><span>Rayon : <span id="rv"></span> km</span><input type="range" id="r" min="1" max="60" step="1"></label>
+  <label><span>Rayon : <span id="rv"></span> km</span><input type="range" id="r" min="1" max="10" step="1"></label>
   <label>Rechercher<input id="q" type="search" placeholder="Commune, mot-clé, parcelle, requérant…"></label>
   <label>Type<select id="t"><option value="">Tous</option><option>Autorisation de construire</option><option>Consultation des plans</option></select></label>
   <label class="chk"><input type="checkbox" id="late"> Inclure les délais échus</label>
@@ -436,7 +449,7 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function(){
-const DATA=__DATA__, CFG=__CFG__;
+const DATA=__DATA__, CFG=__CFG__, COMMUNES=__COMMUNES__;
 const $=s=>document.querySelector(s), DAY=864e5;
 const today=new Date(CFG.today+'T00:00:00');
 const fmt=new Intl.DateTimeFormat('fr-CH',{day:'numeric',month:'long'});
@@ -444,7 +457,7 @@ const fmtY=new Intl.DateTimeFormat('fr-CH',{day:'numeric',month:'long',year:'num
 const pd=s=>s?new Date(s+'T00:00:00'):null;
 let home={lat:CFG.home[0],lon:CFG.home[1],label:CFG.home[2]};
 try{const s=JSON.parse(localStorage.getItem('enq-home')||'null');if(s&&s.lat)home=s;}catch(e){}
-let radius=CFG.rayon;try{const r=+localStorage.getItem('enq-r');if(r)radius=r;}catch(e){}
+let radius=CFG.rayon;try{const r=+localStorage.getItem('enq-r');if(r>=1&&r<=10)radius=r;}catch(e){}
 
 function km(a,b){const R=6371,r=Math.PI/180,dp=(b.lat-a.lat)*r,dl=(b.lon-a.lon)*r;
  const h=Math.sin(dp/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dl/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
@@ -469,7 +482,8 @@ function card(d){
  const end=pd(d.fin_delai);
  const acts=el('div','acts');if(d.left>=0){const ob=el('button','oppb','Faire opposition');ob.type='button';ob.addEventListener('click',e=>{e.stopPropagation();openOpp(d);});acts.append(ob);}
  a.append(el('small',null,'Publié le '+fmt.format(pd(d.date))+' · oppositions jusqu’au '+(end?fmtY.format(end):'?')+(d.coords_exactes?'':' · position approximative (centre de la commune)')));
- if(acts.children.length)a.append(acts);
+ acts.append(communeDetails(d));
+ a.append(acts);
  a.addEventListener('click',e=>{if(e.target.closest('a'))return;const m=markers[d.id];if(m){map.setView(m.getLatLng(),Math.max(map.getZoom(),15));m.openPopup();}select([d.id]);});
  return a;
 }
@@ -485,6 +499,22 @@ function ecButton(no){const b=el('button','ecb','Copier et ouvrir eConstruction 
   const msg=ok=>[document.createTextNode(ok?'Numéro ':'Notez le numéro '),el('b',null,no),document.createTextNode((ok?' copié. Sur':' : sur')+' eConstruction, connectez-vous avec SwissID, puis « Consultation du Bulletin Officiel » et collez-le dans la recherche.')];
   copy(no).then(()=>toast(msg(true)),()=>toast(msg(false),15000));});
  return b;}
+// ---------- Coordonnées de l'administration communale ----------
+const de=n=>(/^[aeiouyàâéèêëîïôûü]/i.test(n||'')?'d\u2019':'de ')+n;
+function communeBox(d){
+ const c=COMMUNES[d.bfs]||{nom:d.commune};const box=el('div','box');
+ box.append(el('b',null,c.service||('Administration communale '+de(c.nom||d.commune))));
+ if(c.adresse)box.append(el('div',null,c.adresse));
+ if(c.telephone){const r=el('div',null,'Tél. ');const a=el('a',null,c.telephone);a.href='tel:'+c.telephone.replace(/[^\d+]/g,'');r.append(a);box.append(r);}
+ if(c.email){const r=el('div',null,'E-mail ');const a=el('a',null,c.email.replace(/^mailto:/,''));a.href='mailto:'+c.email.replace(/^mailto:/,'');r.append(a);box.append(r);}
+ if(c.horaires)box.append(el('div',null,'Horaires : '+c.horaires));
+ if(c.site){const a=el('a',null,(c.horaires?'Site de la commune ↗':'Horaires et contact sur le site de la commune ↗'));a.href=c.site;a.target='_blank';a.rel='noopener';box.append(a);}
+ if(!c.adresse&&!c.telephone&&!c.site)box.append(el('div','muted','Coordonnées non disponibles.'));
+ return box;
+}
+function communeDetails(d){const det=el('details','ci');const s=el('summary',null,'Contacter la commune');det.append(s,communeBox(d));
+ det.addEventListener('click',e=>e.stopPropagation());return det;}
+
 // ---------- Faire opposition : lettre pré-remplie, à signer et envoyer ----------
 const dlg=$('#opp'),of=$('#opp-f');let cur=null;
 const MOI=['prenom','nom','adresse','localite','email','tel','qualite','precision'];
@@ -498,6 +528,7 @@ function openOpp(d){
  const how=$('#opp-how');how.textContent='';
  how.append(el('li',null,'Générez la lettre, imprimez-la (ou enregistrez-la en PDF) et signez-la à la main.'));
  const li=el('li',null,'Envoyez-la de préférence en recommandé à : '+authority(d).replace(/\n/g,', ')+'.');how.append(li);
+ {const c=COMMUNES[d.bfs]||{};const l0=el('li',null,'Avant d’écrire, consultez le dossier auprès de l’administration communale '+de(c.nom||d.commune)+[c.adresse,c.telephone?'tél. '+c.telephone:'',c.horaires?'horaires : '+c.horaires:''].filter(Boolean).map(x=>', '+x).join('')+(d.econstruction?', ou en ligne sur eConstruction.':'.'));how.prepend(l0);}
  if(d.econstruction){const l2=el('li',null,'Ou déposez-la en PDF sur eConstruction (n° '+d.econstruction+') : il faut alors une signature électronique qualifiée et une identité vérifiée. ');l2.append(ecButton(d.econstruction));how.append(l2);}
  try{const m=JSON.parse(localStorage.getItem('enq-moi')||'{}');MOI.forEach(k=>{if(m[k]!=null&&of.elements[k])of.elements[k].value=m[k];});}catch(e){}
  of.elements.motifs.value='';
@@ -658,15 +689,70 @@ update(true);
 </script></body></html>"""
 
 
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JOURS = {"Mo": "lu", "Tu": "ma", "We": "me", "Th": "je", "Fr": "ve", "Sa": "sa", "Su": "di", "PH": "jours fériés"}
+
+
+def horaires_fr(oh):
+    """Horaires au format OpenStreetMap (« Mo-Fr 08:00-12:00 ») → texte français lisible."""
+    if not oh:
+        return ""
+    t = re.sub(r"\b(Mo|Tu|We|Th|Fr|Sa|Su|PH)\b", lambda m: JOURS[m.group(1)], oh)
+    t = re.sub(r"(\d{2}):(\d{2})", lambda m: f"{int(m.group(1))}h{m.group(2)}", t)
+    t = t.replace("-", "–").replace(",", ", ").replace(";", " ·").replace(" off", " fermé")
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def load_json(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+COMMUNAL = re.compile(r"^(commune|administration communale|ville|municipalit|gemeinde|stadt)", re.I)
+
+
+def communes_info(items):
+    """Coordonnées des administrations communales, par numéro OFS."""
+    base = load_json(os.path.join(ROOT, "data", "communes_vs.json"))
+    manuel = load_json(os.path.join(ROOT, "data", "communes_vs_manuel.json"))
+    # adresse publiée dans les avis par la commune elle-même (la plus fréquente)
+    vues = {}
+    for it in items:
+        if it.get("ro_bfs") and it["ro_bfs"] == it.get("bfs") and COMMUNAL.match(it.get("ro_nom", "")) and it.get("ro_adresse"):
+            vues.setdefault(it["bfs"], {}).setdefault((it["ro_nom"], it["ro_adresse"]), 0)
+            vues[it["bfs"]][(it["ro_nom"], it["ro_adresse"])] += 1
+    out = {}
+    for bfs in {it.get("bfs") for it in items if it.get("bfs")}:
+        b, m = base.get(bfs, {}), manuel.get(bfs, {})
+        r = {"nom": b.get("nom") or next((i["commune"] for i in items if i.get("bfs") == bfs), "")}
+        if bfs in vues:
+            (nom, adr), _ = max(vues[bfs].items(), key=lambda kv: kv[1])
+            r["service"], r["adresse"] = nom, adr
+        elif b.get("adresse"):
+            r["adresse"] = b["adresse"]
+        for k in ("telephone", "email", "site"):
+            if b.get(k):
+                r[k] = b[k]
+        if b.get("horaires_osm"):
+            r["horaires"] = horaires_fr(b["horaires_osm"])
+        r.update({k: v for k, v in m.items() if v})  # corrections manuelles en dernier
+        out[bfs] = {k: v for k, v in r.items() if v}
+    return out
+
+
 def render(items, home, args, generated):
     data = [{k: it.get(k) for k in ("id", "numero", "type", "titre", "projet", "date", "fin_delai", "commune",
                                      "parcelle", "zone", "derogations", "requerant", "econstruction",
-                                     "coords_exactes", "lat", "lon", "url", "contact")}
+                                     "coords_exactes", "lat", "lon", "url", "contact", "bfs")}
             for it in items if it.get("lat") is not None]
-    cfg = {"home": list(home), "rayon": int(round(args.rayon)) or 15, "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
+    cfg = {"home": list(home), "rayon": min(10, max(1, int(round(args.rayon)) or 2)), "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
            "today": dt.date.today().isoformat()}
     js = lambda o: json.dumps(o, ensure_ascii=False).replace("</", "<\\/")
     return (TEMPLATE.replace("__DATA__", js(data)).replace("__CFG__", js(cfg))
+            .replace("__COMMUNES__", js(communes_info(items)))
             .replace("__GENERATED__", html.escape(generated)).replace("__JOURS__", str(args.jours))
             .replace("__DELAI__", str(DELAI_OPPOSITION_J)))
 
@@ -675,7 +761,7 @@ def render(items, home, args, generated):
 def main():
     ap = argparse.ArgumentParser(description="Mises à l'enquête publique près de chez toi (Valais)")
     ap.add_argument("--home", default="Evionnaz", help="commune ou NPA de référence (défaut : Evionnaz)")
-    ap.add_argument("--rayon", type=float, default=15, help="rayon en km (défaut : 15)")
+    ap.add_argument("--rayon", type=float, default=2, help="rayon en km, de 1 à 10 (défaut : 2)")
     ap.add_argument("--jours", type=int, default=30, help="publications des N derniers jours (défaut : 30)")
     ap.add_argument("--tous", action="store_true", help="inclure les avis dont le délai est échu")
     ap.add_argument("--rubrique", action="append", help="forcer une sous-rubrique (ex. BA-VS05) ; répétable")
