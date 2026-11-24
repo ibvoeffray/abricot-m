@@ -28,6 +28,7 @@ from concurrent.futures import ThreadPoolExecutor
 API = "https://amtsblattportal.ch/api/v1"
 GEO = "https://api3.geo.admin.ch/rest/services/api/SearchServer"
 DETAIL_URL = "https://www.bulletin-officiel.vs.ch/#!/search/publications/detail/{id}"
+ECONSTRUCTION_URL = "https://econstruction-vs.apps.vs.ch/"  # consultation : connexion SwissID, puis recherche par numéro
 SUBRUBRIQUES = {"BA-VS05": "Autorisation de construire", "BA-VS10": "Consultation des plans"}
 DELAI_OPPOSITION_J = 30  # LC Valais : 30 jours dès la publication au BO (si l'avis n'indique pas de date)
 CACHE = os.path.expanduser("~/.cache/enquetes_vs_geo.json")
@@ -295,9 +296,18 @@ header{padding:24px max(4vw,16px) 16px;border-top:6px solid var(--red)}
 h1{margin:0 0 4px;font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.01em}
 .sub{color:var(--mut);font-size:15px}
 .ctl{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;margin-top:16px}
-.ctl label{display:grid;gap:4px;font-size:13px;color:var(--mut);font-weight:600}
+.ctl label,.fld{display:grid;gap:4px;font-size:13px;color:var(--mut);font-weight:600}
+.acw{position:relative;display:flex;gap:6px}
+#gps{flex:none;width:42px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+#gps:hover{border-color:var(--mut)}#gps[aria-busy=true] svg{animation:spin 1s linear infinite}#gps.on{color:var(--red);border-color:var(--red)}
+@keyframes spin{to{transform:rotate(360deg)}}
+#hl{position:absolute;z-index:1000;top:calc(100% + 4px);left:0;right:48px;min-width:220px;margin:0;padding:4px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-height:320px;overflow:auto}
+#hl li{padding:8px 10px;border-radius:6px;cursor:pointer;color:var(--ink);font-weight:500;font-size:15px;display:flex;justify-content:space-between;gap:12px}
+#hl li small{color:var(--mut);font-weight:400;white-space:nowrap}
+#hl li[aria-selected=true],#hl li:hover{background:var(--soft)}
+#hl mark{background:none;color:var(--red);font-weight:700}
 input,select{font:16px system-ui;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-#home{width:220px}#q{width:min(340px,100%)}
+#home{width:240px}#q{width:min(340px,100%)}
 input[type=range]{padding:0;accent-color:var(--red);width:180px}
 .chk{display:flex!important;align-items:center;gap:8px;font-weight:500!important;color:var(--ink)!important;font-size:15px!important;padding-bottom:9px}
 .chk input{accent-color:var(--red)}
@@ -319,13 +329,19 @@ dl{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margin:6px 0;
 dt{color:var(--mut)}dd{margin:0}
 small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 .empty{color:var(--mut);padding:24px 0}
-@media (max-width:560px){.ctl{display:grid;grid-template-columns:1fr 1fr}.ctl label:nth-child(3),.ctl #err{grid-column:1/-1}#home,#q,input[type=range]{width:100%}}
+.ec{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ec code{font:600 14px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.ecb{font:600 13px system-ui;color:var(--red);background:none;border:1px solid currentColor;border-radius:99px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.ecb:hover{background:var(--red);color:#fff}
+#toast{position:fixed;left:0;right:0;bottom:20px;margin:0 auto;width:fit-content;z-index:2000;max-width:min(520px,calc(100vw - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#toast b{font-family:ui-monospace,Menlo,monospace}
+@media (max-width:560px){.ctl{display:grid;grid-template-columns:1fr 1fr}.ctl .fld,.ctl label:nth-child(3),.ctl #err{grid-column:1/-1}#home,#q,input[type=range]{width:100%}#home{flex:1}}
 </style></head><body>
 <header>
  <h1 id="h1">Mises à l'enquête</h1>
  <div class="sub" id="sub"></div>
  <div class="ctl">
-  <label>Autour de<input id="home" list="hl" autocomplete="off" placeholder="Commune ou NPA"></label>
+  <div class="fld"><label for="home">Autour de</label><div class="acw"><input id="home" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hl" autocomplete="off" spellcheck="false" placeholder="Commune ou NPA"><button id="gps" type="button" title="Utiliser ma position" aria-label="Utiliser ma position"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg></button><ul id="hl" role="listbox" aria-label="Communes" hidden></ul></div></div>
   <label><span>Rayon : <span id="rv"></span> km</span><input type="range" id="r" min="1" max="60" step="1"></label>
   <label>Rechercher<input id="q" type="search" placeholder="Commune, mot-clé, parcelle, requérant…"></label>
   <label>Type<select id="t"><option value="">Tous</option><option>Autorisation de construire</option><option>Consultation des plans</option></select></label>
@@ -333,12 +349,13 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
   <span id="err" role="status"></span>
  </div>
 </header>
+<div id="toast" role="status" aria-live="polite" hidden></div>
 <div class="layout">
  <div id="map"></div>
  <main><section id="list"></section>
  <p class="foot">Source : Bulletin officiel du Valais (amtsblattportal.ch), généré le __GENERATED__ (publications des __JOURS__ derniers jours).
  Le lien de chaque avis ouvre la publication officielle, seule à faire foi. Le délai affiché est celui indiqué dans l'avis
- (à défaut : __DELAI__ jours dès la publication). Les dossiers se consultent sur eConstruction avec le numéro indiqué, ou auprès de la commune.</p></main>
+ (à défaut : __DELAI__ jours dès la publication). Les dossiers se consultent sur eConstruction (connexion SwissID, « Consultation du Bulletin Officiel », puis recherche avec le numéro indiqué) ou auprès de la commune.</p></main>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -360,7 +377,7 @@ DATA.forEach(d=>{const now=new Date();const end=pd(d.fin_delai);d.left=end?Math.
 const map=L.map('map',{scrollWheelZoom:true}).setView([home.lat,home.lon],11);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
 const circle=L.circle([home.lat,home.lon],{radius:radius*1000,color:'#d52b1e',weight:1,fillOpacity:.04}).addTo(map);
-const me=L.circleMarker([home.lat,home.lon],{radius:7,color:'#14181d',weight:2,fillColor:'#fff',fillOpacity:1}).addTo(map).bindTooltip('Référence');
+const me=L.circleMarker([home.lat,home.lon],{radius:7,color:'#14181d',weight:2,fillColor:'#fff',fillOpacity:1}).addTo(map).bindTooltip('Point de référence');
 const layer=L.layerGroup().addTo(map);const markers={};
 
 function el(t,c,x){const n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
@@ -369,13 +386,27 @@ function card(d){
  const h=el('div','h');h.append(el('span','d',d.dist.toFixed(1)+' km'),el('span','com',d.commune),el('span','tp',d.type));
  const b=el('span','b '+(d.left<0?'late':d.left<=7?'hot':''),d.left<0?'échu':d.left===0?'dernier jour':'J-'+d.left);h.append(b);a.append(h);
  const h3=el('h3');const l=el('a',null,d.projet||d.titre||'Avis');l.href=d.url;l.target='_blank';l.rel='noopener';h3.append(l);a.append(h3);
- const dl=el('dl');[['Parcelle','parcelle'],['Zone','zone'],['Dérogations','derogations'],['Requérant','requerant'],['eConstruction','econstruction']]
-  .forEach(([k,v])=>{if(d[v]){dl.append(el('dt',null,k),el('dd',null,d[v]));}});if(dl.children.length)a.append(dl);
+ const dl=el('dl');[['Parcelle','parcelle'],['Zone','zone'],['Dérogations','derogations'],['Requérant','requerant']]
+  .forEach(([k,v])=>{if(d[v]){dl.append(el('dt',null,k),el('dd',null,d[v]));}});
+ if(d.econstruction){const dd=el('dd','ec');dd.append(el('code',null,d.econstruction),ecButton(d.econstruction));dl.append(el('dt',null,'eConstruction'),dd);}
+ if(dl.children.length)a.append(dl);
  const end=pd(d.fin_delai);
  a.append(el('small',null,'Publié le '+fmt.format(pd(d.date))+' · oppositions jusqu’au '+(end?fmtY.format(end):'?')+(d.coords_exactes?'':' · position approximative (centre de la commune)')));
  a.addEventListener('click',e=>{if(e.target.closest('a'))return;const m=markers[d.id];if(m){map.setView(m.getLatLng(),Math.max(map.getZoom(),15));m.openPopup();}select([d.id]);});
  return a;
 }
+// eConstruction n'a pas de lien public direct vers un dossier : connexion SwissID puis recherche par numéro.
+// On copie le numéro et on ouvre la plateforme dans un nouvel onglet.
+const EC_URL=CFG.econstruction;let toastT;
+function toast(nodes,ms){const t=$('#toast');t.textContent='';t.append(...nodes);t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,ms||9000);}
+function copy(txt){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(txt);
+ return new Promise((ok,ko)=>{const ta=el('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.select();try{document.execCommand('copy')?ok():ko();}catch(e){ko(e);}ta.remove();});}
+function ecButton(no){const b=el('button','ecb','Copier et ouvrir eConstruction ↗');b.type='button';
+ b.title='Copie le numéro '+no+' et ouvre eConstruction (connexion SwissID requise)';
+ b.addEventListener('click',e=>{e.stopPropagation();window.open(EC_URL,'_blank','noopener');
+  const msg=ok=>[document.createTextNode(ok?'Numéro ':'Notez le numéro '),el('b',null,no),document.createTextNode((ok?' copié. Sur':' : sur')+' eConstruction, connectez-vous avec SwissID, puis « Consultation du Bulletin Officiel » et collez-le dans la recherche.')];
+  copy(no).then(()=>toast(msg(true)),()=>toast(msg(false),15000));});
+ return b;}
 function select(ids){document.querySelectorAll('.c').forEach(c=>c.classList.toggle('on',ids.includes(c.dataset.id)));}
 
 function update(fit){
@@ -396,6 +427,7 @@ function update(fit){
   const m=L.circleMarker([d.lat,d.lon],{radius:7,color:d.left<0?'#888':'#d52b1e',weight:2,fillColor:d.left<0?'#888':'#d52b1e',fillOpacity:d.coords_exactes?.75:.25});
   const p=el('div');p.append(el('b',null,d.commune));p.append(el('div',null,d.projet||d.titre));
   const a=el('a',null,'Avis officiel ↗');a.href=d.url;a.target='_blank';a.rel='noopener';p.append(a);
+  if(d.econstruction){const w=el('div');w.style.marginTop='6px';w.append(ecButton(d.econstruction));p.append(w);}
   m.bindPopup(p);m.on('click',()=>{select([d.id]);const c=document.querySelector('.c[data-id="'+d.id+'"]');if(c)c.scrollIntoView({behavior:'smooth',block:'center'});});
   m.addTo(layer);markers[d.id]=m;});
  if(fit)map.fitBounds(circle.getBounds(),{padding:[10,10]});
@@ -406,31 +438,94 @@ DATA.forEach(d=>d.search=[d.commune,d.projet,d.titre,d.parcelle,d.requerant,d.zo
 $('#r').addEventListener('input',e=>{radius=+e.target.value;update(false);});
 $('#r').addEventListener('change',()=>update(true));
 ['#q','#t','#late'].forEach(s=>$(s).addEventListener('input',()=>update(false)));
-const dlist=document.createElement('datalist');dlist.id='hl';document.body.append(dlist);
-let sugg=[],tm;
-$('#home').addEventListener('input',e=>{clearTimeout(tm);const v=e.target.value.trim();
- const hit=sugg.find(s=>s.label===v);if(hit){choose(hit);return;}
- if(v.length<2)return;tm=setTimeout(()=>geo(v),250);});
-$('#home').addEventListener('change',e=>{const v=e.target.value.trim();if(v===home.label)return;
- const hit=sugg.find(s=>s.label===v)||sugg[0];if(hit)choose(hit);else if(v)geo(v,true);});
+// ---------- Choix du point de référence : suggestions de communes + position GPS ----------
 const GEO='https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&sr=4326&';
-function geo(v,apply){
- fetch(GEO+'origins=gg25,zipcode&limit=6&searchText='+encodeURIComponent(v))
- .then(r=>r.json()).then(j=>{sugg=(j.results||[]).filter(r=>r.attrs&&r.attrs.lat).map(r=>({lat:r.attrs.lat,lon:r.attrs.lon,label:r.attrs.label.replace(/<[^>]+>/g,'').trim()}));
-  dlist.textContent='';sugg.forEach(s=>{const o=document.createElement('option');o.value=s.label;dlist.append(o);});
-  if(apply){if(sugg[0])choose(sugg[0]);else $('#err').textContent='Commune introuvable.';}})
- .catch(()=>{if(apply)$('#err').textContent='Recherche indisponible.';});
+const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-'’]/g,' ').replace(/\s+/g,' ').trim();
+const strip=l=>l.replace(/^\d{4}\s*-\s*|\s*\([A-Z]{2}\)$/g,'').trim();
+// Communes présentes dans les données : proposées immédiatement, même hors ligne
+const LOCAL=(()=>{const m={};DATA.forEach(d=>{if(d.commune&&d.lat!=null&&!m[d.commune])m[d.commune]={lat:d.lat,lon:d.lon,label:d.commune+' (VS)',name:d.commune,n:0};if(m[d.commune])m[d.commune].n++;});return Object.values(m);})();
+const inp=$('#home'),box=$('#hl'),gps=$('#gps');
+let items=[],active=-1,tm,reqId=0;
+
+function hl(label,q){const i=norm(label).indexOf(q);if(!q||i<0)return document.createTextNode(label);
+ const f=document.createDocumentFragment();f.append(label.slice(0,i));const mk=el('mark',null,label.slice(i,i+q.length));f.append(mk,label.slice(i+q.length));return f;}
+function render(q){
+ box.textContent='';active=-1;
+ items.forEach((it,i)=>{const li=el('li');li.id='hl-'+i;li.setAttribute('role','option');li.setAttribute('aria-selected',i===active);
+  const span=el('span');span.append(hl(it.label,q));li.append(span);if(it.n)li.append(el('small',null,it.n+' avis'));
+  li.addEventListener('mousedown',e=>{e.preventDefault();pick(i);});box.append(li);});
+ const open=items.length>0;box.hidden=!open;inp.setAttribute('aria-expanded',open);
+ inp.removeAttribute('aria-activedescendant');
 }
+function move(d){if(!items.length)return;active=active<0?(d>0?0:items.length-1):(active+d+items.length)%items.length;
+ box.querySelectorAll('li').forEach((li,i)=>li.setAttribute('aria-selected',i===active));
+ inp.setAttribute('aria-activedescendant','hl-'+active);const li=$('#hl-'+active);if(li)li.scrollIntoView({block:'nearest'});}
+function close(){box.hidden=true;inp.setAttribute('aria-expanded','false');inp.removeAttribute('aria-activedescendant');}
+function pick(i){const it=items[i];if(!it)return;close();gps.classList.remove('on');choose(it);inp.blur();}
+
+function suggest(v){
+ const q=norm(v);
+ if(q.length<1){items=[];render('');return;}
+ const loc=LOCAL.filter(c=>norm(c.name).startsWith(q)||(q.length>2&&norm(c.name).includes(q)))
+  .sort((a,b)=>(norm(b.name).startsWith(q))-(norm(a.name).startsWith(q))||b.n-a.n).slice(0,5);
+ items=loc;render(q);
+ clearTimeout(tm);if(q.length<2)return;const id=++reqId;
+ tm=setTimeout(()=>fetch(GEO+'origins=gg25,zipcode&limit=8&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+  if(id!==reqId)return;
+  const seen=new Set(items.map(x=>norm(x.name)+'|'));
+  const rem=(j.results||[]).filter(r=>r.attrs&&r.attrs.lat).map(r=>{const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();return{lat:r.attrs.lat,lon:r.attrs.lon,label,name:strip(label)};})
+   .filter(x=>{const k=norm(x.name)+'|'+(/^\d{4}/.test(x.label)?x.label.slice(0,4):'');if(seen.has(k)||seen.has(norm(x.name)+'|'))return false;seen.add(k);return true;});
+  const lab=items.length?items.map(x=>x.label):[];items=items.concat(rem).slice(0,8);
+  const keep=active>=0&&lab[active];render(q);if(keep){const i=items.findIndex(x=>x.label===keep);if(i>=0){active=i-1;move(1);}}
+ }).catch(()=>{}),180);
+}
+inp.addEventListener('focus',()=>inp.select());
+inp.addEventListener('input',()=>{$('#err').textContent='';suggest(inp.value);});
+inp.addEventListener('keydown',e=>{
+ if(e.key==='ArrowDown'){e.preventDefault();if(box.hidden)suggest(inp.value);else move(1);}
+ else if(e.key==='ArrowUp'){e.preventDefault();move(-1);}
+ else if(e.key==='Enter'){e.preventDefault();if(items.length&&!box.hidden)pick(Math.max(active,0));else if(inp.value.trim())search(inp.value.trim());}
+ else if(e.key==='Escape'){close();inp.value=home.label;inp.blur();}
+});
+inp.addEventListener('blur',()=>setTimeout(()=>{close();if(document.activeElement!==inp)inp.value=home.label;},120));
+function search(v){fetch(GEO+'origins=gg25,zipcode&limit=1&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+ const r=(j.results||[]).find(r=>r.attrs&&r.attrs.lat);if(!r){$('#err').textContent='Commune introuvable.';return;}
+ const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();gps.classList.remove('on');choose({lat:r.attrs.lat,lon:r.attrs.lon,label});inp.blur();})
+ .catch(()=>{$('#err').textContent='Recherche indisponible.';});}
+
 // Centre du village (« Ort » swisstopo) plutôt que centre géométrique de la commune
 function choose(s){
- $('#err').textContent='';home=s;update(true);
- const name=s.label.replace(/^\d{4}\s*-\s*|\s*\([A-Z]{2}\)$/g,'').trim();
+ $('#err').textContent='';home={lat:s.lat,lon:s.lon,label:s.label};const mine=home;update(true);
+ const name=strip(s.label);
  fetch(GEO+'origins=gazetteer&limit=15&searchText='+encodeURIComponent(name)).then(r=>r.json()).then(j=>{
   const esc=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   const hit=(j.results||[]).find(r=>r.attrs&&r.attrs.label.includes('<i>Ort</i>')&&new RegExp('<b>\\s*'+esc+'\\s*</b>','i').test(r.attrs.label));
-  if(hit&&home===s){home={lat:hit.attrs.lat,lon:hit.attrs.lon,label:s.label};update(true);}
+  if(hit&&home===mine){home={lat:hit.attrs.lat,lon:hit.attrs.lon,label:s.label};update(true);}
  }).catch(()=>{});
 }
+
+// Position GPS du navigateur, puis nom de la commune via swisstopo
+gps.addEventListener('click',()=>{
+ if(!('geolocation' in navigator)){$('#err').textContent='Géolocalisation non disponible sur cet appareil.';return;}
+ gps.setAttribute('aria-busy','true');$('#err').textContent='Localisation…';
+ navigator.geolocation.getCurrentPosition(p=>{
+  gps.removeAttribute('aria-busy');gps.classList.add('on');$('#err').textContent='';
+  const lat=p.coords.latitude,lon=p.coords.longitude,pos={lat,lon};
+  // Libellé immédiat : commune la plus proche parmi les avis (le service swisstopo peut mettre >10 s à répondre)
+  let near=null,nd=1e9;DATA.forEach(d=>{if(d.lat==null||!d.coords_exactes)return;const k=km(pos,d);if(k<nd){nd=k;near=d.commune;}});
+  const pres=n=>(/^[aeiouyàâéèêëîïôûü]/i.test(n)?'près d\u2019':'près de ')+n;
+  home={lat,lon,label:near&&nd<=5?'Ma position ('+pres(near)+')':'Ma position'};const mine=home;update(true);
+  // Puis commune exacte via swisstopo, si la réponse arrive dans les 20 s
+  const ctl=('AbortController' in window)?new AbortController():null;if(ctl)setTimeout(()=>ctl.abort(),20000);
+  const y=new Date().getFullYear()-1;
+  fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryPoint&sr=4326&tolerance=0&returnGeometry=false&layers=all:ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill&timeInstant='+y+'&geometry='+lon+','+lat,ctl?{signal:ctl.signal}:{})
+   .then(r=>r.json()).then(j=>{const a=(j.results||[])[0];if(a&&home===mine){home={lat,lon,label:'Ma position ('+a.attributes.gemname+')'};update(false);}})
+   .catch(()=>{});
+ },err=>{
+  gps.removeAttribute('aria-busy');
+  $('#err').textContent=err.code===1?'Accès à la position refusé : autorisez-le dans le navigateur.':'Position indisponible pour le moment.';
+ },{enableHighAccuracy:false,timeout:15000,maximumAge:300000});
+});
 update(true);
 })();
 </script></body></html>"""
@@ -441,7 +536,7 @@ def render(items, home, args, generated):
                                      "parcelle", "zone", "derogations", "requerant", "econstruction",
                                      "coords_exactes", "lat", "lon", "url")}
             for it in items if it.get("lat") is not None]
-    cfg = {"home": list(home), "rayon": int(round(args.rayon)) or 15, "jours": args.jours,
+    cfg = {"home": list(home), "rayon": int(round(args.rayon)) or 15, "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
            "today": dt.date.today().isoformat()}
     js = lambda o: json.dumps(o, ensure_ascii=False).replace("</", "<\\/")
     return (TEMPLATE.replace("__DATA__", js(data)).replace("__CFG__", js(cfg))
