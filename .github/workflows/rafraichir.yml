@@ -1,0 +1,23 @@
+# Relance chaque jour un déploiement Netlify pour récupérer les nouveaux avis du Bulletin officiel.
+# Prérequis : créer un « Build hook » dans Netlify (Site configuration → Build & deploy → Build hooks)
+# et l'enregistrer dans GitHub comme secret NETLIFY_BUILD_HOOK.
+name: Rafraîchir les mises à l'enquête
+
+on:
+  schedule:
+    - cron: "17 4 * * *"   # tous les jours vers 5h/6h (heure suisse)
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier le générateur
+        uses: actions/checkout@v4
+      - run: python3 scripts/enquetes_vs.py --jours 7 --out /tmp/test.html
+      - name: Déclencher le déploiement Netlify
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "Secret NETLIFY_BUILD_HOOK manquant"; exit 1; fi
+          curl -fsS -X POST -d '{}' "$HOOK"

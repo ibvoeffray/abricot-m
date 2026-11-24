@@ -1,29 +1,34 @@
-# Mise à l'enquête publique en ligne
+# Mises à l'enquête en Valais
 
-Site statique présentant un dossier mis à l'enquête publique (permis de construire, plan d'affectation…) :
+Page web qui liste les **mises à l'enquête publique** publiées au **Bulletin officiel du Valais** autour d'une commune, avec carte, distance, délai d'opposition et lien vers l'avis officiel.
 
-- **Statut en direct** : enquête à venir / en cours (jours restants) / close, calculé à partir des dates.
-- **Documents** du dossier (PDF) classés par catégorie, avec recherche.
-- **Présentation du projet**, chiffres clés et **carte** de situation (OpenStreetMap).
-- **Formulaire d'observation / d'opposition** (reçu via Netlify Forms) et **génération d'un courrier prêt à signer** (impression / PDF). Le formulaire se désactive automatiquement à la fin du délai.
-- Procédure, questions fréquentes, contact.
+- Sources : API publique du Portail des feuilles officielles (amtsblattportal.ch, SECO), sous-rubriques
+  **BA-VS05** (demandes d'autorisation de construire) et **BA-VS10** (mises en consultation publique des plans) ;
+  géocodage swisstopo (api3.geo.admin.ch).
+- Pour chaque avis : projet, commune, parcelle, zone, dérogations, requérant, n° eConstruction, **délai indiqué dans l'avis**,
+  position **exacte** (coordonnées de l'avis, sinon centre du village).
+- Dans la page : choix de la commune de référence, rayon (1–60 km), recherche, type d'avis, avis échus. Les réglages sont mémorisés dans le navigateur.
 
-## Modifier le contenu
+## Utilisation en local
 
-Tout le contenu se trouve dans [`site/content/enquete.json`](site/content/enquete.json) :
-textes, dates (`dateDebut`, `dateFin` au format `AAAA-MM-JJ`, la date de fin est incluse), documents, coordonnées de la carte, adresse postale, FAQ, contact.
-
-Les PDF se placent dans `site/documents/` (les fichiers actuels sont des **documents provisoires** à remplacer).
-
-Une interface d'édition (Decap CMS) est disponible sur `/admin/` une fois Netlify Identity et Git Gateway activés sur le site Netlify.
-
-## Développement local
+Python 3.8+ seul, sans dépendance :
 
 ```sh
-cd site && python3 -m http.server 8000
-# puis ouvrir http://localhost:8000
+python3 scripts/enquetes_vs.py                          # Evionnaz, 15 km, 30 jours → enquetes.html
+python3 scripts/enquetes_vs.py --home Martigny --rayon 8
+python3 scripts/enquetes_vs.py --jours 60 --tous        # y c. délais échus
+python3 scripts/enquetes_vs.py --json enquetes.json     # export des avis dans le rayon
+python3 scripts/enquetes_vs.py --debug                  # XML du 1er avis + champs extraits
 ```
 
-## Déploiement
+## En ligne (Netlify)
 
-Netlify publie directement le dossier `site/` (voir `netlify.toml`), sans étape de compilation. Les remarques envoyées apparaissent dans l'onglet **Forms** de Netlify (formulaire `remarques`), où l'on peut configurer une notification par e-mail vers le service communal.
+`netlify.toml` lance le script à chaque déploiement et publie `site/` (la page n'est pas versionnée).
+Pour une mise à jour quotidienne automatique :
+
+1. Netlify → *Site configuration → Build & deploy → Build hooks* : créer un hook.
+2. GitHub → *Settings → Secrets and variables → Actions* : ajouter le secret `NETLIFY_BUILD_HOOK` avec l'URL du hook.
+
+Le workflow `.github/workflows/rafraichir.yml` déclenche alors un déploiement chaque matin (et à la demande depuis l'onglet *Actions*).
+
+> Le lien de chaque avis ouvre la publication officielle, seule à faire foi.

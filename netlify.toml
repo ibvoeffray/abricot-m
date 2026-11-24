@@ -1,9 +1,9 @@
+# Le site est généré à chaque déploiement à partir du Bulletin officiel du Valais.
 [build]
-  # Site statique : aucune compilation nécessaire.
+  command = "python3 scripts/enquetes_vs.py --home Evionnaz --rayon 15 --jours 45 --tous --out site/index.html --json site/enquetes.json"
   publish = "site/"
-  command = ""
 
 [[headers]]
-  for = "/content/*"
+  for = "/*"
   [headers.values]
-    Cache-Control = "no-cache"
+    Cache-Control = "public, max-age=0, must-revalidate"
