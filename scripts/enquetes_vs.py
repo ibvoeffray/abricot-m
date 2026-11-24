@@ -295,9 +295,18 @@ header{padding:24px max(4vw,16px) 16px;border-top:6px solid var(--red)}
 h1{margin:0 0 4px;font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.01em}
 .sub{color:var(--mut);font-size:15px}
 .ctl{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;margin-top:16px}
-.ctl label{display:grid;gap:4px;font-size:13px;color:var(--mut);font-weight:600}
+.ctl label,.fld{display:grid;gap:4px;font-size:13px;color:var(--mut);font-weight:600}
+.acw{position:relative;display:flex;gap:6px}
+#gps{flex:none;width:42px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+#gps:hover{border-color:var(--mut)}#gps[aria-busy=true] svg{animation:spin 1s linear infinite}#gps.on{color:var(--red);border-color:var(--red)}
+@keyframes spin{to{transform:rotate(360deg)}}
+#hl{position:absolute;z-index:1000;top:calc(100% + 4px);left:0;right:48px;min-width:220px;margin:0;padding:4px;list-style:none;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-height:320px;overflow:auto}
+#hl li{padding:8px 10px;border-radius:6px;cursor:pointer;color:var(--ink);font-weight:500;font-size:15px;display:flex;justify-content:space-between;gap:12px}
+#hl li small{color:var(--mut);font-weight:400;white-space:nowrap}
+#hl li[aria-selected=true],#hl li:hover{background:var(--soft)}
+#hl mark{background:none;color:var(--red);font-weight:700}
 input,select{font:16px system-ui;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-#home{width:220px}#q{width:min(340px,100%)}
+#home{width:240px}#q{width:min(340px,100%)}
 input[type=range]{padding:0;accent-color:var(--red);width:180px}
 .chk{display:flex!important;align-items:center;gap:8px;font-weight:500!important;color:var(--ink)!important;font-size:15px!important;padding-bottom:9px}
 .chk input{accent-color:var(--red)}
@@ -319,13 +328,13 @@ dl{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margin:6px 0;
 dt{color:var(--mut)}dd{margin:0}
 small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 .empty{color:var(--mut);padding:24px 0}
-@media (max-width:560px){.ctl{display:grid;grid-template-columns:1fr 1fr}.ctl label:nth-child(3),.ctl #err{grid-column:1/-1}#home,#q,input[type=range]{width:100%}}
+@media (max-width:560px){.ctl{display:grid;grid-template-columns:1fr 1fr}.ctl .fld,.ctl label:nth-child(3),.ctl #err{grid-column:1/-1}#home,#q,input[type=range]{width:100%}#home{flex:1}}
 </style></head><body>
 <header>
  <h1 id="h1">Mises à l'enquête</h1>
  <div class="sub" id="sub"></div>
  <div class="ctl">
-  <label>Autour de<input id="home" list="hl" autocomplete="off" placeholder="Commune ou NPA"></label>
+  <div class="fld"><label for="home">Autour de</label><div class="acw"><input id="home" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hl" autocomplete="off" spellcheck="false" placeholder="Commune ou NPA"><button id="gps" type="button" title="Utiliser ma position" aria-label="Utiliser ma position"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg></button><ul id="hl" role="listbox" aria-label="Communes" hidden></ul></div></div>
   <label><span>Rayon : <span id="rv"></span> km</span><input type="range" id="r" min="1" max="60" step="1"></label>
   <label>Rechercher<input id="q" type="search" placeholder="Commune, mot-clé, parcelle, requérant…"></label>
   <label>Type<select id="t"><option value="">Tous</option><option>Autorisation de construire</option><option>Consultation des plans</option></select></label>
@@ -360,7 +369,7 @@ DATA.forEach(d=>{const now=new Date();const end=pd(d.fin_delai);d.left=end?Math.
 const map=L.map('map',{scrollWheelZoom:true}).setView([home.lat,home.lon],11);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
 const circle=L.circle([home.lat,home.lon],{radius:radius*1000,color:'#d52b1e',weight:1,fillOpacity:.04}).addTo(map);
-const me=L.circleMarker([home.lat,home.lon],{radius:7,color:'#14181d',weight:2,fillColor:'#fff',fillOpacity:1}).addTo(map).bindTooltip('Référence');
+const me=L.circleMarker([home.lat,home.lon],{radius:7,color:'#14181d',weight:2,fillColor:'#fff',fillOpacity:1}).addTo(map).bindTooltip('Point de référence');
 const layer=L.layerGroup().addTo(map);const markers={};
 
 function el(t,c,x){const n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
@@ -406,31 +415,88 @@ DATA.forEach(d=>d.search=[d.commune,d.projet,d.titre,d.parcelle,d.requerant,d.zo
 $('#r').addEventListener('input',e=>{radius=+e.target.value;update(false);});
 $('#r').addEventListener('change',()=>update(true));
 ['#q','#t','#late'].forEach(s=>$(s).addEventListener('input',()=>update(false)));
-const dlist=document.createElement('datalist');dlist.id='hl';document.body.append(dlist);
-let sugg=[],tm;
-$('#home').addEventListener('input',e=>{clearTimeout(tm);const v=e.target.value.trim();
- const hit=sugg.find(s=>s.label===v);if(hit){choose(hit);return;}
- if(v.length<2)return;tm=setTimeout(()=>geo(v),250);});
-$('#home').addEventListener('change',e=>{const v=e.target.value.trim();if(v===home.label)return;
- const hit=sugg.find(s=>s.label===v)||sugg[0];if(hit)choose(hit);else if(v)geo(v,true);});
+// ---------- Choix du point de référence : suggestions de communes + position GPS ----------
 const GEO='https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&sr=4326&';
-function geo(v,apply){
- fetch(GEO+'origins=gg25,zipcode&limit=6&searchText='+encodeURIComponent(v))
- .then(r=>r.json()).then(j=>{sugg=(j.results||[]).filter(r=>r.attrs&&r.attrs.lat).map(r=>({lat:r.attrs.lat,lon:r.attrs.lon,label:r.attrs.label.replace(/<[^>]+>/g,'').trim()}));
-  dlist.textContent='';sugg.forEach(s=>{const o=document.createElement('option');o.value=s.label;dlist.append(o);});
-  if(apply){if(sugg[0])choose(sugg[0]);else $('#err').textContent='Commune introuvable.';}})
- .catch(()=>{if(apply)$('#err').textContent='Recherche indisponible.';});
+const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-'’]/g,' ').replace(/\s+/g,' ').trim();
+const strip=l=>l.replace(/^\d{4}\s*-\s*|\s*\([A-Z]{2}\)$/g,'').trim();
+// Communes présentes dans les données : proposées immédiatement, même hors ligne
+const LOCAL=(()=>{const m={};DATA.forEach(d=>{if(d.commune&&d.lat!=null&&!m[d.commune])m[d.commune]={lat:d.lat,lon:d.lon,label:d.commune+' (VS)',name:d.commune,n:0};if(m[d.commune])m[d.commune].n++;});return Object.values(m);})();
+const inp=$('#home'),box=$('#hl'),gps=$('#gps');
+let items=[],active=-1,tm,reqId=0;
+
+function hl(label,q){const i=norm(label).indexOf(q);if(!q||i<0)return document.createTextNode(label);
+ const f=document.createDocumentFragment();f.append(label.slice(0,i));const mk=el('mark',null,label.slice(i,i+q.length));f.append(mk,label.slice(i+q.length));return f;}
+function render(q){
+ box.textContent='';active=-1;
+ items.forEach((it,i)=>{const li=el('li');li.id='hl-'+i;li.setAttribute('role','option');li.setAttribute('aria-selected',i===active);
+  const span=el('span');span.append(hl(it.label,q));li.append(span);if(it.n)li.append(el('small',null,it.n+' avis'));
+  li.addEventListener('mousedown',e=>{e.preventDefault();pick(i);});box.append(li);});
+ const open=items.length>0;box.hidden=!open;inp.setAttribute('aria-expanded',open);
+ inp.removeAttribute('aria-activedescendant');
 }
+function move(d){if(!items.length)return;active=active<0?(d>0?0:items.length-1):(active+d+items.length)%items.length;
+ box.querySelectorAll('li').forEach((li,i)=>li.setAttribute('aria-selected',i===active));
+ inp.setAttribute('aria-activedescendant','hl-'+active);const li=$('#hl-'+active);if(li)li.scrollIntoView({block:'nearest'});}
+function close(){box.hidden=true;inp.setAttribute('aria-expanded','false');inp.removeAttribute('aria-activedescendant');}
+function pick(i){const it=items[i];if(!it)return;close();gps.classList.remove('on');choose(it);inp.blur();}
+
+function suggest(v){
+ const q=norm(v);
+ if(q.length<1){items=[];render('');return;}
+ const loc=LOCAL.filter(c=>norm(c.name).startsWith(q)||(q.length>2&&norm(c.name).includes(q)))
+  .sort((a,b)=>(norm(b.name).startsWith(q))-(norm(a.name).startsWith(q))||b.n-a.n).slice(0,5);
+ items=loc;render(q);
+ clearTimeout(tm);if(q.length<2)return;const id=++reqId;
+ tm=setTimeout(()=>fetch(GEO+'origins=gg25,zipcode&limit=8&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+  if(id!==reqId)return;
+  const seen=new Set(items.map(x=>norm(x.name)+'|'));
+  const rem=(j.results||[]).filter(r=>r.attrs&&r.attrs.lat).map(r=>{const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();return{lat:r.attrs.lat,lon:r.attrs.lon,label,name:strip(label)};})
+   .filter(x=>{const k=norm(x.name)+'|'+(/^\d{4}/.test(x.label)?x.label.slice(0,4):'');if(seen.has(k)||seen.has(norm(x.name)+'|'))return false;seen.add(k);return true;});
+  const lab=items.length?items.map(x=>x.label):[];items=items.concat(rem).slice(0,8);
+  const keep=active>=0&&lab[active];render(q);if(keep){const i=items.findIndex(x=>x.label===keep);if(i>=0){active=i-1;move(1);}}
+ }).catch(()=>{}),180);
+}
+inp.addEventListener('focus',()=>inp.select());
+inp.addEventListener('input',()=>{$('#err').textContent='';suggest(inp.value);});
+inp.addEventListener('keydown',e=>{
+ if(e.key==='ArrowDown'){e.preventDefault();if(box.hidden)suggest(inp.value);else move(1);}
+ else if(e.key==='ArrowUp'){e.preventDefault();move(-1);}
+ else if(e.key==='Enter'){e.preventDefault();if(items.length&&!box.hidden)pick(Math.max(active,0));else if(inp.value.trim())search(inp.value.trim());}
+ else if(e.key==='Escape'){close();inp.value=home.label;inp.blur();}
+});
+inp.addEventListener('blur',()=>setTimeout(()=>{close();if(document.activeElement!==inp)inp.value=home.label;},120));
+function search(v){fetch(GEO+'origins=gg25,zipcode&limit=1&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+ const r=(j.results||[]).find(r=>r.attrs&&r.attrs.lat);if(!r){$('#err').textContent='Commune introuvable.';return;}
+ const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();gps.classList.remove('on');choose({lat:r.attrs.lat,lon:r.attrs.lon,label});inp.blur();})
+ .catch(()=>{$('#err').textContent='Recherche indisponible.';});}
+
 // Centre du village (« Ort » swisstopo) plutôt que centre géométrique de la commune
 function choose(s){
- $('#err').textContent='';home=s;update(true);
- const name=s.label.replace(/^\d{4}\s*-\s*|\s*\([A-Z]{2}\)$/g,'').trim();
+ $('#err').textContent='';home={lat:s.lat,lon:s.lon,label:s.label};const mine=home;update(true);
+ const name=strip(s.label);
  fetch(GEO+'origins=gazetteer&limit=15&searchText='+encodeURIComponent(name)).then(r=>r.json()).then(j=>{
   const esc=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   const hit=(j.results||[]).find(r=>r.attrs&&r.attrs.label.includes('<i>Ort</i>')&&new RegExp('<b>\\s*'+esc+'\\s*</b>','i').test(r.attrs.label));
-  if(hit&&home===s){home={lat:hit.attrs.lat,lon:hit.attrs.lon,label:s.label};update(true);}
+  if(hit&&home===mine){home={lat:hit.attrs.lat,lon:hit.attrs.lon,label:s.label};update(true);}
  }).catch(()=>{});
 }
+
+// Position GPS du navigateur, puis nom de la commune via swisstopo
+gps.addEventListener('click',()=>{
+ if(!('geolocation' in navigator)){$('#err').textContent='Géolocalisation non disponible sur cet appareil.';return;}
+ gps.setAttribute('aria-busy','true');$('#err').textContent='Localisation…';
+ navigator.geolocation.getCurrentPosition(p=>{
+  gps.removeAttribute('aria-busy');gps.classList.add('on');$('#err').textContent='';
+  const lat=p.coords.latitude,lon=p.coords.longitude;home={lat,lon,label:'Ma position'};const mine=home;update(true);
+  const y=new Date().getFullYear()-1;
+  fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryPoint&sr=4326&tolerance=0&returnGeometry=false&layers=all:ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill&timeInstant='+y+'&geometry='+lon+','+lat)
+   .then(r=>r.json()).then(j=>{const a=(j.results||[])[0];if(a&&home===mine){home={lat,lon,label:'Ma position ('+a.attributes.gemname+')'};update(false);}})
+   .catch(()=>{});
+ },err=>{
+  gps.removeAttribute('aria-busy');
+  $('#err').textContent=err.code===1?'Accès à la position refusé : autorisez-le dans le navigateur.':'Position indisponible pour le moment.';
+ },{enableHighAccuracy:false,timeout:15000,maximumAge:300000});
+});
 update(true);
 })();
 </script></body></html>"""
