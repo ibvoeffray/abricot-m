@@ -27,6 +27,7 @@
     "lat": 46.17728806873204,
     "lon": 7.025749590723667,
     "url": "https://www.bulletin-officiel.vs.ch/#!/search/publications/detail/88e3b3aa-f5bc-4653-a2a7-73474e5e1c1c",
+    "canton": "VS",
     "fin_delai": "2026-12-14",
     "jours_restants": 20,
     "distance": 0.22837712615075093
@@ -59,6 +60,7 @@
     "lat": 46.178654077018656,
     "lon": 7.020494448901281,
     "url": "https://www.bulletin-officiel.vs.ch/#!/search/publications/detail/a3b6592c-f1c8-485b-9063-51b1b64753f8",
+    "canton": "VS",
     "fin_delai": "2026-12-14",
     "jours_restants": 20,
     "distance": 0.2899108442905719
@@ -91,6 +93,7 @@
     "lat": 46.17076265368842,
     "lon": 7.022328863830401,
     "url": "https://www.bulletin-officiel.vs.ch/#!/search/publications/detail/a0379d69-cf8f-43b2-b902-9266d8a29728",
+    "canton": "VS",
     "fin_delai": "2026-12-07",
     "jours_restants": 13,
     "distance": 0.6576277032085659
@@ -123,6 +126,7 @@
     "lat": 46.17056096291801,
     "lon": 7.026201914309694,
     "url": "https://www.bulletin-officiel.vs.ch/#!/search/publications/detail/e4850376-08f5-43f9-aa66-677987ee7e21",
+    "canton": "VS",
     "fin_delai": "2026-12-21",
     "jours_restants": 27,
     "distance": 0.7238703329258303

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
   push:
     branches: [master]
-    paths: ["scripts/**", ".github/workflows/publier.yml"]
+    paths: ["scripts/**", "data/**", ".github/workflows/publier.yml"]
   pull_request:                # sur une PR : vérifie seulement que la génération fonctionne
 
 permissions:

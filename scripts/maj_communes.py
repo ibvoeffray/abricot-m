@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-maj_communes.py — Coordonnées des administrations communales valaisannes.
+maj_communes.py — Coordonnées des administrations communales (VS, VD, GE).
 
-Construit data/communes_vs.json (clé : numéro OFS de la commune) à partir de :
+Construit data/communes_vs.json (clé : numéro OFS de la commune, toutes cantons
+confondus malgré le nom du fichier) à partir de :
   - Wikidata : nom et site officiel ;
   - OpenStreetMap (Overpass) : bâtiment de l'administration communale
     (amenity=townhall) : adresse, téléphone, horaires, e-mail ;
@@ -26,15 +27,16 @@ OVERPASS = ["https://overpass-api.de/api/interpreter",
 
 SPARQL = """
 SELECT ?bfs ?label ?web WHERE {
-  ?c wdt:P31 wd:Q70208; wdt:P131 ?d. ?d wdt:P131 wd:Q834.
+  VALUES ?k { wd:Q834 wd:Q12771 wd:Q11917 }
+  ?c wdt:P31 wd:Q70208; wdt:P131+ ?k.
   FILTER NOT EXISTS { ?c wdt:P576 ?end }
   ?c wdt:P771 ?bfs.
   OPTIONAL { ?c wdt:P856 ?web }
   ?c rdfs:label ?label FILTER(lang(?label)="fr")
 }"""
 
-OVERPASS_Q = """[out:json][timeout:180];
-area["ISO3166-2"="CH-VS"]["admin_level"="4"]->.vs;
+OVERPASS_Q = """[out:json][timeout:300];
+area["ISO3166-2"="__KT__"]["admin_level"="4"]->.vs;
 rel(area.vs)["boundary"="administrative"]["admin_level"="8"];
 map_to_area->.communes;
 foreach.communes->.c(
@@ -77,8 +79,8 @@ def parse_wd(raw):
     return out
 
 
-def overpass(path=None):
-    data = urllib.parse.urlencode({"data": OVERPASS_Q}).encode()
+def overpass(path=None, kt="CH-VS"):
+    data = urllib.parse.urlencode({"data": OVERPASS_Q.replace("__KT__", kt)}).encode()
     for url in ([] if path else OVERPASS):
         try:
             d = json.loads(fetch(url, data=data, timeout=200))
@@ -114,7 +116,8 @@ def overpass(path=None):
     return best
 
 
-TEL = re.compile(r"(?:\+41[\s.]?|0)(?:2[47]|58)[\s.]?\d{3}[\s.]?\d{2}[\s.]?\d{2}")
+# indicatifs romands : 021 (Lausanne), 022 (Genève), 024, 026, 027, 032, et 058 (administrations)
+TEL = re.compile(r"(?:\+41[\s.]?|0)(?:2[1-7]|32|58)[\s.]?\d{3}[\s.]?\d{2}[\s.]?\d{2}")
 
 
 def phone_from_site(url):
@@ -128,7 +131,7 @@ def phone_from_site(url):
         d = re.sub(r"[^\d+]", "", x)
         if d.startswith("+41"):
             d = "0" + d[3:]
-        if re.fullmatch(r"0(2[47]|58)\d{7}", d):
+        if re.fullmatch(r"0(2[1-7]|32|58)\d{7}", d):
             return f"{d[:3]} {d[3:6]} {d[6:8]} {d[8:]}"
     return ""
 
@@ -143,12 +146,18 @@ def fmt_tel(t):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sans-sites", action="store_true", help="ne pas lire les sites communaux")
-    ap.add_argument("--osm", help="fichier JSON d'un résultat Overpass déjà téléchargé")
+    ap.add_argument("--osm", help="fichier JSON d'un résultat Overpass déjà téléchargé (premier canton)")
+    ap.add_argument("--cantons", default="VS,VD,GE", help="cantons (défaut : VS,VD,GE)")
     ap.add_argument("--wikidata", help="fichier JSON d'un résultat SPARQL Wikidata déjà téléchargé")
     a = ap.parse_args()
 
     print("→ Wikidata"); wd = wikidata(a.wikidata); print(f"  {len(wd)} communes")
-    print("→ OpenStreetMap"); osm = overpass(a.osm); print(f"  {len(osm)} administrations communales")
+    osm = {}
+    for i, kt in enumerate(a.cantons.split(",")):
+        print(f"→ OpenStreetMap {kt}")
+        got = overpass(a.osm if (a.osm and i == 0) else None, "CH-" + kt.strip())
+        print(f"  {len(got)} administrations communales")
+        osm.update(got)
     sites = {}
     if not a.sans_sites:
         todo = [(b, x["site"]) for b, x in wd.items() if x.get("site")]
@@ -160,6 +169,11 @@ def main():
         print(f"  {len(sites)} numéros trouvés")
 
     today = dt.date.today().isoformat()
+    try:  # valeurs déjà connues : conservées si une source ne répond pas cette fois-ci
+        with open(OUT, encoding="utf-8") as f:
+            before = json.load(f)
+    except (OSError, ValueError):
+        before = {}
     out = {}
     for bfs, w in sorted(wd.items(), key=lambda kv: kv[1]["nom"]):
         o = osm.get(bfs, {})
@@ -174,6 +188,10 @@ def main():
             rec["horaires_osm"] = o["horaires_osm"]
         if o.get("email"):
             rec["email"] = o["email"]
+        old = before.get(bfs, {})
+        for k in ("adresse", "telephone", "source_telephone", "horaires_osm", "email"):
+            if not rec.get(k) and old.get(k):
+                rec[k] = old[k]
         rec["maj"] = today
         out[bfs] = rec
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
