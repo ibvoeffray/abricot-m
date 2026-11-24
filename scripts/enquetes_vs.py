@@ -500,7 +500,6 @@ function ecButton(no){const b=el('button','ecb','Copier et ouvrir eConstruction 
   copy(no).then(()=>toast(msg(true)),()=>toast(msg(false),15000));});
  return b;}
 // ---------- Coordonnées de l'administration communale ----------
-const de=n=>(/^[aeiouyàâéèêëîïôûü]/i.test(n||'')?'d\u2019':'de ')+n;
 function communeBox(d){
  const c=COMMUNES[d.bfs]||{nom:d.commune};const box=el('div','box');
  box.append(el('b',null,c.service||('Administration communale '+de(c.nom||d.commune))));
@@ -598,6 +597,7 @@ $('#r').addEventListener('change',()=>update(true));
 ['#q','#t','#late'].forEach(s=>$(s).addEventListener('input',()=>update(false)));
 // ---------- Choix du point de référence : suggestions de communes + position GPS ----------
 const GEO='https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&sr=4326&';
+const de=n=>(/^[aeiouyàâéèêëîïôûü]/i.test(n||'')?'d\u2019':'de ')+n;
 const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-'’]/g,' ').replace(/\s+/g,' ').trim();
 const strip=l=>l.replace(/^\d{4}\s*-\s*|\s*\([A-Z]{2}\)$/g,'').trim();
 // Communes présentes dans les données : proposées immédiatement, même hors ligne
@@ -610,7 +610,7 @@ function hl(label,q){const i=norm(label).indexOf(q);if(!q||i<0)return document.c
 function render(q){
  box.textContent='';active=-1;
  items.forEach((it,i)=>{const li=el('li');li.id='hl-'+i;li.setAttribute('role','option');li.setAttribute('aria-selected',i===active);
-  const span=el('span');span.append(hl(it.label,q));li.append(span);if(it.n)li.append(el('small',null,it.n+' avis'));
+  const span=el('span');span.append(hl(it.disp||it.label,q));li.append(span);if(it.n)li.append(el('small',null,it.n+' avis'));else if(it.sub)li.append(el('small',null,it.sub));
   li.addEventListener('mousedown',e=>{e.preventDefault();pick(i);});box.append(li);});
  const open=items.length>0;box.hidden=!open;inp.setAttribute('aria-expanded',open);
  inp.removeAttribute('aria-activedescendant');
@@ -628,14 +628,26 @@ function suggest(v){
   .sort((a,b)=>(norm(b.name).startsWith(q))-(norm(a.name).startsWith(q))||b.n-a.n).slice(0,5);
  items=loc;render(q);
  clearTimeout(tm);if(q.length<2)return;const id=++reqId;
- tm=setTimeout(()=>fetch(GEO+'origins=gg25,zipcode&limit=8&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+ const J=u=>fetch(u).then(r=>r.json()).then(j=>j.results||[]).catch(()=>[]);
+ tm=setTimeout(()=>Promise.all([J(GEO+'origins=gg25,zipcode&limit=8&searchText='+encodeURIComponent(v)),
+  J(GEO+'origins=gazetteer&limit=15&searchText='+encodeURIComponent(v))]).then(([com,gaz])=>{
   if(id!==reqId)return;
-  const seen=new Set(items.map(x=>norm(x.name)+'|'));
-  const rem=(j.results||[]).filter(r=>r.attrs&&r.attrs.lat).map(r=>{const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();return{lat:r.attrs.lat,lon:r.attrs.lon,label,name:strip(label)};})
+  const seen=new Set(items.map(x=>norm(x.name)+'|'));const num=/^\d/.test(q);
+  const rem=com.filter(r=>r.attrs&&r.attrs.lat).map(r=>{const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();return{lat:r.attrs.lat,lon:r.attrs.lon,label,name:strip(label)};})
+   .filter(x=>num||norm(x.name).includes(q))   // la recherche floue propose p.ex. « Chur » pour « Charrat »
    .filter(x=>{const k=norm(x.name)+'|'+(/^\d{4}/.test(x.label)?x.label.slice(0,4):'');if(seen.has(k)||seen.has(norm(x.name)+'|'))return false;seen.add(k);return true;});
-  const lab=items.length?items.map(x=>x.label):[];items=items.concat(rem).slice(0,8);
+  // Localités (« Ort ») : villages et anciennes communes fusionnées, p.ex. Charrat → Martigny
+  const vil=num?[]:gaz.filter(r=>r.attrs&&r.attrs.lat&&r.attrs.label.includes('<i>Ort</i>')).map(r=>{
+    const m=r.attrs.label.replace(/<i>Ort<\/i>\s*/,'').match(/<b>\s*(.*?)\s*<\/b>\s*\(([A-Z]{2})\)\s*-\s*(.*)$/);if(!m)return null;
+    const name=m[1].replace(/<[^>]+>/g,'').trim(),kt=m[2],com=m[3].split(',')[0].replace(/\s*\([A-Z]{2}\)\s*$/,'').trim();
+    const same=norm(name)===norm(com);return{lat:r.attrs.lat,lon:r.attrs.lon,name,kt,label:same?name+' ('+kt+')':name+' ('+com+', '+kt+')',disp:same?name+' ('+kt+')':name,sub:same?'':'localité '+de(com)+' ('+kt+')',village:true};})
+   .filter(x=>x&&norm(x.name.replace(/\s*\(.*\)\s*$/,'')).includes(q)&&!seen.has(norm(x.name)+'|'))
+   .filter(x=>{const k=norm(x.name)+'|';if(seen.has(k))return false;seen.add(k);return true;});
+  const pre=x=>norm(x.name).startsWith(q)?0:1,vs=x=>/\(VS\)$/.test(x.label)||x.kt==='VS'?0:1;
+  const extra=rem.concat(vil).sort((a,b)=>vs(a)-vs(b)||pre(a)-pre(b));
+  const lab=items.length?items.map(x=>x.label):[];items=items.concat(extra).slice(0,8);
   const keep=active>=0&&lab[active];render(q);if(keep){const i=items.findIndex(x=>x.label===keep);if(i>=0){active=i-1;move(1);}}
- }).catch(()=>{}),180);
+ }),180);
 }
 inp.addEventListener('focus',()=>inp.select());
 inp.addEventListener('input',()=>{$('#err').textContent='';suggest(inp.value);});
@@ -646,14 +658,15 @@ inp.addEventListener('keydown',e=>{
  else if(e.key==='Escape'){close();inp.value=home.label;inp.blur();}
 });
 inp.addEventListener('blur',()=>setTimeout(()=>{close();if(document.activeElement!==inp)inp.value=home.label;},120));
-function search(v){fetch(GEO+'origins=gg25,zipcode&limit=1&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+function search(v){fetch(GEO+'origins=gg25,zipcode,gazetteer&limit=1&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
  const r=(j.results||[]).find(r=>r.attrs&&r.attrs.lat);if(!r){$('#err').textContent='Commune introuvable.';return;}
- const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();gps.classList.remove('on');choose({lat:r.attrs.lat,lon:r.attrs.lon,label});inp.blur();})
+ const label=r.attrs.label.replace(/<i>.*?<\/i>\s*/,'').replace(/<[^>]+>/g,'').trim();gps.classList.remove('on');choose({lat:r.attrs.lat,lon:r.attrs.lon,label});inp.blur();})
  .catch(()=>{$('#err').textContent='Recherche indisponible.';});}
 
 // Centre du village (« Ort » swisstopo) plutôt que centre géométrique de la commune
 function choose(s){
  $('#err').textContent='';home={lat:s.lat,lon:s.lon,label:s.label};const mine=home;update(true);
+ if(s.village)return;
  const name=strip(s.label);
  fetch(GEO+'origins=gazetteer&limit=15&searchText='+encodeURIComponent(name)).then(r=>r.json()).then(j=>{
   const esc=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
