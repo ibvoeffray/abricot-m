@@ -1,14 +1,20 @@
-# Mises à l'enquête – Valais, Vaud, Genève
+# Mises à l'enquête – Suisse romande
 
-Page web qui liste les **mises à l'enquête publique** autour d'une commune, en **Valais, dans le canton de Vaud et à Genève**, avec carte, distance, délai d'opposition et lien vers l'avis ou le dossier officiel.
+Page web (en **français, allemand et italien**) qui liste les **mises à l'enquête publique** autour d'une commune, dans les **cantons romands** (VS, VD, GE, FR, NE, JU) et la **partie francophone du canton de Berne**, avec carte, distance, délai d'opposition et lien vers l'avis officiel.
 
 | Canton | Source | Délai |
 |---|---|---|
-| **VS** | Bulletin officiel du Valais, API amtsblattportal.ch (SECO), sous-rubriques BA-VS05 (autorisations de construire) et BA-VS10 (consultation des plans) | indiqué dans l'avis |
-| **VD** | Géodonnées de l'État de Vaud, couche CAMAC « Demandes de permis de construire (enquête publique) » (ogc.vd.ch) | fin de l'enquête publique |
-| **GE** | SITG, « Autorisation de construire – Dossier » (dossiers enregistrés ou en instruction) | non fourni : 30 jours dès la publication FAO |
+| **VS** | Bulletin officiel du Valais, API amtsblattportal.ch (SECO), BA-VS05 / BA-VS10 | indiqué dans l'avis |
+| **BE** | Feuille officielle du canton de Berne, API amtsblattportal.ch, BP-BE10, avis en français | indiqué dans l'avis |
+| **VD** | Couche CAMAC « Demandes de permis de construire (enquête publique) », ogc.vd.ch | fin de l'enquête |
+| **GE** | SITG « Autorisation de construire – Dossier » (enregistrés ou en instruction) | non fourni : 30 jours dès la publication FAO |
+| **FR** | Moteur de recherche des mises à l'enquête de l'État de Fribourg (fr.ch), commune par commune | fin de l'enquête |
+| **NE** | SITN, couche « autorisations de construire – pendant l'enquête » (WFS) | fin de l'enquête |
+| **JU** | Journal officiel (PDF hebdomadaire), rubrique « Avis de construction » ; nécessite `pdftotext` (poppler-utils) | date indiquée dans l'avis |
 
-La commune des dossiers vaudois et genevois est retrouvée à partir des contours communaux publiés par chaque canton. Seuls les avis officiels (Bulletin officiel, Feuille des avis officiels) font foi.
+Commune : numéro OFS fourni (VS, BE, FR) ou retrouvé par les contours communaux du canton (VD, GE, NE) ou par le nom (JU). Position : coordonnées de l'avis (VS, VD, GE, NE) ou adresse géocodée par swisstopo (BE, FR, JU), à défaut centre de la commune. Seuls les avis officiels font foi.
+
+**Langues** : interface FR / DE / IT (sélecteur en haut à droite, langue du navigateur par défaut). Le contenu des avis reste dans sa langue de publication. La lettre d'opposition est rédigée dans la langue de l'avis (allemand pour le Haut-Valais, français ailleurs), puisqu'elle s'adresse à l'autorité qui l'a publié.
 
 - Pour chaque avis : projet, commune, parcelle, zone, dérogations, requérant, n° eConstruction, **délai indiqué dans l'avis**,
   position **exacte** (coordonnées de l'avis, sinon centre du village).
@@ -17,7 +23,7 @@ La commune des dossiers vaudois et genevois est retrouvée à partir des contour
 
 ## Coordonnées des communes
 
-Chaque avis propose « Contacter la commune » (VS, VD, GE) : adresse, téléphone, e-mail, horaires et site de l'administration communale.
+Chaque avis propose « Contacter la commune » (1027 communes des 7 cantons) : adresse, téléphone, e-mail, horaires et site de l'administration communale.
 
 - `data/communes_vs.json` est construit par `python3 scripts/maj_communes.py` à partir de Wikidata (site officiel), d'OpenStreetMap (adresse, téléphone, horaires des administrations communales) et de la page d'accueil des sites communaux (téléphone). Relancé automatiquement le 3 de chaque mois (`.github/workflows/communes.yml`).
 - L'adresse publiée par la commune dans ses propres avis prime sur celle d'OpenStreetMap.
@@ -44,7 +50,7 @@ python3 scripts/enquetes_vs.py                          # Evionnaz, 2 km, 30 jou
 python3 scripts/enquetes_vs.py --home Martigny --rayon 8
 python3 scripts/enquetes_vs.py --jours 60 --tous        # y c. délais échus
 python3 scripts/enquetes_vs.py --json enquetes.json     # export des avis dans le rayon
-python3 scripts/enquetes_vs.py --cantons VS            # un seul canton
+python3 scripts/enquetes_vs.py --cantons VS,VD          # certains cantons seulement
 python3 scripts/enquetes_vs.py --debug                  # XML du 1er avis VS
 ```
 

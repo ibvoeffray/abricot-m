@@ -2,6 +2,7 @@
   {
     "id": "88e3b3aa-f5bc-4653-a2a7-73474e5e1c1c",
     "numero": "BA-VS05-0000024813",
+    "langue": "fr",
     "type": "Autorisation de construire",
     "titre": "Demande d’autorisation de construire - Projet d'oeuvre d'art urbain, Evionnaz",
     "projet": "Projet d'oeuvre d'art urbain",
@@ -35,6 +36,7 @@
   {
     "id": "a3b6592c-f1c8-485b-9063-51b1b64753f8",
     "numero": "BA-VS05-0000024867",
+    "langue": "fr",
     "type": "Autorisation de construire",
     "titre": "Demande d’autorisation de construire - Installation d'une paroi de protection, Evionnaz",
     "projet": "Installation d'une paroi de protection",
@@ -68,6 +70,7 @@
   {
     "id": "a0379d69-cf8f-43b2-b902-9266d8a29728",
     "numero": "BA-VS05-0000024716",
+    "langue": "fr",
     "type": "Autorisation de construire",
     "titre": "Demande d’autorisation de construire - Installation de trois batteries solaires sur une dalle en béton, Evionnaz",
     "projet": "Installation de trois batteries solaires sur une dalle en béton",
@@ -101,6 +104,7 @@
   {
     "id": "e4850376-08f5-43f9-aa66-677987ee7e21",
     "numero": "BA-VS05-0000025014",
+    "langue": "fr",
     "type": "Autorisation de construire",
     "titre": "Demande d’autorisation de construire - Construction d'un ascenseur extérieur et aménagement de salles de formation, Evionnaz",
     "projet": "Construction d'un ascenseur extérieur et aménagement de salles de formation",

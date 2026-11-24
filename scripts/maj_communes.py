@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-maj_communes.py — Coordonnées des administrations communales (VS, VD, GE).
+maj_communes.py — Coordonnées des administrations communales (cantons romands et Berne).
 
 Construit data/communes_vs.json (clé : numéro OFS de la commune, toutes cantons
 confondus malgré le nom du fichier) à partir de :
@@ -27,7 +27,7 @@ OVERPASS = ["https://overpass-api.de/api/interpreter",
 
 SPARQL = """
 SELECT ?bfs ?label ?web WHERE {
-  VALUES ?k { wd:Q834 wd:Q12771 wd:Q11917 }
+  VALUES ?k { wd:Q834 wd:Q12771 wd:Q11917 wd:Q12640 wd:Q12738 wd:Q12755 wd:Q11911 }  # VS VD GE FR NE JU BE
   ?c wdt:P31 wd:Q70208; wdt:P131+ ?k.
   FILTER NOT EXISTS { ?c wdt:P576 ?end }
   ?c wdt:P771 ?bfs.
@@ -146,14 +146,15 @@ def fmt_tel(t):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sans-sites", action="store_true", help="ne pas lire les sites communaux")
+    ap.add_argument("--sans-osm", action="store_true", help="ne pas interroger OpenStreetMap (valeurs déjà connues conservées)")
     ap.add_argument("--osm", help="fichier JSON d'un résultat Overpass déjà téléchargé (premier canton)")
-    ap.add_argument("--cantons", default="VS,VD,GE", help="cantons (défaut : VS,VD,GE)")
+    ap.add_argument("--cantons", default="VS,VD,GE,FR,NE,JU,BE", help="cantons (défaut : VS,VD,GE,FR,NE,JU,BE)")
     ap.add_argument("--wikidata", help="fichier JSON d'un résultat SPARQL Wikidata déjà téléchargé")
     a = ap.parse_args()
 
     print("→ Wikidata"); wd = wikidata(a.wikidata); print(f"  {len(wd)} communes")
     osm = {}
-    for i, kt in enumerate(a.cantons.split(",")):
+    for i, kt in enumerate([] if a.sans_osm else a.cantons.split(",")):
         print(f"→ OpenStreetMap {kt}")
         got = overpass(a.osm if (a.osm and i == 0) else None, "CH-" + kt.strip())
         print(f"  {len(got)} administrations communales")
