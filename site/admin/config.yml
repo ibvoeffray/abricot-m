@@ -1,0 +1,80 @@
+backend:
+  name: git-gateway
+  branch: master
+
+locale: fr
+media_folder: site/documents
+public_folder: /documents
+
+collections:
+  - name: enquete
+    label: Enquête publique
+    files:
+      - name: dossier
+        label: Dossier mis à l'enquête
+        file: site/content/enquete.json
+        editor: { preview: false }
+        fields:
+          - { label: Commune, name: commune, widget: string }
+          - { label: Titre du projet, name: titre, widget: string }
+          - { label: Sous-titre, name: sousTitre, widget: string }
+          - { label: Référence (CAMAC / dossier), name: reference, widget: string }
+          - { label: Parcelle, name: parcelle, widget: string }
+          - { label: Adresse, name: adresse, widget: string }
+          - { label: Maître d'ouvrage, name: maitreOuvrage, widget: string }
+          - { label: Auteur du projet, name: auteurProjet, widget: string }
+          - { label: Début de l'enquête, name: dateDebut, widget: datetime, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", time_format: false }
+          - { label: Fin de l'enquête (incluse), name: dateFin, widget: datetime, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", time_format: false }
+          - { label: Lieu et horaires de consultation, name: lieuConsultation, widget: string }
+          - { label: Résumé, name: resume, widget: text }
+          - { label: Description (paragraphes), name: description, widget: list, field: { label: Paragraphe, name: p, widget: text } }
+          - label: Chiffres clés
+            name: chiffres
+            widget: list
+            fields:
+              - { label: Valeur, name: valeur, widget: string }
+              - { label: Libellé, name: libelle, widget: string }
+          - label: Carte
+            name: carte
+            widget: object
+            fields:
+              - { label: Latitude, name: lat, widget: number, value_type: float }
+              - { label: Longitude, name: lon, widget: number, value_type: float }
+              - { label: Zoom, name: zoom, widget: number, value_type: int, default: 17 }
+          - label: Documents
+            name: documents
+            widget: list
+            summary: "{{fields.categorie}} — {{fields.titre}}"
+            fields:
+              - { label: Titre, name: titre, widget: string }
+              - { label: Catégorie, name: categorie, widget: select, options: ["Avis officiel", "Plans", "Rapports", "Annexes"] }
+              - { label: Fichier, name: fichier, widget: file }
+              - { label: Taille (ex. 2,4 Mo), name: taille, widget: string, required: false }
+          - label: Étapes de la procédure
+            name: etapes
+            widget: list
+            fields:
+              - { label: Titre, name: titre, widget: string }
+              - { label: Texte, name: texte, widget: text }
+          - label: Participation
+            name: participation
+            widget: object
+            fields:
+              - { label: Introduction, name: intro, widget: text }
+              - { label: Règles, name: regles, widget: list, field: { label: Règle, name: r, widget: text } }
+              - { label: "Le dépôt en ligne d'une opposition est valable", name: depotEnLigneValable, widget: boolean, default: false }
+              - { label: Adresse postale, name: adressePostale, widget: text }
+          - label: Questions fréquentes
+            name: faq
+            widget: list
+            fields:
+              - { label: Question, name: question, widget: string }
+              - { label: Réponse, name: reponse, widget: text }
+          - label: Contact
+            name: contact
+            widget: object
+            fields:
+              - { label: Service, name: service, widget: string }
+              - { label: Téléphone, name: telephone, widget: string }
+              - { label: E-mail, name: email, widget: string }
+              - { label: Horaires, name: horaires, widget: string }

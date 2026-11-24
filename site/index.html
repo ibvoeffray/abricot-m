@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mise à l'enquête publique</title>
+  <meta name="description" content="Consultez en ligne le dossier mis à l'enquête publique et déposez vos observations ou oppositions.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c8102e'/><path d='M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z' fill='white'/></svg>">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script defer src="/assets/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span data-bind="commune">Commune</span>
+      </a>
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="#projet">Le projet</a>
+        <a href="#documents">Documents</a>
+        <a href="#participer">Participer</a>
+        <a href="#faq">Questions</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <!-- En-tête -->
+    <section class="hero">
+      <div class="wrap hero__grid">
+        <div>
+          <p class="eyebrow" data-bind="sousTitre">Mise à l'enquête publique</p>
+          <h1 data-bind="titre">Chargement…</h1>
+          <p class="lead" data-bind="resume"></p>
+          <dl class="meta">
+            <div><dt>Adresse</dt><dd data-bind="adresse"></dd></div>
+            <div><dt>Parcelle</dt><dd data-bind="parcelle"></dd></div>
+            <div><dt>Référence</dt><dd data-bind="reference"></dd></div>
+            <div><dt>Maître d'ouvrage</dt><dd data-bind="maitreOuvrage"></dd></div>
+            <div><dt>Auteur du projet</dt><dd data-bind="auteurProjet"></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn btn--primary" href="#documents">Consulter le dossier</a>
+            <a class="btn" href="#participer">Déposer une remarque</a>
+          </div>
+        </div>
+
+        <aside class="status" id="status" aria-live="polite">
+          <p class="status__badge" id="status-badge">—</p>
+          <p class="status__big" id="status-big"></p>
+          <p class="status__small" id="status-small"></p>
+          <div class="progress" role="progressbar" aria-label="Avancement du délai d'enquête" aria-valuemin="0" aria-valuemax="100" id="progress">
+            <span id="progress-bar"></span>
+          </div>
+          <div class="status__dates">
+            <div><span>Début</span><strong id="date-debut"></strong></div>
+            <div><span>Fin</span><strong id="date-fin"></strong></div>
+          </div>
+          <p class="status__place"><strong>Consultation sur place :</strong> <span data-bind="lieuConsultation"></span></p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Le projet -->
+    <section id="projet" class="section">
+      <div class="wrap">
+        <h2>Le projet</h2>
+        <div class="split">
+          <div class="prose" id="description"></div>
+          <ul class="figures" id="chiffres"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Documents -->
+    <section id="documents" class="section section--alt">
+      <div class="wrap">
+        <div class="section__head">
+          <h2>Documents mis à l'enquête</h2>
+          <label class="filter">
+            <span class="sr">Rechercher un document</span>
+            <input type="search" id="doc-search" placeholder="Rechercher un document…">
+          </label>
+        </div>
+        <div id="doc-groups"></div>
+        <p class="note">Les documents en ligne sont fournis à titre d'information. Seul le dossier déposé au greffe municipal fait foi.</p>
+      </div>
+    </section>
+
+    <!-- Localisation -->
+    <section id="localisation" class="section">
+      <div class="wrap">
+        <h2>Localisation</h2>
+        <div class="map">
+          <iframe id="map" title="Carte de situation du projet" loading="lazy" referrerpolicy="no-referrer"></iframe>
+        </div>
+        <p class="note"><a id="map-link" href="#" target="_blank" rel="noopener">Ouvrir la carte en grand</a></p>
+      </div>
+    </section>
+
+    <!-- Participer -->
+    <section id="participer" class="section section--alt">
+      <div class="wrap">
+        <h2>Observations et oppositions</h2>
+        <p class="lead" data-bind="participation.intro"></p>
+        <div class="split split--form">
+          <div>
+            <ul class="rules" id="regles"></ul>
+            <div class="card">
+              <h3>Adresse pour l'envoi postal</h3>
+              <address id="adresse-postale"></address>
+            </div>
+          </div>
+
+          <form class="card form" name="remarques" method="POST" action="/merci.html" data-netlify="true" netlify-honeypot="site-web" id="form">
+            <input type="hidden" name="form-name" value="remarques">
+            <input type="hidden" name="reference" id="f-reference">
+            <p class="hidden"><label>Ne pas remplir : <input name="site-web"></label></p>
+
+            <fieldset class="choice">
+              <legend>Type de remarque</legend>
+              <label><input type="radio" name="type" value="Observation" checked> Observation</label>
+              <label><input type="radio" name="type" value="Opposition"> Opposition</label>
+            </fieldset>
+
+            <div class="row">
+              <label>Prénom<input name="prenom" required autocomplete="given-name"></label>
+              <label>Nom<input name="nom" required autocomplete="family-name"></label>
+            </div>
+            <label>Adresse<input name="adresse" required autocomplete="street-address"></label>
+            <div class="row">
+              <label>NPA et localité<input name="localite" required autocomplete="address-level2"></label>
+              <label>E-mail<input type="email" name="email" required autocomplete="email"></label>
+            </div>
+            <label>Qualité <small>(facultatif)</small>
+              <select name="qualite">
+                <option value="">—</option>
+                <option>Voisin·e direct·e</option>
+                <option>Habitant·e de la commune</option>
+                <option>Propriétaire d'une parcelle voisine</option>
+                <option>Association</option>
+                <option>Autre</option>
+              </select>
+            </label>
+            <label>Motifs de votre remarque<textarea name="motifs" rows="7" required placeholder="Décrivez votre remarque et ses motifs (ex. hauteur du bâtiment, ombrage, circulation, arbres, etc.)"></textarea></label>
+            <label class="check"><input type="checkbox" name="consentement" required> J'accepte que mes données soient transmises à la Municipalité pour le traitement de ma remarque.</label>
+
+            <p class="warn" id="warn-opposition" hidden>Pour être valable, une opposition doit être <strong>signée</strong> et remise au greffe ou envoyée par la poste avant le <strong id="warn-date"></strong>. Utilisez le bouton « Préparer le courrier » pour l'imprimer.</p>
+
+            <div class="actions">
+              <button class="btn btn--primary" type="submit" id="submit">Envoyer à la commune</button>
+              <button class="btn" type="button" id="print-letter">Préparer le courrier à signer</button>
+            </div>
+            <p class="closed" id="form-closed" hidden>Le délai d'enquête est échu : il n'est plus possible de déposer de remarque.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Procédure -->
+    <section id="procedure" class="section">
+      <div class="wrap">
+        <h2>La procédure</h2>
+        <ol class="steps" id="etapes"></ol>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section section--alt">
+      <div class="wrap wrap--narrow">
+        <h2>Questions fréquentes</h2>
+        <div id="faq-list"></div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="wrap">
+        <h2>Contact</h2>
+        <div class="card contact">
+          <p><strong data-bind="contact.service"></strong></p>
+          <p><a id="c-tel" href="#"></a> · <a id="c-mail" href="#"></a></p>
+          <p class="muted" data-bind="contact.horaires"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p><span data-bind="commune"></span> · <span data-bind="reference"></span></p>
+    </div>
+  </footer>
+
+  <!-- Courrier imprimable (visible uniquement à l'impression) -->
+  <article class="letter" id="letter" aria-hidden="true"></article>
+
+  <!-- Redirige les liens d'invitation Netlify Identity vers l'administration -->
+  <script>
+    if (/(invite|recovery|confirmation)_token=/.test(location.hash)) location.replace('/admin/' + location.hash);
+  </script>
+</body>
+</html>
