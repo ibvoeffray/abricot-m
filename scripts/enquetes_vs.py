@@ -510,9 +510,15 @@ gps.addEventListener('click',()=>{
  gps.setAttribute('aria-busy','true');$('#err').textContent='Localisation…';
  navigator.geolocation.getCurrentPosition(p=>{
   gps.removeAttribute('aria-busy');gps.classList.add('on');$('#err').textContent='';
-  const lat=p.coords.latitude,lon=p.coords.longitude;home={lat,lon,label:'Ma position'};const mine=home;update(true);
+  const lat=p.coords.latitude,lon=p.coords.longitude,pos={lat,lon};
+  // Libellé immédiat : commune la plus proche parmi les avis (le service swisstopo peut mettre >10 s à répondre)
+  let near=null,nd=1e9;DATA.forEach(d=>{if(d.lat==null||!d.coords_exactes)return;const k=km(pos,d);if(k<nd){nd=k;near=d.commune;}});
+  const pres=n=>(/^[aeiouyàâéèêëîïôûü]/i.test(n)?'près d\u2019':'près de ')+n;
+  home={lat,lon,label:near&&nd<=5?'Ma position ('+pres(near)+')':'Ma position'};const mine=home;update(true);
+  // Puis commune exacte via swisstopo, si la réponse arrive dans les 20 s
+  const ctl=('AbortController' in window)?new AbortController():null;if(ctl)setTimeout(()=>ctl.abort(),20000);
   const y=new Date().getFullYear()-1;
-  fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryPoint&sr=4326&tolerance=0&returnGeometry=false&layers=all:ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill&timeInstant='+y+'&geometry='+lon+','+lat)
+  fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryPoint&sr=4326&tolerance=0&returnGeometry=false&layers=all:ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill&timeInstant='+y+'&geometry='+lon+','+lat,ctl?{signal:ctl.signal}:{})
    .then(r=>r.json()).then(j=>{const a=(j.results||[])[0];if(a&&home===mine){home={lat,lon,label:'Ma position ('+a.attributes.gemname+')'};update(false);}})
    .catch(()=>{});
  },err=>{
