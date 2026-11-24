@@ -1,0 +1,798 @@
+{
+ "6002": {
+  "maj": "2026-11-24",
+  "nom": "Brigue-Glis",
+  "site": "http://www.brig-glis.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 922 42 90"
+ },
+ "6004": {
+  "maj": "2026-11-24",
+  "nom": "Eggerberg",
+  "site": "https://www.eggerberg.ch"
+ },
+ "6007": {
+  "maj": "2026-11-24",
+  "nom": "Naters",
+  "site": "https://www.naters.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 922 75 75"
+ },
+ "6008": {
+  "maj": "2026-11-24",
+  "nom": "Ried-Brig",
+  "site": "https://www.ried-brig.ch/"
+ },
+ "6009": {
+  "maj": "2026-11-24",
+  "nom": "Simplon",
+  "site": "https://gemeinde-simplon.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 978 80 80"
+ },
+ "6010": {
+  "maj": "2026-11-24",
+  "nom": "Termen",
+  "site": "https://www.termen.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 922 29 00"
+ },
+ "6011": {
+  "adresse": "Simplonstrasse 34, 3907 Gondo",
+  "horaires_osm": "Mo, We-Fr 10:00-11:30; Tu,Sa,Su,PH off",
+  "maj": "2026-11-24",
+  "nom": "Zwischbergen",
+  "site": "http://www.gondo.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 979 15 01"
+ },
+ "6021": {
+  "maj": "2026-11-24",
+  "nom": "Ardon",
+  "site": "https://www.ardon.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 305 15 85"
+ },
+ "6022": {
+  "adresse": "Chemin Neuf 9, 1955 Chamoson",
+  "horaires_osm": "Mo-Fr 08:00-12:00",
+  "maj": "2026-11-24",
+  "nom": "Chamoson",
+  "site": "https://www.chamoson.net",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "027 305 10 30"
+ },
+ "6023": {
+  "adresse": "Route de Savoie 54, 1975 Saint-Séverin",
+  "horaires_osm": "Mo-Fr 08:30-11:30; We 14:00-19:00",
+  "maj": "2026-11-24",
+  "nom": "Conthey",
+  "site": "https://www.conthey.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "027 345 45 45"
+ },
+ "6024": {
+  "maj": "2026-11-24",
+  "nom": "Nendaz",
+  "site": "http://www.nendaz.org",
+  "source_telephone": "site communal",
+  "telephone": "027 289 56 00"
+ },
+ "6025": {
+  "adresse": "Route de l'Abbaye 31",
+  "horaires_osm": "Mo-Fr 08:00-12:00; We 13:30-17:30",
+  "maj": "2026-11-24",
+  "nom": "Vétroz",
+  "site": "http://www.vetroz.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "027 345 37 70"
+ },
+ "6032": {
+  "maj": "2026-11-24",
+  "nom": "Bourg-Saint-Pierre",
+  "site": "https://www.bourg-saint-pierre.ch"
+ },
+ "6033": {
+  "maj": "2026-11-24",
+  "nom": "Liddes",
+  "site": "https://www.liddes.ch"
+ },
+ "6034": {
+  "adresse": "Rue de la Commune 3, 1938 Orsières",
+  "maj": "2026-11-24",
+  "nom": "Orsières",
+  "site": "https://www.orsieres.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 782 62 62"
+ },
+ "6035": {
+  "adresse": "Rue Principale 24, 1933 Sembrancher",
+  "email": "commsembr@dransnet.ch",
+  "maj": "2026-11-24",
+  "nom": "Sembrancher",
+  "site": "https://www.sembrancher.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "027 785 12 23"
+ },
+ "6037": {
+  "adresse": "Route de Clouchèvre 30, 1934 Le Châble VS",
+  "maj": "2026-11-24",
+  "nom": "Val de Bagnes",
+  "site": "https://www.valdebagnes.ch/"
+ },
+ "6052": {
+  "adresse": "Hauptgasse 1, 3997 Bellwald",
+  "maj": "2026-11-24",
+  "nom": "Bellwald",
+  "site": "https://gemeinde.bellwald.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 970 19 40"
+ },
+ "6054": {
+  "maj": "2026-11-24",
+  "nom": "Binn",
+  "site": "https://www.binn.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 971 46 20"
+ },
+ "6056": {
+  "maj": "2026-11-24",
+  "nom": "Ernen",
+  "site": "https://www.ernen.ch"
+ },
+ "6057": {
+  "adresse": "Furkastrasse 44, 3984 Fiesch",
+  "maj": "2026-11-24",
+  "nom": "Fiesch",
+  "site": "https://www.gemeinde-fiesch.ch/"
+ },
+ "6058": {
+  "maj": "2026-11-24",
+  "nom": "Fieschertal",
+  "site": "http://www.fieschertal.ch"
+ },
+ "6061": {
+  "maj": "2026-11-24",
+  "nom": "Lax",
+  "site": "http://www.lax.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 971 24 44"
+ },
+ "6064": {
+  "maj": "2026-11-24",
+  "nom": "Niederwald",
+  "site": ""
+ },
+ "6076": {
+  "maj": "2026-11-24",
+  "nom": "Obergoms",
+  "site": "https://gemeinde.obergoms.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 974 12 00"
+ },
+ "6077": {
+  "adresse": "Furkastrasse 399, 3998 Gluringen",
+  "horaires_osm": "Mo,We 08:30-11:30,14:00-17:00; We,Th,Fr 08:30-11:30",
+  "maj": "2026-11-24",
+  "nom": "Goms",
+  "site": "https://www.gemeinde-goms.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 974 12 50"
+ },
+ "6082": {
+  "maj": "2026-11-24",
+  "nom": "Ayent",
+  "site": "http://www.ayent.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 399 26 26"
+ },
+ "6083": {
+  "maj": "2026-11-24",
+  "nom": "Evolène",
+  "site": "https://www.commune-evolene.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 283 13 00"
+ },
+ "6084": {
+  "maj": "2026-11-24",
+  "nom": "Hérémence",
+  "site": "https://www.heremence.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 282 50 20"
+ },
+ "6087": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Martin",
+  "site": "http://www.saint-martin.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 282 50 10"
+ },
+ "6089": {
+  "maj": "2026-11-24",
+  "nom": "Vex",
+  "site": "http://www.vex.ch"
+ },
+ "6090": {
+  "maj": "2026-11-24",
+  "nom": "Mont-Noble",
+  "site": "https://www.mont-noble.ch"
+ },
+ "6101": {
+  "maj": "2026-11-24",
+  "nom": "Agarn",
+  "site": "http://www.agarn.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 474 96 30"
+ },
+ "6102": {
+  "horaires_osm": "Mo 08:00-11:00; We 16:00-18:30; Th 14:00-16:00",
+  "maj": "2026-11-24",
+  "nom": "Albinen",
+  "site": "https://www.albinen.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 473 20 23"
+ },
+ "6104": {
+  "maj": "2026-11-24",
+  "nom": "Ergisch",
+  "site": "https://www.ergisch.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 932 28 15"
+ },
+ "6109": {
+  "maj": "2026-11-24",
+  "nom": "Inden",
+  "site": "https://www.inden.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 470 28 56"
+ },
+ "6110": {
+  "maj": "2026-11-24",
+  "nom": "Loèche",
+  "site": "https://leuk.ch"
+ },
+ "6111": {
+  "maj": "2026-11-24",
+  "nom": "Loèche-les-Bains",
+  "site": "https://www.leukerbad.org"
+ },
+ "6112": {
+  "maj": "2026-11-24",
+  "nom": "Oberems",
+  "site": "http://www.oberems.ch/gemeinde/index.htm"
+ },
+ "6113": {
+  "maj": "2026-11-24",
+  "nom": "Salquenen",
+  "site": "https://www.salgesch.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 456 39 66"
+ },
+ "6116": {
+  "maj": "2026-11-24",
+  "nom": "Varonne",
+  "site": "http://www.varen.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 473 15 77"
+ },
+ "6117": {
+  "maj": "2026-11-24",
+  "nom": "Guttet-Feschel",
+  "site": "https://www.guttet-feschel.ch"
+ },
+ "6118": {
+  "adresse": "Kirchstrasse 6, 3945 Gampel",
+  "email": "gemeinde@gampel-bratsch.ch",
+  "horaires_osm": "Mo-Fr 10:00-11:30, Tu,We 16:00-17:00, Th 16:00-18:00",
+  "maj": "2026-11-24",
+  "nom": "Gampel-Bratsch",
+  "site": "http://www.gampel-bratsch.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "027 933 69 00"
+ },
+ "6119": {
+  "adresse": "Dorfstrasse 26, 3946 Turtmann",
+  "maj": "2026-11-24",
+  "nom": "Turtmann-Unterems",
+  "site": "https://www.turtmann-unterems.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 932 50 25"
+ },
+ "6131": {
+  "maj": "2026-11-24",
+  "nom": "Bovernier",
+  "site": "https://www.bovernier.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 722 29 09"
+ },
+ "6133": {
+  "adresse": "Rue de l'Eglise 46, 1926 Fully",
+  "horaires_osm": "Mo-Fr 08:00-12:00",
+  "maj": "2026-11-24",
+  "nom": "Fully",
+  "site": "https://www.fully.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "027 747 11 11"
+ },
+ "6134": {
+  "maj": "2026-11-24",
+  "nom": "Isérables",
+  "site": "https://iserables.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 307 20 50"
+ },
+ "6135": {
+  "maj": "2026-11-24",
+  "nom": "Leytron",
+  "site": "http://www.leytron.ch"
+ },
+ "6136": {
+  "maj": "2026-11-24",
+  "nom": "Martigny",
+  "site": "http://www.martigny.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 721 21 11"
+ },
+ "6137": {
+  "maj": "2026-11-24",
+  "nom": "Martigny-Combe",
+  "site": "https://www.martigny-combe.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 563 05 00"
+ },
+ "6139": {
+  "maj": "2026-11-24",
+  "nom": "Riddes",
+  "site": "https://www.riddes.ch"
+ },
+ "6140": {
+  "maj": "2026-11-24",
+  "nom": "Saillon",
+  "site": "https://www.saillon.ch"
+ },
+ "6141": {
+  "maj": "2026-11-24",
+  "nom": "Saxon",
+  "site": "https://www.saxon.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 743 21 00"
+ },
+ "6142": {
+  "adresse": "Le Gilliod 27, 1929 Trient",
+  "maj": "2026-11-24",
+  "nom": "Trient",
+  "site": "https://www.trient.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 722 21 05"
+ },
+ "6151": {
+  "maj": "2026-11-24",
+  "nom": "Champéry",
+  "site": "https://www.admin-champery.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 479 09 09"
+ },
+ "6152": {
+  "maj": "2026-11-24",
+  "nom": "Collombey-Muraz",
+  "site": "http://www.collombey-muraz.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 473 61 61"
+ },
+ "6153": {
+  "adresse": "Place de l'Hôtel-de-Ville 2, 1870 Monthey",
+  "email": "administration@monthey.ch",
+  "maj": "2026-11-24",
+  "nom": "Monthey",
+  "site": "https://www.monthey.ch/",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "024 475 75 11"
+ },
+ "6154": {
+  "adresse": "Chemin du Clous 18, 1897 Bouveret",
+  "maj": "2026-11-24",
+  "nom": "Port-Valais",
+  "site": "https://www.port-valais.ch/",
+  "source_telephone": "site communal",
+  "telephone": "024 482 70 00"
+ },
+ "6155": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Gingolph",
+  "site": "https://st-gingolph.ch"
+ },
+ "6156": {
+  "maj": "2026-11-24",
+  "nom": "Troistorrents",
+  "site": "http://www.troistorrents.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 476 80 10"
+ },
+ "6157": {
+  "maj": "2026-11-24",
+  "nom": "Val-d'Illiez",
+  "site": "https://www.illiez.ch"
+ },
+ "6158": {
+  "adresse": "Rue du Pavé 6, 1895 Vionnaz",
+  "email": "info@vionnaz.ch",
+  "horaires_osm": "Mo 09:00-11:00,14:00-18:00; Tu,Th,Fr 09:00-11:00; We 09:00-11:00,14:00-16:00",
+  "maj": "2026-11-24",
+  "nom": "Vionnaz",
+  "site": "https://www.vionnaz.ch",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "024 481 42 52"
+ },
+ "6159": {
+  "maj": "2026-11-24",
+  "nom": "Vouvry",
+  "site": "https://www.vouvry.ch"
+ },
+ "6172": {
+  "adresse": "Kantonsstrasse 50, 3983 Bister",
+  "maj": "2026-11-24",
+  "nom": "Bister",
+  "site": "gemeinde-bister.ch"
+ },
+ "6173": {
+  "maj": "2026-11-24",
+  "nom": "Bitsch",
+  "site": "https://www.bitsch.ch"
+ },
+ "6177": {
+  "adresse": "Dorfplatz 22, 3993 Grengiols",
+  "maj": "2026-11-24",
+  "nom": "Grengiols",
+  "site": "https://www.grengiols.ch"
+ },
+ "6181": {
+  "maj": "2026-11-24",
+  "nom": "Riederalp",
+  "site": "https://www.gemeinde-riederalp.ch"
+ },
+ "6191": {
+  "adresse": "Dorfstrasse 71, 3938 Ausserberg",
+  "maj": "2026-11-24",
+  "nom": "Ausserberg",
+  "site": "http://www.ausserberg.ch"
+ },
+ "6192": {
+  "maj": "2026-11-24",
+  "nom": "Blatten",
+  "site": "https://www.blatten-vs.ch"
+ },
+ "6193": {
+  "maj": "2026-11-24",
+  "nom": "Bürchen",
+  "site": "https://gemeinde.buerchen.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 935 88 88"
+ },
+ "6194": {
+  "maj": "2026-11-24",
+  "nom": "Eischoll",
+  "site": "https://www.eischoll.ch"
+ },
+ "6195": {
+  "maj": "2026-11-24",
+  "nom": "Ferden",
+  "site": "https://www.ferden.ch"
+ },
+ "6197": {
+  "adresse": "Hauptstrasse 61, 3917",
+  "maj": "2026-11-24",
+  "nom": "Kippel",
+  "site": "https://www.kippel.ch"
+ },
+ "6198": {
+  "adresse": "Kirchgasse 6, 3942 Niedergesteln",
+  "maj": "2026-11-24",
+  "nom": "Niedergesteln",
+  "site": "https://www.niedergesteln.ch"
+ },
+ "6199": {
+  "maj": "2026-11-24",
+  "nom": "Rarogne",
+  "site": "https://www.raron.ch"
+ },
+ "6201": {
+  "maj": "2026-11-24",
+  "nom": "Unterbäch",
+  "site": "https://www.unterbaech.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 934 56 56"
+ },
+ "6202": {
+  "adresse": "Dorfstrasse 24, 3918 Wiler (Lötschen)",
+  "maj": "2026-11-24",
+  "nom": "Wiler",
+  "site": "https://www.wilervs.ch"
+ },
+ "6203": {
+  "maj": "2026-11-24",
+  "nom": "Mörel-Filet",
+  "site": "http://www.moerel-filet.ch"
+ },
+ "6204": {
+  "maj": "2026-11-24",
+  "nom": "Steg-Hohtenn",
+  "site": "https://www.steg-hohtenn.ch"
+ },
+ "6205": {
+  "maj": "2026-11-24",
+  "nom": "Bettmeralp",
+  "site": "https://gemeinde.bettmeralp.ch/"
+ },
+ "6211": {
+  "maj": "2026-11-24",
+  "nom": "Collonges",
+  "site": "https://www.collonges.ch"
+ },
+ "6212": {
+  "maj": "2026-11-24",
+  "nom": "Dorénaz",
+  "site": "http://www.dorenaz.ch"
+ },
+ "6213": {
+  "maj": "2026-11-24",
+  "nom": "Evionnaz",
+  "site": "https://www.evionnaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 767 11 13"
+ },
+ "6214": {
+  "adresse": "3, 1925 Finhaut",
+  "maj": "2026-11-24",
+  "nom": "Finhaut",
+  "site": "https://www.finhaut.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 768 12 10"
+ },
+ "6215": {
+  "adresse": "Place de l'Eglise 1, 1869 Massongex",
+  "horaires_osm": "Mo 15:00-18:00; Tu,Th 15:00-17:00; Fr 09:00-11:00",
+  "maj": "2026-11-24",
+  "nom": "Massongex",
+  "site": "http://www.massongex.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 471 37 12"
+ },
+ "6217": {
+  "adresse": "Grand-Rue 79, 1890 St-Maurice",
+  "maj": "2026-11-24",
+  "nom": "Saint-Maurice",
+  "site": "https://www.saint-maurice.ch",
+  "source_telephone": "site communal",
+  "telephone": "024 485 40 40"
+ },
+ "6218": {
+  "maj": "2026-11-24",
+  "nom": "Salvan",
+  "site": "https://www.salvan.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 761 71 11"
+ },
+ "6219": {
+  "maj": "2026-11-24",
+  "nom": "Vernayaz",
+  "site": "https://www.vernayaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 764 22 10"
+ },
+ "6220": {
+  "maj": "2026-11-24",
+  "nom": "Vérossaz",
+  "site": "http://www.verossaz.ch"
+ },
+ "6232": {
+  "maj": "2026-11-24",
+  "nom": "Chalais",
+  "site": "https://www.chalais.ch"
+ },
+ "6235": {
+  "maj": "2026-11-24",
+  "nom": "Chippis",
+  "site": "http://www.chippis.ch"
+ },
+ "6238": {
+  "maj": "2026-11-24",
+  "nom": "Grône",
+  "site": "https://www.grone.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 458 15 03"
+ },
+ "6239": {
+  "adresse": "Chemin de la Bourgeoisie 7, 1977 Icogne",
+  "maj": "2026-11-24",
+  "nom": "Icogne",
+  "site": "http://www.icogne.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 484 20 00"
+ },
+ "6240": {
+  "horaires_osm": "Mo 08:00-11:30,13:30-17:30; Tu-Fr 13:30-17:30",
+  "maj": "2026-11-24",
+  "nom": "Lens",
+  "site": "https://www.lens.ch"
+ },
+ "6246": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Léonard",
+  "site": "http://www.st-leonard.ch"
+ },
+ "6248": {
+  "maj": "2026-11-24",
+  "nom": "Sierre",
+  "site": "https://www.sierre.ch"
+ },
+ "6252": {
+  "adresse": "Route du Vieux Village 68, 3961 Chandolin",
+  "maj": "2026-11-24",
+  "nom": "Anniviers",
+  "site": "https://www.anniviers.org",
+  "source_telephone": "site communal",
+  "telephone": "027 476 15 00"
+ },
+ "6253": {
+  "horaires_osm": "Mo-Fr 08:00-12:00,14:00-17:00",
+  "maj": "2026-11-24",
+  "nom": "Crans-Montana",
+  "site": "https://www.commune-cransmontana.ch/",
+  "source_telephone": "site communal",
+  "telephone": "027 486 18 18"
+ },
+ "6254": {
+  "maj": "2026-11-24",
+  "nom": "Noble-Contrée",
+  "site": "https://www.noble-contree.ch"
+ },
+ "6261": {
+  "maj": "2026-11-24",
+  "nom": "Arbaz",
+  "site": "http://www.arbaz.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 399 28 28"
+ },
+ "6263": {
+  "adresse": "Pl. Mgr Gabriel Balet, 1971 Grimisuat",
+  "maj": "2026-11-24",
+  "nom": "Grimisuat",
+  "site": "https://www.grimisuat.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 399 28 59"
+ },
+ "6265": {
+  "maj": "2026-11-24",
+  "nom": "Savièse",
+  "site": "https://www.saviese.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 396 10 10"
+ },
+ "6266": {
+  "maj": "2026-11-24",
+  "nom": "Sion",
+  "site": "https://www.sion.ch"
+ },
+ "6267": {
+  "maj": "2026-11-24",
+  "nom": "Veysonnaz",
+  "site": "https://veysonnaz.org",
+  "source_telephone": "site communal",
+  "telephone": "027 207 10 52"
+ },
+ "6282": {
+  "maj": "2026-11-24",
+  "nom": "Eisten",
+  "site": "https://www.eisten.ch"
+ },
+ "6283": {
+  "maj": "2026-11-24",
+  "nom": "Embd",
+  "site": "http://www.embd.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 952 21 48"
+ },
+ "6285": {
+  "maj": "2026-11-24",
+  "nom": "Grächen",
+  "site": "http://www.gemeinde-graechen.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 955 15 00"
+ },
+ "6286": {
+  "adresse": "Dorfstrasse 60, 3931 Lalden",
+  "maj": "2026-11-24",
+  "nom": "Lalden",
+  "site": "http://www.lalden.ch"
+ },
+ "6287": {
+  "maj": "2026-11-24",
+  "nom": "Randa",
+  "site": "https://www.randa.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 967 44 77"
+ },
+ "6288": {
+  "maj": "2026-11-24",
+  "nom": "Saas-Almagell",
+  "site": "https://www.saas-almagell.org"
+ },
+ "6289": {
+  "maj": "2026-11-24",
+  "nom": "Saas-Balen",
+  "site": "http://gemeinde-saas-balen.ch"
+ },
+ "6290": {
+  "maj": "2026-11-24",
+  "nom": "Saas-Fee",
+  "site": "https://www.3906.ch"
+ },
+ "6291": {
+  "maj": "2026-11-24",
+  "nom": "Saas-Grund",
+  "site": "http://www.saas-grund.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 958 18 58"
+ },
+ "6292": {
+  "maj": "2026-11-24",
+  "nom": "Saint-Nicolas",
+  "site": "https://st-niklaus.ch/de"
+ },
+ "6293": {
+  "maj": "2026-11-24",
+  "nom": "Stalden",
+  "site": "https://www.stalden.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 953 15 20"
+ },
+ "6294": {
+  "maj": "2026-11-24",
+  "nom": "Staldenried",
+  "site": "http://www.staldenried.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 952 16 46"
+ },
+ "6295": {
+  "maj": "2026-11-24",
+  "nom": "Täsch",
+  "site": "https://www.gemeinde-taesch.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 966 46 66"
+ },
+ "6296": {
+  "maj": "2026-11-24",
+  "nom": "Törbel",
+  "site": "https://www.toerbel.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 952 22 27"
+ },
+ "6297": {
+  "adresse": "1, 3930 Visp",
+  "maj": "2026-11-24",
+  "nom": "Viège",
+  "site": "http://www.visp.ch"
+ },
+ "6298": {
+  "maj": "2026-11-24",
+  "nom": "Visperterminen",
+  "site": "http://www.visperterminen.ch",
+  "source_telephone": "site communal",
+  "telephone": "027 946 03 00"
+ },
+ "6299": {
+  "maj": "2026-11-24",
+  "nom": "Zeneggen",
+  "site": "https://www.zeneggen.ch/"
+ },
+ "6300": {
+  "adresse": "Kirchplatz 3, 3920 Zermatt",
+  "email": "gemeinde@zermatt.ch",
+  "horaires_osm": "Mo, We 08:30-11:00, 14:00-16:00; Tu, Fr 08:30-16:00; Th 08:30-11:00, 14:00-17:30; Sa-Su off",
+  "maj": "2026-11-24",
+  "nom": "Zermatt",
+  "site": "https://gemeinde.zermatt.ch/",
+  "source_telephone": "OpenStreetMap",
+  "telephone": "027 966 22 11"
+ }
+}

@@ -11,14 +11,17 @@ Géocodage des communes / NPA : api3.geo.admin.ch (swisstopo).
 Aucune dépendance : Python 3.8+ standard.
 
 Exemples :
-  python3 enquetes_vs.py                          # Evionnaz, 15 km, 30 jours
+  python3 enquetes_vs.py                          # Evionnaz, 2 km, 30 jours
   python3 enquetes_vs.py --home Martigny --rayon 8
   python3 enquetes_vs.py --jours 60 --tous        # y c. délais échus
   python3 enquetes_vs.py --json enquetes.json     # export brut en plus
   python3 enquetes_vs.py --debug                  # dump XML du 1er avis
 
-La page générée contient tous les avis du canton : le rayon et la commune
-de référence se règlent ensuite directement dans la page.
+La page générée contient tous les avis du canton : le rayon (1 à 10 km) et la
+commune de référence se règlent ensuite directement dans la page.
+
+Coordonnées des communes : data/communes_vs.json (scripts/maj_communes.py),
+corrigées par data/communes_vs_manuel.json, complétées par les avis eux-mêmes.
 """
 import argparse, datetime as dt, html, json, math, os, re, sys, time
 import urllib.parse, urllib.request
@@ -209,6 +212,14 @@ def element_value(el):
     return ""
 
 
+def clean_contact(text):
+    """Adresse de l'autorité (texte simple ou HTML) → lignes de texte."""
+    t = re.sub(r"(?i)<br\s*/?>|</(div|p)>", "\n", text or "")
+    t = html.unescape(re.sub(r"<[^>]+>", "", t))
+    lines = [re.sub(r"\s+", " ", l).strip(" ,") for l in t.splitlines()]
+    return "\n".join(l for l in lines if l)
+
+
 def parse_detail(pid, raw_xml):
     root = _strip_ns(ET.fromstring(raw_xml))
     meta = root.find("meta")
@@ -242,7 +253,7 @@ def parse_detail(pid, raw_xml):
     reaction = content.find("reaction/element") if content is not None else None
     deadline = (reaction.findtext("deadline/date") if reaction is not None else "") or ""
     deadline_label = _t(reaction, "deadline/term") if reaction is not None else ""
-    contact = _t(reaction, "contact") if reaction is not None else ""
+    contact = clean_contact(_t(reaction, "contact")) if reaction is not None else ""
 
     commune = _t(content, "localization/municipalityId/term") if content is not None else ""
     office = meta.findtext("registrationOffice/displayName") or ""
@@ -268,6 +279,12 @@ def parse_detail(pid, raw_xml):
         "proprietaire": g("landowner"),
         "auteur": g("projectframer"),
         "econstruction": g("caseno"),
+        "bfs": (content.findtext("localization/municipalityId/key") if content is not None else "") or "",
+        "ro_bfs": meta.findtext("registrationOffice/municipalityId") or "",
+        "ro_nom": office,
+        "ro_adresse": ", ".join(x for x in (
+            " ".join(y for y in (meta.findtext("registrationOffice/street"), meta.findtext("registrationOffice/streetNumber")) if y),
+            " ".join(y for y in (meta.findtext("registrationOffice/swissZipCode"), meta.findtext("registrationOffice/town")) if y)) if x),
         "contact": contact,
         "coords_exactes": bool(coords),
         "lat": coords[0] if coords else None,
@@ -335,6 +352,45 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 .ecb:hover{background:var(--red);color:#fff}
 #toast{position:fixed;left:0;right:0;bottom:20px;margin:0 auto;width:fit-content;z-index:2000;max-width:min(520px,calc(100vw - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 #toast b{font-family:ui-monospace,Menlo,monospace}
+.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;margin-top:8px}
+.oppb{font:600 13px system-ui;color:#fff;background:var(--red);border:1px solid var(--red);border-radius:99px;padding:4px 12px;cursor:pointer}
+.oppb:hover{filter:brightness(1.1)}
+#opp{width:min(680px,calc(100vw - 16px));max-height:calc(100vh - 24px);padding:0;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#opp::backdrop{background:rgba(10,12,16,.55)}
+#opp form{display:grid;gap:14px;padding:20px}
+#opp .hd{display:flex;justify-content:space-between;align-items:start;gap:12px}
+#opp h2{margin:0;font-size:22px}
+#opp .x{border:0;background:none;color:var(--mut);font-size:26px;line-height:1;cursor:pointer;padding:0 4px}
+.ref{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.ref b{display:block;font-size:15px;margin-bottom:2px}
+.dl{border-left:4px solid var(--red);padding:8px 12px;background:var(--hi);border-radius:0 8px 8px 0;font-size:14px;margin:0}
+#opp fieldset{border:0;padding:0;margin:0;display:flex;gap:8px;flex-wrap:wrap}
+#opp legend{font-size:13px;color:var(--mut);font-weight:600;margin-bottom:6px;padding:0}
+.rad{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:15px}
+.rad:has(input:checked){border-color:var(--red);background:var(--hi)}.rad input{accent-color:var(--red)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+@media (max-width:560px){.g2{grid-template-columns:1fr}}
+#opp label.f{display:grid;gap:4px;font-size:13px;color:var(--mut);font-weight:600}
+#opp label.f i{font-style:normal;font-weight:400}
+#opp input:not([type=radio]),#opp select,#opp textarea{width:100%}
+#opp textarea{font:15px/1.5 system-ui;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-height:150px;resize:vertical}
+.how{font-size:14px;margin:0;padding-left:20px}.how li{margin:3px 0}
+.fine{font-size:12.5px;color:var(--mut);margin:0}
+.fb{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.btn{font:600 15px system-ui;border-radius:8px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.btn.p{background:var(--red);border-color:var(--red);color:#fff}
+.ci{font-size:14px}.ci summary{cursor:pointer;font:600 13px system-ui;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:4px 12px;list-style:none;display:inline-block}
+.ci summary::-webkit-details-marker{display:none}.ci[open] summary{background:var(--soft)}
+.ci .box{margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--soft);display:grid;gap:3px}
+.ci .box b{font-size:14px}.ci .box a{color:var(--red)}.ci .muted{color:var(--mut);font-size:12.5px}
+#letter{display:none}
+@media print{@page{margin:20mm 20mm 18mm}body{background:#fff!important;color:#000!important}body>*:not(#letter){display:none!important}
+ #letter{display:block;font:11pt/1.5 Georgia,"Times New Roman",serif;color:#000}
+ #letter .from{margin-bottom:14mm}#letter .to{margin-left:90mm;margin-bottom:12mm;white-space:pre-line}
+ #letter .rec{font-weight:bold;margin-bottom:2mm}#letter .date{text-align:right;margin-bottom:8mm}
+ #letter .obj{font-weight:bold;margin:0 0 2mm}#letter .refs{margin:0 0 6mm;font-size:10pt}
+ #letter p{margin:0 0 4mm}#letter .mot{white-space:pre-wrap;margin:0 0 4mm}
+ #letter .sig{margin-top:10mm;margin-left:90mm}#letter .line{margin-top:18mm;border-top:1px solid #000;padding-top:1mm;font-size:9pt}}
 @media (max-width:560px){.ctl{display:grid;grid-template-columns:1fr 1fr}.ctl .fld,.ctl label:nth-child(3),.ctl #err{grid-column:1/-1}#home,#q,input[type=range]{width:100%}#home{flex:1}}
 </style></head><body>
 <header>
@@ -342,7 +398,7 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
  <div class="sub" id="sub"></div>
  <div class="ctl">
   <div class="fld"><label for="home">Autour de</label><div class="acw"><input id="home" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hl" autocomplete="off" spellcheck="false" placeholder="Commune ou NPA"><button id="gps" type="button" title="Utiliser ma position" aria-label="Utiliser ma position"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg></button><ul id="hl" role="listbox" aria-label="Communes" hidden></ul></div></div>
-  <label><span>Rayon : <span id="rv"></span> km</span><input type="range" id="r" min="1" max="60" step="1"></label>
+  <label><span>Rayon : <span id="rv"></span> km</span><input type="range" id="r" min="1" max="10" step="1"></label>
   <label>Rechercher<input id="q" type="search" placeholder="Commune, mot-clé, parcelle, requérant…"></label>
   <label>Type<select id="t"><option value="">Tous</option><option>Autorisation de construire</option><option>Consultation des plans</option></select></label>
   <label class="chk"><input type="checkbox" id="late"> Inclure les délais échus</label>
@@ -350,6 +406,39 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
  </div>
 </header>
 <div id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="opp" aria-labelledby="opp-t">
+ <form id="opp-f" novalidate>
+  <div class="hd"><h2 id="opp-t">Faire opposition</h2><button type="button" class="x" id="opp-x" aria-label="Fermer">×</button></div>
+  <div class="ref" id="opp-ref"></div>
+  <p class="dl" id="opp-dl"></p>
+  <fieldset><legend>Je souhaite</legend>
+   <label class="rad"><input type="radio" name="kind" value="opposition" checked> former une opposition</label>
+   <label class="rad"><input type="radio" name="kind" value="reserve"> formuler une réserve de droit privé</label>
+  </fieldset>
+  <div class="g2">
+   <label class="f">Prénom<input name="prenom" required autocomplete="given-name"></label>
+   <label class="f">Nom<input name="nom" required autocomplete="family-name"></label>
+   <label class="f">Adresse<input name="adresse" required autocomplete="street-address"></label>
+   <label class="f">NPA et localité<input name="localite" required autocomplete="postal-code address-level2" placeholder="1902 Evionnaz"></label>
+   <label class="f"><span>E-mail <i>(facultatif)</i></span><input name="email" type="email" autocomplete="email"></label>
+   <label class="f"><span>Téléphone <i>(facultatif)</i></span><input name="tel" type="tel" autocomplete="tel"></label>
+  </div>
+  <div class="g2">
+   <label class="f">Qualité pour agir<select name="qualite" required>
+    <option value="">Choisir…</option>
+    <option>propriétaire d'une parcelle voisine</option>
+    <option>locataire ou habitant·e à proximité immédiate</option>
+    <option>propriétaire ou habitant·e touché·e par les nuisances du projet</option>
+    <option>autre</option></select></label>
+   <label class="f"><span>Précision <i>(parcelle, distance…)</i></span><input name="precision" placeholder="ex. parcelle n° 1234, à 20 m du projet"></label>
+  </div>
+  <label class="f">Motifs<textarea name="motifs" required placeholder="Expliquez en quoi le projet vous touche personnellement : hauteur, ombre, vue, bruit, circulation, non-conformité au règlement de zone, dérogations…"></textarea></label>
+  <ol class="how" id="opp-how"></ol>
+  <p class="fine">Rien n'est envoyé : la lettre est préparée dans votre navigateur. Vos coordonnées sont mémorisées sur cet appareil seulement. Modèle indicatif, qui ne remplace pas un conseil juridique.</p>
+  <div class="fb"><button type="button" class="btn" id="opp-c">Annuler</button><button type="submit" class="btn p">Générer la lettre (imprimer / PDF)</button></div>
+ </form>
+</dialog>
+<article id="letter" aria-hidden="true"></article>
 <div class="layout">
  <div id="map"></div>
  <main><section id="list"></section>
@@ -360,7 +449,7 @@ small{color:var(--mut)}.foot{color:var(--mut);font-size:13px;margin-top:24px}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function(){
-const DATA=__DATA__, CFG=__CFG__;
+const DATA=__DATA__, CFG=__CFG__, COMMUNES=__COMMUNES__;
 const $=s=>document.querySelector(s), DAY=864e5;
 const today=new Date(CFG.today+'T00:00:00');
 const fmt=new Intl.DateTimeFormat('fr-CH',{day:'numeric',month:'long'});
@@ -368,7 +457,7 @@ const fmtY=new Intl.DateTimeFormat('fr-CH',{day:'numeric',month:'long',year:'num
 const pd=s=>s?new Date(s+'T00:00:00'):null;
 let home={lat:CFG.home[0],lon:CFG.home[1],label:CFG.home[2]};
 try{const s=JSON.parse(localStorage.getItem('enq-home')||'null');if(s&&s.lat)home=s;}catch(e){}
-let radius=CFG.rayon;try{const r=+localStorage.getItem('enq-r');if(r)radius=r;}catch(e){}
+let radius=CFG.rayon;try{const r=+localStorage.getItem('enq-r');if(r>=1&&r<=10)radius=r;}catch(e){}
 
 function km(a,b){const R=6371,r=Math.PI/180,dp=(b.lat-a.lat)*r,dl=(b.lon-a.lon)*r;
  const h=Math.sin(dp/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dl/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
@@ -391,7 +480,10 @@ function card(d){
  if(d.econstruction){const dd=el('dd','ec');dd.append(el('code',null,d.econstruction),ecButton(d.econstruction));dl.append(el('dt',null,'eConstruction'),dd);}
  if(dl.children.length)a.append(dl);
  const end=pd(d.fin_delai);
+ const acts=el('div','acts');if(d.left>=0){const ob=el('button','oppb','Faire opposition');ob.type='button';ob.addEventListener('click',e=>{e.stopPropagation();openOpp(d);});acts.append(ob);}
  a.append(el('small',null,'Publié le '+fmt.format(pd(d.date))+' · oppositions jusqu’au '+(end?fmtY.format(end):'?')+(d.coords_exactes?'':' · position approximative (centre de la commune)')));
+ acts.append(communeDetails(d));
+ a.append(acts);
  a.addEventListener('click',e=>{if(e.target.closest('a'))return;const m=markers[d.id];if(m){map.setView(m.getLatLng(),Math.max(map.getZoom(),15));m.openPopup();}select([d.id]);});
  return a;
 }
@@ -407,6 +499,71 @@ function ecButton(no){const b=el('button','ecb','Copier et ouvrir eConstruction 
   const msg=ok=>[document.createTextNode(ok?'Numéro ':'Notez le numéro '),el('b',null,no),document.createTextNode((ok?' copié. Sur':' : sur')+' eConstruction, connectez-vous avec SwissID, puis « Consultation du Bulletin Officiel » et collez-le dans la recherche.')];
   copy(no).then(()=>toast(msg(true)),()=>toast(msg(false),15000));});
  return b;}
+// ---------- Coordonnées de l'administration communale ----------
+function communeBox(d){
+ const c=COMMUNES[d.bfs]||{nom:d.commune};const box=el('div','box');
+ box.append(el('b',null,c.service||('Administration communale '+de(c.nom||d.commune))));
+ if(c.adresse)box.append(el('div',null,c.adresse));
+ if(c.telephone){const r=el('div',null,'Tél. ');const a=el('a',null,c.telephone);a.href='tel:'+c.telephone.replace(/[^\d+]/g,'');r.append(a);box.append(r);}
+ if(c.email){const r=el('div',null,'E-mail ');const a=el('a',null,c.email.replace(/^mailto:/,''));a.href='mailto:'+c.email.replace(/^mailto:/,'');r.append(a);box.append(r);}
+ if(c.horaires)box.append(el('div',null,'Horaires : '+c.horaires));
+ if(c.site){const a=el('a',null,(c.horaires?'Site de la commune ↗':'Horaires et contact sur le site de la commune ↗'));a.href=c.site;a.target='_blank';a.rel='noopener';box.append(a);}
+ if(!c.adresse&&!c.telephone&&!c.site)box.append(el('div','muted','Coordonnées non disponibles.'));
+ return box;
+}
+function communeDetails(d){const det=el('details','ci');const s=el('summary',null,'Contacter la commune');det.append(s,communeBox(d));
+ det.addEventListener('click',e=>e.stopPropagation());return det;}
+
+// ---------- Faire opposition : lettre pré-remplie, à signer et envoyer ----------
+const dlg=$('#opp'),of=$('#opp-f');let cur=null;
+const MOI=['prenom','nom','adresse','localite','email','tel','qualite','precision'];
+function authority(d){const c=(d.contact||'').trim();return c||('Administration communale de '+d.commune+'\n[adresse à compléter]');}
+function openOpp(d){
+ cur=d;const end=pd(d.fin_delai);
+ const r=$('#opp-ref');r.textContent='';r.append(el('b',null,d.projet||d.titre),
+  el('div',null,[d.commune,d.parcelle,d.type].filter(Boolean).join(' · ')),
+  el('div',null,'Publié au Bulletin officiel le '+fmtY.format(pd(d.date))+(d.numero?' (n° '+d.numero+')':'')));
+ $('#opp-dl').textContent='À envoyer au plus tard le '+(end?fmtY.format(end):'?')+' (timbre postal faisant foi)'+(d.left===0?' : c’est aujourd’hui !':d.left>0?' : encore '+d.left+' jour'+(d.left>1?'s':'')+'.':'.');
+ const how=$('#opp-how');how.textContent='';
+ how.append(el('li',null,'Générez la lettre, imprimez-la (ou enregistrez-la en PDF) et signez-la à la main.'));
+ const li=el('li',null,'Envoyez-la de préférence en recommandé à : '+authority(d).replace(/\n/g,', ')+'.');how.append(li);
+ {const c=COMMUNES[d.bfs]||{};const l0=el('li',null,'Avant d’écrire, consultez le dossier auprès de l’administration communale '+de(c.nom||d.commune)+[c.adresse,c.telephone?'tél. '+c.telephone:'',c.horaires?'horaires : '+c.horaires:''].filter(Boolean).map(x=>', '+x).join('')+(d.econstruction?', ou en ligne sur eConstruction.':'.'));how.prepend(l0);}
+ if(d.econstruction){const l2=el('li',null,'Ou déposez-la en PDF sur eConstruction (n° '+d.econstruction+') : il faut alors une signature électronique qualifiée et une identité vérifiée. ');l2.append(ecButton(d.econstruction));how.append(l2);}
+ try{const m=JSON.parse(localStorage.getItem('enq-moi')||'{}');MOI.forEach(k=>{if(m[k]!=null&&of.elements[k])of.elements[k].value=m[k];});}catch(e){}
+ of.elements.motifs.value='';
+ if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
+ setTimeout(()=>{const f=MOI.map(k=>of.elements[k]).find(x=>x&&x.required&&!x.value)||of.elements.motifs;f.focus();},50);
+}
+function closeOpp(){if(dlg.close)dlg.close();else dlg.removeAttribute('open');}
+$('#opp-x').addEventListener('click',closeOpp);$('#opp-c').addEventListener('click',closeOpp);
+dlg.addEventListener('click',e=>{if(e.target===dlg)closeOpp();});
+of.addEventListener('submit',e=>{
+ e.preventDefault();if(!of.reportValidity())return;
+ const v={};[...MOI,'motifs','kind'].forEach(k=>v[k]=(of.elements[k].value||'').trim());
+ try{const m={};MOI.forEach(k=>m[k]=v[k]);localStorage.setItem('enq-moi',JSON.stringify(m));}catch(e){}
+ letter(cur,v);closeOpp();setTimeout(()=>window.print(),50);
+});
+function letter(d,v){
+ const L=$('#letter');L.textContent='';const P=t=>el('p',null,t);
+ const opp=v.kind!=='reserve',plans=/plans/i.test(d.type||'');
+ const from=el('div','from');[v.prenom+' '+v.nom,v.adresse,v.localite,v.tel,v.email].filter(Boolean).forEach(t=>from.append(el('div',null,t)));L.append(from);
+ const to=el('div','to');to.append(el('div','rec','Recommandé'),el('div',null,authority(d)));L.append(to);
+ L.append(el('div','date',(v.localite.replace(/^\d{4}\s*/,'')||'')+', le '+fmtY.format(new Date())));
+ const what=plans?'la mise en consultation publique des plans':'la demande d’autorisation de construire';
+ L.append(el('p','obj',(opp?'Opposition à ':'Réserve de droit privé : ')+what+' – '+(d.projet||d.titre)));
+ const refs=el('div','refs');[['Commune',d.commune],['Parcelle',(d.parcelle||'').replace(/^parcelle\s*/i,'')],['Requérant',d.requerant],
+  ['Publication','Bulletin officiel du Valais du '+fmtY.format(pd(d.date))+(d.numero?', n° '+d.numero:'')],['N° eConstruction',d.econstruction]]
+  .forEach(([k,x])=>{if(x)refs.append(el('div',null,k+' : '+x));});L.append(refs);
+ L.append(P('Madame, Monsieur,'));
+ L.append(P(opp?'Par la présente, et dans le délai de 30 jours dès sa publication au Bulletin officiel du Valais, je forme opposition à '+what+' citée en référence.'
+  :'Par la présente, et dans le délai de 30 jours dès sa publication au Bulletin officiel du Valais, je formule une réserve de droit privé à l’égard de '+what+' citée en référence.'));
+ L.append(P('Qualité pour agir : '+(v.qualite==='autre'?(v.precision||'voir motifs ci-dessous'):'je suis '+v.qualite+(v.precision?' ('+v.precision+')':''))+'. Je suis ainsi directement et personnellement touché·e par ce projet.'));
+ L.append(el('p','obj','Motifs'));L.append(el('div','mot',v.motifs));
+ if(opp)L.append(P('Pour ces motifs, je vous prie de bien vouloir rejeter le projet tel qu’il a été mis à l’enquête.'));
+ L.append(P('Je vous remercie de me tenir informé·e de la suite donnée à la présente et vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.'));
+ const sig=el('div','sig');sig.append(el('div',null,v.prenom+' '+v.nom),el('div','line','Signature'));L.append(sig);
+}
+
 function select(ids){document.querySelectorAll('.c').forEach(c=>c.classList.toggle('on',ids.includes(c.dataset.id)));}
 
 function update(fit){
@@ -440,6 +597,7 @@ $('#r').addEventListener('change',()=>update(true));
 ['#q','#t','#late'].forEach(s=>$(s).addEventListener('input',()=>update(false)));
 // ---------- Choix du point de référence : suggestions de communes + position GPS ----------
 const GEO='https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&sr=4326&';
+const de=n=>(/^[aeiouyàâéèêëîïôûü]/i.test(n||'')?'d\u2019':'de ')+n;
 const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-'’]/g,' ').replace(/\s+/g,' ').trim();
 const strip=l=>l.replace(/^\d{4}\s*-\s*|\s*\([A-Z]{2}\)$/g,'').trim();
 // Communes présentes dans les données : proposées immédiatement, même hors ligne
@@ -452,7 +610,7 @@ function hl(label,q){const i=norm(label).indexOf(q);if(!q||i<0)return document.c
 function render(q){
  box.textContent='';active=-1;
  items.forEach((it,i)=>{const li=el('li');li.id='hl-'+i;li.setAttribute('role','option');li.setAttribute('aria-selected',i===active);
-  const span=el('span');span.append(hl(it.label,q));li.append(span);if(it.n)li.append(el('small',null,it.n+' avis'));
+  const span=el('span');span.append(hl(it.disp||it.label,q));li.append(span);if(it.n)li.append(el('small',null,it.n+' avis'));else if(it.sub)li.append(el('small',null,it.sub));
   li.addEventListener('mousedown',e=>{e.preventDefault();pick(i);});box.append(li);});
  const open=items.length>0;box.hidden=!open;inp.setAttribute('aria-expanded',open);
  inp.removeAttribute('aria-activedescendant');
@@ -470,14 +628,26 @@ function suggest(v){
   .sort((a,b)=>(norm(b.name).startsWith(q))-(norm(a.name).startsWith(q))||b.n-a.n).slice(0,5);
  items=loc;render(q);
  clearTimeout(tm);if(q.length<2)return;const id=++reqId;
- tm=setTimeout(()=>fetch(GEO+'origins=gg25,zipcode&limit=8&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+ const J=u=>fetch(u).then(r=>r.json()).then(j=>j.results||[]).catch(()=>[]);
+ tm=setTimeout(()=>Promise.all([J(GEO+'origins=gg25,zipcode&limit=8&searchText='+encodeURIComponent(v)),
+  J(GEO+'origins=gazetteer&limit=15&searchText='+encodeURIComponent(v))]).then(([com,gaz])=>{
   if(id!==reqId)return;
-  const seen=new Set(items.map(x=>norm(x.name)+'|'));
-  const rem=(j.results||[]).filter(r=>r.attrs&&r.attrs.lat).map(r=>{const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();return{lat:r.attrs.lat,lon:r.attrs.lon,label,name:strip(label)};})
+  const seen=new Set(items.map(x=>norm(x.name)+'|'));const num=/^\d/.test(q);
+  const rem=com.filter(r=>r.attrs&&r.attrs.lat).map(r=>{const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();return{lat:r.attrs.lat,lon:r.attrs.lon,label,name:strip(label)};})
+   .filter(x=>num||norm(x.name).includes(q))   // la recherche floue propose p.ex. « Chur » pour « Charrat »
    .filter(x=>{const k=norm(x.name)+'|'+(/^\d{4}/.test(x.label)?x.label.slice(0,4):'');if(seen.has(k)||seen.has(norm(x.name)+'|'))return false;seen.add(k);return true;});
-  const lab=items.length?items.map(x=>x.label):[];items=items.concat(rem).slice(0,8);
+  // Localités (« Ort ») : villages et anciennes communes fusionnées, p.ex. Charrat → Martigny
+  const vil=num?[]:gaz.filter(r=>r.attrs&&r.attrs.lat&&r.attrs.label.includes('<i>Ort</i>')).map(r=>{
+    const m=r.attrs.label.replace(/<i>Ort<\/i>\s*/,'').match(/<b>\s*(.*?)\s*<\/b>\s*\(([A-Z]{2})\)\s*-\s*(.*)$/);if(!m)return null;
+    const name=m[1].replace(/<[^>]+>/g,'').trim(),kt=m[2],com=m[3].split(',')[0].replace(/\s*\([A-Z]{2}\)\s*$/,'').trim();
+    const same=norm(name)===norm(com);return{lat:r.attrs.lat,lon:r.attrs.lon,name,kt,label:same?name+' ('+kt+')':name+' ('+com+', '+kt+')',disp:same?name+' ('+kt+')':name,sub:same?'':'localité '+de(com)+' ('+kt+')',village:true};})
+   .filter(x=>x&&norm(x.name.replace(/\s*\(.*\)\s*$/,'')).includes(q)&&!seen.has(norm(x.name)+'|'))
+   .filter(x=>{const k=norm(x.name)+'|';if(seen.has(k))return false;seen.add(k);return true;});
+  const pre=x=>norm(x.name).startsWith(q)?0:1,vs=x=>/\(VS\)$/.test(x.label)||x.kt==='VS'?0:1;
+  const extra=rem.concat(vil).sort((a,b)=>vs(a)-vs(b)||pre(a)-pre(b));
+  const lab=items.length?items.map(x=>x.label):[];items=items.concat(extra).slice(0,8);
   const keep=active>=0&&lab[active];render(q);if(keep){const i=items.findIndex(x=>x.label===keep);if(i>=0){active=i-1;move(1);}}
- }).catch(()=>{}),180);
+ }),180);
 }
 inp.addEventListener('focus',()=>inp.select());
 inp.addEventListener('input',()=>{$('#err').textContent='';suggest(inp.value);});
@@ -488,14 +658,15 @@ inp.addEventListener('keydown',e=>{
  else if(e.key==='Escape'){close();inp.value=home.label;inp.blur();}
 });
 inp.addEventListener('blur',()=>setTimeout(()=>{close();if(document.activeElement!==inp)inp.value=home.label;},120));
-function search(v){fetch(GEO+'origins=gg25,zipcode&limit=1&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
+function search(v){fetch(GEO+'origins=gg25,zipcode,gazetteer&limit=1&searchText='+encodeURIComponent(v)).then(r=>r.json()).then(j=>{
  const r=(j.results||[]).find(r=>r.attrs&&r.attrs.lat);if(!r){$('#err').textContent='Commune introuvable.';return;}
- const label=r.attrs.label.replace(/<[^>]+>/g,'').trim();gps.classList.remove('on');choose({lat:r.attrs.lat,lon:r.attrs.lon,label});inp.blur();})
+ const label=r.attrs.label.replace(/<i>.*?<\/i>\s*/,'').replace(/<[^>]+>/g,'').trim();gps.classList.remove('on');choose({lat:r.attrs.lat,lon:r.attrs.lon,label});inp.blur();})
  .catch(()=>{$('#err').textContent='Recherche indisponible.';});}
 
 // Centre du village (« Ort » swisstopo) plutôt que centre géométrique de la commune
 function choose(s){
  $('#err').textContent='';home={lat:s.lat,lon:s.lon,label:s.label};const mine=home;update(true);
+ if(s.village)return;
  const name=strip(s.label);
  fetch(GEO+'origins=gazetteer&limit=15&searchText='+encodeURIComponent(name)).then(r=>r.json()).then(j=>{
   const esc=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
@@ -531,15 +702,70 @@ update(true);
 </script></body></html>"""
 
 
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JOURS = {"Mo": "lu", "Tu": "ma", "We": "me", "Th": "je", "Fr": "ve", "Sa": "sa", "Su": "di", "PH": "jours fériés"}
+
+
+def horaires_fr(oh):
+    """Horaires au format OpenStreetMap (« Mo-Fr 08:00-12:00 ») → texte français lisible."""
+    if not oh:
+        return ""
+    t = re.sub(r"\b(Mo|Tu|We|Th|Fr|Sa|Su|PH)\b", lambda m: JOURS[m.group(1)], oh)
+    t = re.sub(r"(\d{2}):(\d{2})", lambda m: f"{int(m.group(1))}h{m.group(2)}", t)
+    t = t.replace("-", "–").replace(",", ", ").replace(";", " ·").replace(" off", " fermé")
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def load_json(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+COMMUNAL = re.compile(r"^(commune|administration communale|ville|municipalit|gemeinde|stadt)", re.I)
+
+
+def communes_info(items):
+    """Coordonnées des administrations communales, par numéro OFS."""
+    base = load_json(os.path.join(ROOT, "data", "communes_vs.json"))
+    manuel = load_json(os.path.join(ROOT, "data", "communes_vs_manuel.json"))
+    # adresse publiée dans les avis par la commune elle-même (la plus fréquente)
+    vues = {}
+    for it in items:
+        if it.get("ro_bfs") and it["ro_bfs"] == it.get("bfs") and COMMUNAL.match(it.get("ro_nom", "")) and it.get("ro_adresse"):
+            vues.setdefault(it["bfs"], {}).setdefault((it["ro_nom"], it["ro_adresse"]), 0)
+            vues[it["bfs"]][(it["ro_nom"], it["ro_adresse"])] += 1
+    out = {}
+    for bfs in {it.get("bfs") for it in items if it.get("bfs")}:
+        b, m = base.get(bfs, {}), manuel.get(bfs, {})
+        r = {"nom": b.get("nom") or next((i["commune"] for i in items if i.get("bfs") == bfs), "")}
+        if bfs in vues:
+            (nom, adr), _ = max(vues[bfs].items(), key=lambda kv: kv[1])
+            r["service"], r["adresse"] = nom, adr
+        elif b.get("adresse"):
+            r["adresse"] = b["adresse"]
+        for k in ("telephone", "email", "site"):
+            if b.get(k):
+                r[k] = b[k]
+        if b.get("horaires_osm"):
+            r["horaires"] = horaires_fr(b["horaires_osm"])
+        r.update({k: v for k, v in m.items() if v})  # corrections manuelles en dernier
+        out[bfs] = {k: v for k, v in r.items() if v}
+    return out
+
+
 def render(items, home, args, generated):
     data = [{k: it.get(k) for k in ("id", "numero", "type", "titre", "projet", "date", "fin_delai", "commune",
                                      "parcelle", "zone", "derogations", "requerant", "econstruction",
-                                     "coords_exactes", "lat", "lon", "url")}
+                                     "coords_exactes", "lat", "lon", "url", "contact", "bfs")}
             for it in items if it.get("lat") is not None]
-    cfg = {"home": list(home), "rayon": int(round(args.rayon)) or 15, "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
+    cfg = {"home": list(home), "rayon": min(10, max(1, int(round(args.rayon)) or 2)), "jours": args.jours, "econstruction": ECONSTRUCTION_URL,
            "today": dt.date.today().isoformat()}
     js = lambda o: json.dumps(o, ensure_ascii=False).replace("</", "<\\/")
     return (TEMPLATE.replace("__DATA__", js(data)).replace("__CFG__", js(cfg))
+            .replace("__COMMUNES__", js(communes_info(items)))
             .replace("__GENERATED__", html.escape(generated)).replace("__JOURS__", str(args.jours))
             .replace("__DELAI__", str(DELAI_OPPOSITION_J)))
 
@@ -548,7 +774,7 @@ def render(items, home, args, generated):
 def main():
     ap = argparse.ArgumentParser(description="Mises à l'enquête publique près de chez toi (Valais)")
     ap.add_argument("--home", default="Evionnaz", help="commune ou NPA de référence (défaut : Evionnaz)")
-    ap.add_argument("--rayon", type=float, default=15, help="rayon en km (défaut : 15)")
+    ap.add_argument("--rayon", type=float, default=2, help="rayon en km, de 1 à 10 (défaut : 2)")
     ap.add_argument("--jours", type=int, default=30, help="publications des N derniers jours (défaut : 30)")
     ap.add_argument("--tous", action="store_true", help="inclure les avis dont le délai est échu")
     ap.add_argument("--rubrique", action="append", help="forcer une sous-rubrique (ex. BA-VS05) ; répétable")

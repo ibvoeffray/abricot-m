@@ -30,7 +30,7 @@ jobs:
         env:
           TZ: Europe/Zurich
         run: |
-          python3 scripts/enquetes_vs.py --home Evionnaz --rayon 15 --jours 45 --tous \
+          python3 scripts/enquetes_vs.py --home Evionnaz --rayon 2 --jours 45 --tous \
             --out site/index.html --json site/enquetes.json
 
       - name: Versionner la page mise à jour
